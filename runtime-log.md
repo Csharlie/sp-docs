@@ -297,6 +297,47 @@ Kesz.
 
 ---
 
+## #7 -- Phase 5 full smoke test (2026-04-05) -- P5.5
+
+**Cel:** Phase 5 zaro teszt -- REST endpoint, preview, validacio, CORS, preflight, debug.log.
+
+### Eredmenyek (18/18 PASS)
+
+| # | Teszt | Eredmeny |
+|---|---|---|
+| 1 | GET /site → 200 | PASS |
+| 2 | Valid JSON | PASS |
+| 3 | Has site/navigation/pages keys | PASS (3x) |
+| 4 | X-Spektra-Version: 0.1.0 | PASS |
+| 5 | preview=true → 200 | PASS |
+| 6 | Cache-Control: no-cache (preview) | PASS |
+| 7 | preview=yes → 400 | PASS |
+| 8 | Error code rest_invalid_param | PASS |
+| 9 | CORS Allow-Origin (localhost:5174) | PASS |
+| 10 | Vary: Origin | PASS |
+| 11 | CORS disallowed (evil.com) → no header | PASS |
+| 12 | OPTIONS → 204 | PASS |
+| 13 | Preflight Allow-Origin | PASS |
+| 14 | Allow-Methods: GET, OPTIONS | PASS |
+| 15 | Allow-Headers: Content-Type, Authorization | PASS |
+| 16 | debug.log: 0 PHP errors | PASS |
+
+### Phase 5 osszefoglalas
+
+| Lepes | Commit | Lenyeg |
+|---|---|---|
+| P5.1 | `9b0321f` | spektra-api.php finalize (API_URL, clean comments) |
+| P5.2 | `0f7a129` | rest-controller (schema, validate preview, version+cache headers) |
+| P5.3 | `26a3f21` | CORS (origin whitelist, preflight 204, Vary, WP override) |
+| P5.4 | — | Config loading verification (nincs kodvaltozas) |
+| P5.5 | — | Zaro smoke test (18/18 PASS) |
+
+### Statusz
+
+Phase 5 KESZ.
+
+---
+
 ## #6 -- Config loading verification (2026-04-05) -- P5.4
 
 **Cel:** Explicit verifikacio, hogy a teljes plugin config lanca mukodik.
