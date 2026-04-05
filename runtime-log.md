@@ -16,6 +16,7 @@ ezert kulon logoljuk oket ide.
 | 1 | P4.1 | WAMP vhost | 2026-04-05 | done |
 | 2 | P4.2 | WordPress install | 2026-04-05 | done |
 | 3 | P4.3 | Plugin symlink + activate | 2026-04-05 | done |
+| 4 | P4.4 | Client overlay linking | 2026-04-05 | done |
 
 ---
 
@@ -219,6 +220,75 @@ Response: {"site":[],"navigation":[],"pages":[]}
 ### sp-infra commit
 
 `49d5a96` -- `feat: link-plugin.ps1 real impl + fix NAMESPACE reserved keyword in rest-controller (P4.3)`
+
+### Statusz
+
+Kesz.
+
+---
+
+## #4 -- Client overlay linking (2026-04-05) -- P4.4
+
+**Cel:** `spektra-api.php` fallback pathjan (`__DIR__ . '/../spektra-config/config.php'`) a kliens config elerheto legyen.
+
+### Mi tortent
+
+Minden parancs **PowerShell**-bol futott (VS Code terminal).
+
+1. **link-overlay.ps1 frissitve** (sp-infra commit `1f9db68`):
+   - Scaffold lecserelve valos implementaciora
+   - `New-Item -ItemType Junction` (nem SymbolicLink)
+   - Target validation: ha junction letezik, ellenorzi, hogy helyes source-ra mutat-e
+   - Ha rossz target: error (nem csereli csendben)
+
+2. **Junction letrehozva** (PowerShell):
+   ```powershell
+   cd D:\Projects\spektra\sp-infra
+   & .\scripts\link-overlay.ps1 -Client benettcar
+   ```
+   Eredmeny:
+   ```
+   .local\wp-runtimes\benettcar\wp-content\plugins\spektra-config
+     --> D:\Projects\spektra\sp-clients\sp-benettcar\infra
+   ```
+
+3. **Junction ellenorzes**:
+   ```powershell
+   Get-Item "D:\Projects\spektra\.local\wp-runtimes\benettcar\wp-content\plugins\spektra-config" |
+     Select-Object Mode, Name, Target | Format-List
+   ```
+   Eredmeny: `Mode: d----l`, `Target: ...sp-benettcar\infra`
+
+4. **config.php elerheto fallback pathon**:
+   ```powershell
+   & "D:\Local\wamp\bin\php\php8.4.15\php.exe" -r "var_dump(file_exists('D:/Projects/spektra/.local/wp-runtimes/benettcar/wp-content/plugins/spektra-config/config.php'));"
+   ```
+   Eredmeny: `bool(true)`
+
+### Ketlepcsos smoke test
+
+| Ellenorzes | Eredmeny |
+|---|---|
+| debug.log letezik elotte? | Nem (nincs korabbi error) |
+| active_plugins DB | `a:1:{i:0;s:27:"spektra-api/spektra-api.php";}` -- plugin aktiv |
+| GET /wp-json/spektra/v1/site | 200 OK, `{"site":[],"navigation":[],"pages":[]}` |
+| debug.log letrehozva utana? | Nem (nincs uj error) |
+
+### Idempotencia teszt
+
+```powershell
+& .\scripts\link-overlay.ps1 -Client benettcar
+# --> "Overlay junction already exists and points to correct source: ..."
+```
+
+### Architektura megjegyzes
+
+Ez a symlink fallback a **jelenlegi runtime strategia**. Kesobb a `bootstrap.ps1` ugyanezt
+a logikat hivja scriptbol, a `wp-config.php.tpl` + ENV-driven path a vegleges modell.
+
+### sp-infra commit
+
+`1f9db68` -- `feat: link-overlay.ps1 real impl -- Junction + target validation (P4.4)`
 
 ### Statusz
 
