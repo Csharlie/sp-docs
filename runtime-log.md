@@ -21,6 +21,7 @@ ezert kulon logoljuk oket ide.
 | 6 | P5.4 | Config loading verification | 2026-04-05 | done |
 | 7 | P5.5 | Phase 5 full smoke test | 2026-04-05 | done |
 | 8 | P6.2 | Client field registration verify | 2026-04-05 | done |
+| 9 | P6.3 | Field definition integrity audit | 2026-04-05 | done |
 
 ---
 
@@ -355,6 +356,50 @@ ALL CHECKS PASS — nincs kodvaltozas, verifikacios lepes.
 ### Statusz
 
 ✅ Kesz.
+
+---
+
+## #9 -- Field definition integrity audit (2026-04-05) -- P6.3
+
+**Cel:** Minden mezo type-specifikus property-k futasideju ellenorzese.
+
+### Audit script
+
+WP runtime-ban futtatott PHP script: 10 group, 51 top-level field + osszes sub_field.
+
+### Ellenorzott property-k
+
+| Mező típus | Ellenőrzött property-k |
+|---|---|
+| Alapvető (mind) | key, name, type, label |
+| image | return_format=array |
+| repeater | sub_fields count > 0, sub key/name/type |
+| group | sub_fields count > 0, sub key/name/type |
+| select | choices count ≥ 2, default_value |
+| number | default_value |
+| true_false | default_value |
+| textarea | rows > 0 |
+| image sub_field | return_format=array (repeater/group belsejében) |
+
+### Eredmény
+
+- **329 check futtatva**
+- **329 PASS, 0 FAIL**
+- Minden image field: return_format=array ✅
+- Minden repeater: van sub_fields (1-5 sub) ✅
+- Minden group: van sub_fields (3-8 sub) ✅
+- Minden select: 2 choice + default ✅
+- number: default_value=400 ✅
+- true_false: default_value=0 ✅
+- textarea: rows 2-4 ✅
+
+### Verdict
+
+ALL CHECKS PASS (329/329) — nincs kódváltozás, verifikációs lépés.
+
+### Statusz
+
+✅ Kész.
 
 ---
 
