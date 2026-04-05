@@ -126,39 +126,39 @@ transzformáció — amit a szerver küld, azt a React rendereli.
 ```
                          benettcar.local
                               │
-                    ┌─────────┴─────────┐
+                    ┌─────────┴──────────┐
                     │  Apache (WAMP)     │
                     │  :80               │
-                    └─────────┬─────────┘
+                    └─────────┬──────────┘
                               │
                /wp-json/spektra/v1/site
                               │
-                    ┌─────────┴──────────────────────┐
-                    │  WordPress 6.9.4                │
-                    │  ┌───────────────────────────┐  │
+                    ┌─────────┴────────────────────────┐
+                    │  WordPress 6.9.4                 │
+                    │  ┌────────────────────────────┐  │
                     │  │  spektra-api plugin        │  │
                     │  │  ├── Rest_Controller       │  │ ← route regisztráció
                     │  │  ├── CORS                  │  │ ← cross-origin headerek
                     │  │  └── Response_Builder      │  │ ← JSON összeállítás
-                    │  └──────────┬────────────────┘  │
+                    │  └──────────┬─────────────────┘  │
                     │             │                    │
-                    │  ┌──────────┴────────────────┐  │
-                    │  │  spektra-config (Junction)  │  │
-                    │  │  ├── config.php             │  │ ← kliens beállítások
-                    │  │  └── acf/field-groups.php   │  │ ← ACF mező definíciók
-                    │  └───────────────────────────┘  │
+                    │  ┌──────────┴─────────────────┐  │
+                    │  │  spektra-config (Junction) │  │
+                    │  │  ├── config.php            │  │ ← kliens beállítások
+                    │  │  └── acf/field-groups.php  │  │ ← ACF mező definíciók
+                    │  └────────────────────────────┘  │
                     │                                  │
-                    │  ┌───────────────────────────┐  │
+                    │  ┌────────────────────────────┐  │
                     │  │  ACF Free                  │  │ ← tartalomkezelés
-                    │  └───────────────────────────┘  │
+                    │  └────────────────────────────┘  │
                     └──────────────────────────────────┘
                               │
                          JSON válasz
                               │
-                    ┌─────────┴─────────┐
+                    ┌─────────┴──────────┐
                     │  React app         │
-                    │  localhost:5174     │
-                    └───────────────────┘
+                    │  localhost:5174    │
+                    └────────────────────┘
 ```
 
 Négy repo vesz részt:
@@ -677,18 +677,18 @@ mielőtt publikálna.
 | Plugin aktiválás | ✅ Kész | `49d5a96` (P4.3) | WP runtime-ban aktív |
 | Client overlay | ✅ Kész | `1f9db68` (P4.4) | Junction → sp-benettcar/infra |
 | ACF field groups | ✅ Kész | `43c4456` (P4.5) | 10 group, 51 field |
-| `class-rest-controller.php` | 🔶 Scaffold | — | Route regisztrál, de nincs schema/sanitize |
-| `class-cors.php` | 🔶 Scaffold | — | Hook regisztrál, de nem küld CORS headert |
-| `class-response-builder.php` | 🔶 Scaffold | — | Placeholder `[]` tömböket ad vissza |
+| `class-rest-controller.php` | ✅ Kész | `0f7a129` (P5.2) | Schema, validate, sanitize, headers |
+| `class-cors.php` | ✅ Kész | `26a3f21` (P5.3) | Whitelist, preflight 204, Vary, header_remove |
+| `class-response-builder.php` | 🔶 Placeholder | — | Phase 7-ben lesz valódi assembly |
+| Config loading | ✅ Verified | — (P5.4) | 5 config kulcs, 10 ACF group, 51 field — runtime-log #6 |
+| Smoke test | ✅ 18/18 PASS | — (P5.5) | REST + CORS + preview + preflight — runtime-log #7 |
 
 ### Mi jön?
 
 | Fázis | Lépés | Mit csinál |
 |---|---|---|
-| Phase 5 | P5.2 | `class-rest-controller.php` — valódi route impl (schema, sanitize, params) |
-| Phase 5 | P5.3 | `class-cors.php` — valódi CORS headerek (`allowed_origins`-ból) |
-| Phase 5 | P5.4 | Config loading verifikáció — explicit teszt, hogy a config betöltődik |
-| Phase 5 | P5.5 | REST + CORS smoke test — cross-origin fetch, CORS headerek ellenőrzése |
+| Phase 6 | P6.1 | Reusable ACF helpers (`spektra_get_field`, `spektra_normalize_media`) |
+| Phase 6 | P6.2–6.4 | ACF field registration verify, admin verify, test data |
 | Phase 7 | P7.1 | Response_Builder — osztályváz, section assembly interfész |
 | Phase 7 | P7.2 | Site meta + Navigation assembly |
 | Phase 7 | P7.3 | Section assembly — ACF → SiteData sections[] |
@@ -705,7 +705,7 @@ mielőtt publikálna.
 }
 ```
 
-Ez **szándékos placeholder** — a struktúra megvan, a tartalom Phase 7-ben jön.
+Ez **szándékos placeholder** — a HTTP layer (route, CORS, headerek) kész, a tartalom Phase 7-ben jön.
 
 ---
 
@@ -721,4 +721,4 @@ Ez **szándékos placeholder** — a struktúra megvan, a tartalom Phase 7-ben j
 | Hogyan tud egy másik kliens is használni? | Overlay csere: `spektra-config/` → másik repo |
 | Mi a CORS? | HTTP header mechanizmus, ami megengedi a cross-origin kéréseket |
 | Hol van a szerződés? | `sp-engine/src/types/SiteData.ts` (TS) ↔ `Response_Builder` (PHP) |
-| Milyen státuszban van? | Route + plugin kész, CORS + Response_Builder scaffold (Phase 5 folyamatban) |
+| Milyen státuszban van? | HTTP layer kész (Phase 5 complete), Response Builder placeholder (Phase 7) |
