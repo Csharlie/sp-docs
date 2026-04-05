@@ -15,6 +15,7 @@ ezert kulon logoljuk oket ide.
 |---|-------|-------|-------|---------|
 | 1 | P4.1 | WAMP vhost | 2026-04-05 | done |
 | 2 | P4.2 | WordPress install | 2026-04-05 | done |
+| 3 | P4.3 | Plugin symlink + activate | 2026-04-05 | done |
 
 ---
 
@@ -158,6 +159,66 @@ http://benettcar.local/wp-json/  --> 200 OK
 - Nem adtam hozza Spektra configot
 - Nem hoztam letre symlinket
 - Nem modositottam wp-content-et
+
+### Statusz
+
+Kesz.
+
+---
+
+## #3 -- Plugin symlink + activate (2026-04-05) -- P4.3
+
+**Cel:** Spektra API plugin elerheto WP-ben Junction-on keresztul, aktivalva, nincs fatal error.
+
+### Mi tortent
+
+Minden parancs **PowerShell**-bol futott (VS Code terminal).
+
+1. **link-plugin.ps1 frissitve** (sp-infra commit):
+   - Scaffold lecserelve valos implementaciora
+   - `New-Item -ItemType Junction` (nem SymbolicLink -- admin jog nem kell)
+   - Idempotens: `Test-Path` guard
+
+2. **Junction letrehozva** (PowerShell):
+   ```powershell
+   cd D:\Projects\spektra\sp-infra
+   & .\scripts\link-plugin.ps1 -Client benettcar
+   ```
+   Eredmeny:
+   ```
+   .local\wp-runtimes\benettcar\wp-content\plugins\spektra-api
+     --> D:\Projects\spektra\sp-infra\plugin\spektra-api
+   ```
+
+3. **Plugin aktivalas** (PowerShell --> WAMP MySQL):
+   ```powershell
+   echo 'UPDATE wp_options SET option_value=''a:1:{i:0;s:27:"spektra-api/spektra-api.php";}'' WHERE option_name=''active_plugins'';' | & "D:\Local\wamp\bin\mysql\mysql8.4.7\bin\mysql.exe" -u root sp_benettcar
+   ```
+   Fontos: `s:27` -- a string hossz pontosan 27 karakter!
+
+4. **Permalink struktura** (PowerShell --> WAMP MySQL):
+   ```powershell
+   & "D:\Local\wamp\bin\mysql\mysql8.4.7\bin\mysql.exe" -u root sp_benettcar -e "UPDATE wp_options SET option_value='/%postname%/' WHERE option_name='permalink_structure'"
+   & "D:\Local\wamp\bin\mysql\mysql8.4.7\bin\mysql.exe" -u root sp_benettcar -e "DELETE FROM wp_options WHERE option_name='rewrite_rules'"
+   ```
+
+### Bug fix: `const NAMESPACE` (sp-infra commit)
+
+- `class-rest-controller.php`: `const NAMESPACE` --> `const API_NAMESPACE`
+- `namespace` PHP reserved keyword -- PHP 8-ban fatal error
+- WP error handler elnyelte, plugin csendben nem regisztralodott
+- Fix utan: route regisztralodott, endpoint mukodik
+
+### Smoke test
+
+```
+http://benettcar.local/wp-json/spektra/v1/site --> 200 OK
+Response: {"site":[],"navigation":[],"pages":[]}
+```
+
+### sp-infra commit
+
+`49d5a96` -- `feat: link-plugin.ps1 real impl + fix NAMESPACE reserved keyword in rest-controller (P4.3)`
 
 ### Statusz
 
