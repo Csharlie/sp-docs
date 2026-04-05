@@ -24,11 +24,13 @@ ezert kulon logoljuk oket ide.
 
 ### Mi tortent
 
-1. **Runtime konyvtar letrehozva:**
-   - `D:\Projects\spektra\.local\wp-runtimes\benettcar\`
-   - Teszt `index.html` elhelyezve
+1. **Runtime konyvtar letrehozva** (PowerShell):
+   ```powershell
+   New-Item -ItemType Directory -Path "D:\Projects\spektra\.local\wp-runtimes\benettcar" -Force
+   ```
+   - Teszt `index.html` elhelyezve (VS Code create file)
 
-2. **Apache vhost hozzaadva:**
+2. **Apache vhost hozzaadva** (VS Code szerkesztes):
    - Fajl: `D:\Local\wamp\bin\apache\apache2.4.65\conf\extra\httpd-vhosts.conf`
    - Meglevo localhost blokk erintetlen, uj blokk utana:
    ```apache
@@ -43,11 +45,13 @@ ezert kulon logoljuk oket ide.
    </VirtualHost>
    ```
 
-3. **Hosts fajl bovitve:**
-   - `C:\Windows\System32\drivers\etc\hosts`
-   - `127.0.0.1    benettcar.local`
+3. **Hosts fajl bovitve** (elevated PowerShell / kezzel):
+   ```powershell
+   # Admin jogosultsag szukseges!
+   Add-Content -Path "C:\Windows\System32\drivers\etc\hosts" -Value "`n127.0.0.1    benettcar.local"
+   ```
 
-4. **WAMP ujrainditva** (tray ikon)
+4. **WAMP ujrainditva** (WAMP tray ikon → Restart All Services)
 
 ### Architekturalis dontesek
 
@@ -77,23 +81,63 @@ Kesz.
 
 ### Mi tortent
 
+Minden parancs **PowerShell**-bol futott (VS Code terminal).
+
 1. **WordPress 6.9.4 letoltve es kicsomagolva:**
-   - Forras: `https://wordpress.org/latest.zip`
-   - Runtime: `D:\Projects\spektra\.local\wp-runtimes\benettcar\`
-   - Fajlok root-ban: `wp-admin/`, `wp-content/`, `wp-includes/`, `index.php`
+   ```powershell
+   # Letoltes
+   $zipPath = "$env:TEMP\wordpress-latest.zip"
+   Invoke-WebRequest -Uri "https://wordpress.org/latest.zip" -OutFile $zipPath -UseBasicParsing
 
-2. **Adatbazis letrehozva:**
+   # Kicsomagolas temp-be
+   $extractPath = "$env:TEMP\wp-extract"
+   Expand-Archive -Path $zipPath -DestinationPath $extractPath -Force
+
+   # Masolasa runtime konyvtarba (root-ba, nem alkonyvtarba)
+   $src = "$env:TEMP\wp-extract\wordpress"
+   $dst = "D:\Projects\spektra\.local\wp-runtimes\benettcar"
+   Remove-Item "$dst\index.html" -Force
+   Copy-Item -Path "$src\*" -Destination $dst -Recurse -Force
+
+   # Temp takaritas
+   Remove-Item $zipPath -Force
+   Remove-Item $extractPath -Recurse -Force
+   ```
+
+2. **Adatbazis letrehozva** (PowerShell → WAMP MySQL):
+   ```powershell
+   & "D:\Local\wamp\bin\mysql\mysql8.4.7\bin\mysql.exe" -u root -e "
+     CREATE DATABASE IF NOT EXISTS sp_benettcar
+     CHARACTER SET utf8mb4
+     COLLATE utf8mb4_unicode_ci;
+   "
+   ```
    - Nev: `sp_benettcar` (Spektra naming: `sp_{client_slug}`)
-   - Charset: `utf8mb4_unicode_ci`
-   - MySQL: `D:\Local\wamp\bin\mysql\mysql8.4.7\`
 
-3. **wp-config.php letrehozva:**
+3. **wp-config.php letrehozva** (VS Code create file):
    - DB: `sp_benettcar`, root, ures jelszo, localhost
    - Debug: `WP_DEBUG=true`, `WP_DEBUG_LOG=true`, `WP_DEBUG_DISPLAY=false`
-   - Salt: WordPress API-bol generalt egyedi kulcsok
+   - Salt generalas:
+     ```powershell
+     (Invoke-WebRequest -Uri "https://api.wordpress.org/secret-key/1.1/salt/" -UseBasicParsing).Content
+     ```
    - Spektra config: **NEM** hozzaadva (Phase 5)
 
-4. **WordPress telepites lefuttatva:**
+4. **WordPress telepites** (PowerShell → HTTP POST az installerhez):
+   ```powershell
+   $body = @{
+     weblog_title    = 'Benett Car'
+     user_name       = 'admin'
+     admin_password  = 'admin'
+     admin_password2 = 'admin'
+     pw_weak         = '1'
+     admin_email     = 'dev@benettcar.local'
+     blog_public     = '0'
+     language         = 'hu_HU'
+   }
+   Invoke-WebRequest -Uri "http://benettcar.local/wp-admin/install.php?step=2" `
+     -Method POST -Body $body -UseBasicParsing
+   ```
    - Site title: `Benett Car`
    - Admin: `admin` / `admin` (dev only)
    - Email: `dev@benettcar.local`
