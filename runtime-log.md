@@ -18,6 +18,9 @@ ezert kulon logoljuk oket ide.
 | 3 | P4.3 | Plugin symlink + activate | 2026-04-05 | done |
 | 4 | P4.4 | Client overlay linking | 2026-04-05 | done |
 | 5 | P4.5 | ACF install + verify | 2026-04-05 | done |
+| 6 | P5.4 | Config loading verification | 2026-04-05 | done |
+| 7 | P5.5 | Phase 5 full smoke test | 2026-04-05 | done |
+| 8 | P6.2 | Client field registration verify | 2026-04-05 | done |
 
 ---
 
@@ -294,6 +297,64 @@ a logikat hivja scriptbol, a `wp-config.php.tpl` + ENV-driven path a vegleges mo
 ### Statusz
 
 Kesz.
+
+---
+
+## #8 -- Client field registration verification (2026-04-05) -- P6.2
+
+**Cel:** Verifikacio, hogy a 10 bc-* field group megjelenik a Fooldal szerkeszton.
+
+### Ellenorzott elemek
+
+**1. Front page setup:**
+- `show_on_front`: `page`
+- `page_on_front`: ID 7 ("Home", status: publish, slug: home)
+
+**2. Field group registration:**
+- 10/10 group regisztralva
+- 10/10 group illeszkedik a front page post ID-hez (location rule: `page_type == front_page`)
+
+**3. Config sections vs ACF groups alignment:**
+- Config sections (10): bc-hero, bc-brand, bc-gallery, bc-services, bc-service, bc-about, bc-team, bc-assistance, bc-contact, bc-map
+- ACF group slugs (10): bc-hero, bc-brand, bc-gallery, bc-services, bc-service, bc-about, bc-team, bc-assistance, bc-contact, bc-map
+- Missing: NONE
+- Extra: NONE
+
+**4. Field type inventory (51 field, 8 unique type):**
+
+| Type | Count |
+|---|---|
+| text | 28 |
+| textarea | 6 |
+| image | 2 |
+| repeater | 8 |
+| true_false | 1 |
+| group | 2 |
+| select | 3 |
+| number | 1 |
+
+**5. Per-group detail:**
+
+| Group | Fields | Types |
+|---|---|---|
+| BC Hero | 8 | text(7), image(1) |
+| BC Brand | 3 | text(1), textarea(1), repeater(1) |
+| BC Gallery | 4 | text(2), true_false(1), repeater(1) |
+| BC Services | 3 | text(2), repeater(1) |
+| BC Service | 6 | text(2), textarea(1), repeater(2), group(1) |
+| BC About | 9 | text(3), repeater(2), image(1), select(2) |
+| BC Team | 4 | text(2), textarea(1), repeater(1) |
+| BC Assistance | 6 | text(5), textarea(1) |
+| BC Contact | 5 | text(2), textarea(1), group(1), select(1) |
+| BC Map | 3 | text(2), number(1) |
+
+### Verdict
+
+ALL CHECKS PASS — nincs kodvaltozas, verifikacios lepes.
+
+### Statusz
+
+✅ Kesz.
 
 ---
 
