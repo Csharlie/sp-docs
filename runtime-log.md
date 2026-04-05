@@ -22,6 +22,7 @@ ezert kulon logoljuk oket ide.
 | 7 | P5.5 | Phase 5 full smoke test | 2026-04-05 | done |
 | 8 | P6.2 | Client field registration verify | 2026-04-05 | done |
 | 9 | P6.3 | Field definition integrity audit | 2026-04-05 | done |
+| 10 | P6.4 | Test data seed + persistence | 2026-04-05 | done |
 
 ---
 
@@ -396,6 +397,50 @@ WP runtime-ban futtatott PHP script: 10 group, 51 top-level field + osszes sub_f
 ### Verdict
 
 ALL CHECKS PASS (329/329) — nincs kódváltozás, verifikációs lépés.
+
+### Statusz
+
+✅ Kész.
+
+---
+
+## #10 -- Test data seed + persistence verify (2026-04-05) -- P6.4
+
+**Cel:** Valos teszt adat bevitele mind a 10 bc-* field group-ba, majd persistence ellenorzes.
+
+### Seed
+
+`update_field()` ACF API-val, front page (post ID 7).
+
+| Section | Tartalom |
+|---|---|
+| bc-hero | 7 text (title, subtitle, desc, 2×CTA text+href) |
+| bc-brand | 2 text + 1 repeater/3 row (Toyota, Suzuki, Opel) |
+| bc-gallery | 3 text + 1 repeater/2 row |
+| bc-services | 2 text + 1 repeater/3 row (Wrench, AlertCircle, DollarSign) |
+| bc-service | 3 text + 2 repeater (3+2 row) + 1 group/8 sub |
+| bc-about | 5 text + 2 repeater (2+3 row) + 2 select |
+| bc-team | 3 text + 1 repeater/3 row (Kiss, Nagy, Szabó) |
+| bc-assistance | 6 text |
+| bc-contact | 3 text + 1 group/3 sub + 1 select |
+| bc-map | 2 text + 1 number (450) |
+
+### Persistence verify
+
+Külön PHP script - friss `wp-load.php` + `get_field()` visszaolvasás.
+
+- **59 check futtatva**
+- **59 PASS, 0 FAIL**
+- Szöveg mezők: pontos egyezés ✅
+- Repeater-ek: helyes row count + tartalom ✅
+- Group-ok: összes sub_field visszajön ✅
+- Select-ek: helyes választás (right, light, dark) ✅
+- Number: 450 ✅
+- true_false: true ✅
+
+### Verdict
+
+ALL CHECKS PASS (59/59) — minden adat persistált a WP post_meta-ban.
 
 ### Statusz
 
