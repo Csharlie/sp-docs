@@ -17,6 +17,7 @@ ezert kulon logoljuk oket ide.
 | 2 | P4.2 | WordPress install | 2026-04-05 | done |
 | 3 | P4.3 | Plugin symlink + activate | 2026-04-05 | done |
 | 4 | P4.4 | Client overlay linking | 2026-04-05 | done |
+| 5 | P4.5 | ACF install + verify | 2026-04-05 | done |
 
 ---
 
@@ -289,6 +290,80 @@ a logikat hivja scriptbol, a `wp-config.php.tpl` + ENV-driven path a vegleges mo
 ### sp-infra commit
 
 `1f9db68` -- `feat: link-overlay.ps1 real impl -- Junction + target validation (P4.4)`
+
+### Statusz
+
+Kesz.
+
+---
+
+## #5 -- ACF install + verify (2026-04-05) -- P4.5
+
+**Cel:** ACF Free telepites, 10 kliens field group betoltodesenek ellenorzese.
+
+### Mi tortent
+
+Minden parancs **PowerShell**-bol futott (VS Code terminal).
+
+1. **ACF Free letoltve es kicsomagolva:**
+   ```powershell
+   $acfZip = "$env:TEMP\advanced-custom-fields.zip"
+   Invoke-WebRequest -Uri "https://downloads.wordpress.org/plugin/advanced-custom-fields.latest-stable.zip" -OutFile $acfZip -UseBasicParsing
+   $pluginsDir = "D:\Projects\spektra\.local\wp-runtimes\benettcar\wp-content\plugins"
+   Expand-Archive -Path $acfZip -DestinationPath $pluginsDir -Force
+   Remove-Item $acfZip -Force
+   ```
+
+2. **ACF aktivalas WP PHP API-bol** (NEM serialized MySQL hack):
+   ```powershell
+   # Egyszer hasznalatos script (utana torolve):
+   & "D:\Local\wamp\bin\php\php8.4.15\php.exe" activate-acf.php
+   ```
+   A script `activate_plugin('advanced-custom-fields/acf.php')` WP fuggvenyt hasznalja.
+   Eredmeny: `ACF activated successfully`
+   Active plugins: `advanced-custom-fields/acf.php, spektra-api/spektra-api.php`
+
+### Bug fix: `__DIR__` -> `WP_PLUGIN_DIR` (sp-infra commit)
+
+- **Problema:** `__DIR__` PHP-ban Junction-on at a valos forras utvonalra old fel
+  (`D:\Projects\spektra\sp-infra\plugin\spektra-api\`), nem a junction utvonalra
+  (`wp-content/plugins/spektra-api/`). Igy a `__DIR__ . '/../spektra-config/'`
+  sotetbe mutatott -- se config, se ACF field groups nem toltodott be.
+- **Tenet:** Ez P4.4-bol oroklott latens bug volt. A 200 OK elfeddte, mert a
+  placeholder response nem fugg a configtol.
+- **Fix:** `WP_PLUGIN_DIR . '/spektra-config/config.php'` -- ez a tenyleges
+  plugins mappat adja, ahol a `spektra-config` Junction el.
+- Ugyanitt: ACF field group loader hozzaadva (`require_once field-groups.php`)
+
+### Ketlepcsos smoke test
+
+| Ellenorzes | Eredmeny |
+|---|---|
+| debug.log baseline | Letezett, 3 sor (auto-update + korabbi diag) |
+| Endpoint | 200 OK, `{"site":[],"navigation":[],"pages":[]}` |
+| debug.log uj hiba? | Nincs |
+| [diag] ACF loaded | `yes` |
+| [diag] Local field groups | `10` |
+
+### ACF field group reszletek
+
+| Field Group | Key | Fields |
+|---|---|---|
+| BC Hero | group_bc_hero | 8 |
+| BC Brand | group_bc_brand | 3 |
+| BC Gallery | group_bc_gallery | 4 |
+| BC Services | group_bc_services | 3 |
+| BC Service | group_bc_service | 6 |
+| BC About | group_bc_about | 9 |
+| BC Team | group_bc_team | 4 |
+| BC Assistance | group_bc_assistance | 6 |
+| BC Contact | group_bc_contact | 5 |
+| BC Map | group_bc_map | 3 |
+| **Osszesen** | | **51** |
+
+### sp-infra commit
+
+`43c4456` -- `fix: config path __DIR__ -> WP_PLUGIN_DIR + add ACF field group loader (P4.5)`
 
 ### Statusz
 
