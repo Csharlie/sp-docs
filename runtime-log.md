@@ -297,6 +297,38 @@ Kesz.
 
 ---
 
+## #6 -- Config loading verification (2026-04-05) -- P5.4
+
+**Cel:** Explicit verifikacio, hogy a teljes plugin config lanca mukodik.
+
+### Verifikalt elemek
+
+| # | Ellenorzes | Eredmeny |
+|---|---|---|
+| 1 | `SPEKTRA_CLIENT_CONFIG` defined | YES |
+| 2 | Tipusa tomb | YES |
+| 3 | `client_slug` | `benettcar` |
+| 3 | `client_name` | `Benett Car` |
+| 3 | `allowed_origins` | `['http://localhost:5174']` |
+| 3 | `site_defaults` | `lang=hu, title=Benett Car` |
+| 3 | `sections` | 10 item (bc-hero ... bc-map) |
+| 4 | ACF field groups | 10 group, 51 field |
+| 5 | `SPEKTRA_API_VERSION` | `0.1.0` |
+| 5 | `SPEKTRA_API_PATH` | `.../sp-infra/plugin/spektra-api/` |
+| 5 | `SPEKTRA_API_URL` | `http://benettcar.local/wp-content/plugins/spektra-api/` |
+
+### Megjegyzes
+
+- Nincs kodvaltozas -- ez tisztan verifikacios lepes
+- PHP CLI-bol futott (`wp-load.php` require)
+- A `SPEKTRA_API_PATH` a Junction forras utvonalat mutatja (sp-infra), a `SPEKTRA_API_URL` a WP-s utvonalat -- ez vart viselkedes
+
+### Statusz
+
+Kesz.
+
+---
+
 ## #5 -- ACF install + verify (2026-04-05) -- P4.5
 
 **Cel:** ACF Free telepites, 10 kliens field group betoltodesenek ellenorzese.
