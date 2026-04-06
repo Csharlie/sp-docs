@@ -361,7 +361,7 @@ A smoke test eredményei **két helyen** jelennek meg:
 
 | Dokumentum | Mit tartalmaz | Példa |
 |---|---|---|
-| `sp-infra/docs/bootstrap-log.md` | Infrastruktúra lépések smoke test eredményei | #14: "200 OK, debug.log üres" |
+| `sp-infra/docs/bootstrap-infra-log.md` | Infrastruktúra lépések smoke test eredményei | #14: "200 OK, debug.log üres" |
 | `sp-docs/runtime-log.md` | Runtime lépések kétlépcsős teszt táblázata | #5: ACF smoke test tábla |
 
 ### Jövőbeli terv
@@ -388,5 +388,5 @@ minden lépésnél úgyis lefuttatja.
 | A Spektrában hogyan működik? | Endpoint + debug.log ellenőrzés (kétlépcsős) |
 | Ki futtatja? | Az AI agent, manuálisan, minden roadmap lépés után |
 | Hová van regisztrálva? | Sehová — nincs CI, nincs hook, nincs script |
-| Hol van az eredmény? | `bootstrap-log.md` és `runtime-log.md` |
+| Hol van az eredmény? | `bootstrap-infra-log.md` és `runtime-log.md` |
 | Miért fontos a Spektrának? | Junction + placeholder válaszok elfedik a hibákat |

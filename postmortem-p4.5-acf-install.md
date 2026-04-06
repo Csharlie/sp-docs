@@ -394,7 +394,7 @@ Relatív path hivatkozásoknál ez mindig potenciális buktató.
 |------|------|----------|
 | `plugin/spektra-api/spektra-api.php` | sp-infra | `__DIR__` → `WP_PLUGIN_DIR` + ACF loader |
 | `runtime-log.md` (#5) | sp-docs | P4.5 parancsok + bug leírás |
-| `docs/bootstrap-log.md` (#14) | sp-infra | P4.5 log bejegyzés |
+| `docs/bootstrap-infra-log.md` (#14) | sp-infra | P4.5 log bejegyzés |
 
 ## Commitok
 

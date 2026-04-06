@@ -306,7 +306,7 @@ fejlesztéshez tökéletes.
 | `scripts/link-plugin.ps1` | sp-infra | scaffold → valós implementáció |
 | `plugin/spektra-api/includes/class-rest-controller.php` | sp-infra | `const NAMESPACE` → `const API_NAMESPACE` |
 | `runtime-log.md` (#3) | sp-docs | P4.3 parancsok + fix dokumentáció |
-| `docs/bootstrap-log.md` (#12) | sp-infra | P4.3 log bejegyzés |
+| `docs/bootstrap-infra-log.md` (#12) | sp-infra | P4.3 log bejegyzés |
 
 ## Commitok
 
