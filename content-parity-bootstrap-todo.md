@@ -27,7 +27,7 @@
 - [x] export-seed CLI interface design (--output, --dry-run, --verbose)
 - [x] import-seed.sh interface design
 - [x] image handling / media exception spec
-- [ ] commit + push sp-docs
+- [x] commit + push sp-docs (`42e10bb`)
 
 ## P8.5.4 — Minimal Implementation
 

@@ -38,11 +38,11 @@ sp-docs/
 | 2 | `b64157a` | docs(P8.5.1): add content parity bootstrap TODO checklist | P8.5.1 |
 | 3 | `235a6b1` | docs(P8.5.2): v4 seed docs alignment — export ownership + P10.4 alias | P8.5.2 |
 | 4 | `38f095d` | fix(P8.5.2): seed README boundary + seed.json gitignore | P8.5.2 |
-| 5 | — | docs(P8.5.3): tooling design — seed shape, ACF mapping, CLI interfaces | P8.5.3 |
+| 5 | `42e10bb` | docs(P8.5.3): tooling design — seed shape, ACF mapping, CLI interfaces | P8.5.3 |
 
 ---
 
-## #5 — Tooling Design (2026-04-06)
+## #5 — Tooling Design (2026-04-06) · `42e10bb`
 
 **Mini-phase:** P8.5.3
 
@@ -74,7 +74,7 @@ sp-docs/
 
 ### Státusz
 
-⏳ Commit pending
+✅ Pusholva — `42e10bb`
 
 ---
 
