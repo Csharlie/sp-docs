@@ -31,13 +31,16 @@
 
 ## P8.5.4 — Minimal Implementation
 
-- [ ] mapping.ts (sp-benettcar/infra/seed/)
-- [ ] export-seed.ts (sp-benettcar/infra/seed/)
-- [ ] sp-infra/seed/export-seed.ts scaffold törlés
-- [ ] import-seed.php (sp-infra/seed/) — ACF-aware, wp eval-file
-- [ ] seed.json .gitignore (sp-infra/seed/)
-- [ ] commit + push sp-benettcar
-- [ ] commit + push sp-infra
+- [x] mapping.ts (sp-benettcar/infra/seed/)
+- [x] export-seed.ts (sp-benettcar/infra/seed/)
+- [x] sp-infra/seed/export-seed.ts scaffold törlés
+- [x] import-seed.php (sp-infra/seed/) — ACF-aware, wp eval-file
+- [x] ACF alt fields: bc-hero, bc-about, bc-team (sp-benettcar)
+- [x] media-helper.php alt_override + sections.php alt pass-through (sp-infra)
+- [x] seed.json .gitignore (sp-infra — already in P8.5.2)
+- [x] commit + push sp-benettcar (`c4ed7f6`)
+- [x] commit + push sp-infra (`7aa1964`)
+- [x] commit + push sp-docs meta (`9ff505f`)
 
 ## P8.5.5 — Verification
 
