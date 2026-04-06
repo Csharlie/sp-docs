@@ -9,7 +9,7 @@ Kronológikus napló (fordított sorrend — legújabb felül): mi jött létre,
 
 ## Jelenlegi állapot
 
-> Utolsó frissítés: P8.5.4 Minimal Implementation (#8)
+> Utolsó frissítés: P8.5.4 Minimal Implementation (#10)
 
 ### Fájlok (sp-docs)
 
@@ -42,6 +42,56 @@ sp-docs/
 | 6 | `c4ed7f6` | P8.5.4: ACF alt fields + seed pipeline (mapping.ts, export-seed.ts) | P8.5.4 (sp-benettcar) |
 | 7 | `7aa1964` | P8.5.4: ACF alt support + import-seed.php + scaffold cleanup | P8.5.4 (sp-infra) |
 | 8 | `9ff505f` | P8.5.4 meta: tooling design updates + artefact fixes | P8.5.4 (sp-docs) |
+| 9 | `68357a8` | fix(P8.5.4): make seed export runnable — tsx + asset loader + npm scripts | P8.5.4 (sp-benettcar) |
+| 10 | `f9eb596` | fix(P8.5.4): align bootstrap doc with actual seed contract | P8.5.4 (sp-docs) |
+
+---
+
+## #10 — Bootstrap doc contract alignment (2026-04-06) · `f9eb596`
+
+**Mini-phase:** P8.5.4 (sp-docs)
+
+### Mi változott
+
+- `content-parity-bootstrap.md` §2: pipeline import-seed.sh → import-seed.php (wp eval-file)
+- `content-parity-bootstrap.md` §3.2: boundary tábla import-seed.sh → import-seed.php
+- `content-parity-bootstrap.md` §6.1: seed shape átírás — sections-grouped/kind-annotated → flat `fields` object
+- `content-parity-bootstrap.md` §6.1 szabályok: kind annotáció → `detect_kind()` value shape alapú
+
+### Miért
+
+- [P2 finding] A doksi §6.1 példa JSON-ja `sections → bc-hero → { value, kind }` struktúrát írt,
+  miközben az export-seed.ts valójában lapos `fields` objektumot gyárt, az import-seed.php
+  pedig `detect_kind()`-dal határozza meg a típust az érték shape-jéből.
+- Az import-seed.sh → .php váltás még nem volt végigírt a pipeline (§2) és boundary (§3.2) szekciókban.
+
+### Státusz
+
+✅ Pusholva — `f9eb596`
+
+---
+
+## #9 — Seed export futtathatóvá téve (2026-04-06) · `68357a8`
+
+**Mini-phase:** P8.5.4 (sp-benettcar)
+
+### Mi jött létre / változott
+
+- `package.json`: tsx devDependency + `seed:export` / `seed:export:dry` npm scriptek
+- `infra/seed/asset-loader.mjs`: Node ESM loader hook — image importokat file path stringgé stub-olja
+- `infra/seed/register-asset-hooks.mjs`: `module.register()` bootstrap a loader hook-hoz
+
+### Miért
+
+- [P1 finding] Az export-seed.ts `npx tsx`-re épült, de tsx nem volt devDep — npx külso
+  registry-ről próbálta húzni, failing.
+- A site.ts image importokat használ (.jpg/.png), amiket Vite kezel build-ben, de bare
+  tsx/Node nem tud. Az asset-loader.mjs ezeket file path stringgé oldja fel.
+- Dry-run eredmény: 53 mező, 10 szekció, helyes shape — P8.5.5 unblokkolt.
+
+### Státusz
+
+✅ Pusholva — `68357a8`
 
 ---
 
