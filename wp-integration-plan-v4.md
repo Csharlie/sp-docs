@@ -799,9 +799,12 @@ site.ts (kliens statikus adat)
 
 ### 13.2. Export (site.ts → seed.json)
 
-`sp-infra/seed/export-seed.ts`:
+> **P8.5 boundary döntés**: az export a kliens repóban él, nem sp-infra-ban.
+> Lásd: [content-parity-bootstrap.md](content-parity-bootstrap.md) §3.2.
+
+`<client>/infra/seed/export-seed.ts`:
 - Importálja a kliens `site.ts`-t
-- Szekciónként ACF field mapping-re konvertálja
+- Kliens-specifikus `mapping.ts`-t használja
 - Kimenete: `seed.json` — WP-CLI kompatibilis
 
 ### 13.3. Import (seed.json → WP)
@@ -1216,7 +1219,7 @@ sp-client-y/                # Client C
 | P10.1 | Loading + error state UX | Loading spinner, WP unavailable error UI | UX tesztelve (gyors net, lassú net, WP down) |
 | P10.2 | Missing field fallback | Degradált renderelés hiányzó optional mezőknél | Nincs crash |
 | P10.3 | Maradék 7 bc-* szekció bekötés | bc-brand, bc-gallery, bc-about, bc-team, bc-assistance, bc-service, bc-map | Mind a 10 szekció E2E működik |
-| P10.4 | Seed pipeline (site.ts → WP) | `export-seed.ts` → `seed.json` → WP import | WP tartalom = site.ts tartalom |
+| P10.4 | ~~Seed pipeline (site.ts → WP)~~ | ~~export-seed.ts → seed.json → WP import~~ | → **Phase 8.5-be áthelyezve** (P8.5.4–P8.5.5) |
 | P10.5 | Debug tooling + logging | Response builder log, adapter error log | Hibakeresés lehetséges |
 
 ---
