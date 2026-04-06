@@ -9,7 +9,7 @@ Kronológikus napló (fordított sorrend — legújabb felül): mi jött létre,
 
 ## Jelenlegi állapot
 
-> Utolsó frissítés: P8.5.5 Verification (#13)
+> Utolsó frissítés: P8.5.6 Documentation — CLOSED (#15)
 
 ### Fájlok (sp-docs)
 
@@ -47,6 +47,67 @@ sp-docs/
 | 11 | `4006047` | P8.5.5: verify-parity.ts + dump-acf.php — parity verification tooling | P8.5.5 (sp-infra) |
 | 12 | `ef237c0` | fix(P8.5.5): dump-acf.php — reconstruct {url,alt} shape for image fields | P8.5.5 (sp-infra) |
 | 13 | `6d94056` | fix(P8.5.5): local asset path fix — relative refs + warnings | P8.5.5 (sp-benettcar) |
+| 14 | `d3697a7` | fix(P8.5.5): @types/node + infra/seed/tsconfig.json | P8.5.5 (sp-benettcar) |
+| 15 | `60555fa` | P8.5.5: seed-pipeline.ps1 orchestrator + WP-CLI arg compat | P8.5.5 (sp-infra) |
+
+---
+
+## #15 — Pipeline orchestrator + WP-CLI arg fix (2026-04-06) · `60555fa`
+
+**Mini-phase:** P8.5.5 (sp-infra)
+
+### Mi jött létre / változott
+
+**Új fájl:**
+- `seed/seed-pipeline.ps1`: Egyparancsos orchestrátor — export → import → dump → verify.
+  Auto-selects PHP 8.4.x (8.5+ breaks WP-CLI phar). Auto-downloads wp-cli.phar.
+  Flagek: `-DryRun`, `-Verbose`, `-SkipExport`.
+
+**Módosított fájlok:**
+- `seed/import-seed.php`: Dual-form arg parsing — `--dry-run` és `dry-run` is elfogadott
+  (WP-CLI intercepts `--` prefixed custom args)
+- `seed/dump-acf.php`: Dual-form arg parsing — `--output` és `output` is elfogadott
+- `.gitignore`: `seed/wp-cli.phar` szabály hozzáadva
+
+### Éles pipeline eredmény
+
+```
+Total: 55 fields
+  Match:    53
+  Mismatch: 2  (bc_service_contact, bc_contact_info — ACF regisztráció hiányzik)
+  Missing:  0
+```
+
+### Sequencing hibák felfedezve
+
+1. PHP 8.5.0 auto-selection → WP-CLI phar deprecation warning flood → fix: prefer 8.4.x
+2. WP-CLI `eval-file` intercepts `--` prefixed args → fix: bare positional arg form
+3. PowerShell 5.1 nem parse-ol non-ASCII karaktereket (─, →, ✓) → fix: ASCII-only strings
+
+### Státusz
+
+✅ Pusholva — `60555fa`
+
+---
+
+## #14 — @types/node + infra/seed/tsconfig (2026-04-06) · `d3697a7`
+
+**Mini-phase:** P8.5.5 (sp-benettcar)
+
+### Mi változott
+
+- `package.json`: `@types/node` devDependency hozzáadva
+- `infra/seed/tsconfig.json`: Külön tsconfig a seed tooling-hoz (`"types": ["node"]`)
+  — nem keveredik a frontend build-del (main tsconfig: `"include": ["src"]`)
+
+### Miért
+
+- Az export-seed.ts `process`, `path`, `fs` Node API-kat használ — @types/node nélkül
+  type error-ok az IDE-ben és `tsc --noEmit`-nál.
+
+### Státusz
+
+✅ Pusholva — `d3697a7`
 
 ---
 

@@ -48,13 +48,27 @@
 - [x] dump-acf.php (sp-infra/seed/) — `4006047`
 - [x] dump-acf.php image round-trip shape fix — `ef237c0`
 - [x] seed.json generálás (53 mező, 10 szekció)
-- [ ] WP import + dump (manuális — élő WP szükséges)
-- [ ] parity check PASS (mind 10 szekció)
-- [x] commit + push sp-infra (`4006047`)
+- [x] @types/node + infra/seed/tsconfig.json — `d3697a7`
+- [x] seed-pipeline.ps1 orchestrátor — `60555fa`
+- [x] WP import + dump (éles pipeline futtatás)
+- [x] parity check: **53/55 PASS** (2 group field → P11+ scope)
+- [x] commit + push sp-infra (`4006047`, `ef237c0`, `60555fa`)
+- [x] commit + push sp-benettcar (`6d94056`, `d3697a7`)
 
 ## P8.5.6 — Documentation
 
-- [ ] postmortem-p8.5-sequencing-slip.md (sp-docs)
-- [ ] workflow standard + onboarding checklist véglegesítés
-- [ ] log frissítés (content-parity-bootstrap-log.md — all entries)
+- [x] postmortem-p8.5-content-parity.md (sp-docs) — honest close + workflow standard
+- [x] log frissítés: #14, #15 entry + close header
+- [x] todo frissítés: P8.5.5 + P8.5.6 lezárás
 - [ ] commit + push sp-docs
+
+---
+
+## Phase 8.5 — CLOSED
+
+**Eredmény:** 53/55 verified parity, működő pipeline, tudatos maradékok P11+ scope-ban.
+
+**Elfogadott maradékok (P11+):**
+- `bc_service_contact` — group field, ACF regisztráció kell
+- `bc_contact_info` — group field, ACF regisztráció kell
+- 6 brand logó — lokális asset, media library upload kell
