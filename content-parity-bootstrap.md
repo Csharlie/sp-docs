@@ -17,7 +17,7 @@ Nincs garancia, hogy a kettő egyezik — és nincs gate, ami ezt kikényszerít
 site.ts (SiteData)
   → export-seed.ts (Node script, kliens repo)
     → seed.json (generált, gitignored)
-      → import-seed.sh (WP-CLI, infra repo)
+      → import-seed.php (ACF API via wp eval-file, infra repo)
         → WordPress DB (ACF field values)
 ```
 
@@ -34,7 +34,7 @@ tartalma ebből deriválódik, nem fordítva.
 |---|---|---|
 | `infra/seed/export-seed.ts` | sp-benettcar | kliens site.ts-t importálja, kliens mapping-et használja |
 | `infra/seed/mapping.ts` | sp-benettcar | ACF field nevek = kliens-specifikus |
-| `seed/import-seed.sh` | sp-infra | WP-CLI = infra művelet |
+| `seed/import-seed.php` | sp-infra | ACF API (update_field) via wp eval-file |
 | `seed/verify-parity.ts` | sp-infra | parity check = platform-szintű gate |
 | `seed/seed.json` | sp-infra | generált, gitignored |
 
@@ -88,9 +88,8 @@ viszont egyeznie kell.
 
 ### 6.1. seed.json shape
 
-A seed.json ACF-aware struktúrájú fájl. Két szekció:
-`site_options` (WP settings), `sections` (ACF field data — szekciónként csoportosítva,
-mapping kind-dal annotálva: scalar / repeater / group / image).
+A seed.json lapos (flat) struktúrájú fájl. Három top-level kulcs:
+`post_id` (céloldal), `site_options` (WP settings), `fields` (ACF field értékek — lapos kulcs-érték párok).
 
 Navigation **nem** szerepel a seed-ben — config-driven (lásd §6.6).
 
@@ -101,34 +100,38 @@ Navigation **nem** szerepel a seed-ben — config-driven (lásd §6.6).
     "blogname": "Benett Car",
     "blogdescription": "Autószerviz, felvásárlás és útmenti segítség Cegléden."
   },
-  "sections": {
-    "bc-hero": {
-      "bc_hero_title": { "value": "Precíz munka. Valódi odafigyelés.", "kind": "scalar" },
-      "bc_hero_subtitle": { "value": "Volkswagen Konszern...", "kind": "scalar" },
-      "bc_hero_description": { "value": "Minden munkát az adott autóra szabunk...", "kind": "scalar" },
-      "bc_hero_primary_cta_text": { "value": "Szerviz egyeztetés", "kind": "scalar" },
-      "bc_hero_primary_cta_href": { "value": "#car-service", "kind": "scalar" },
-      "bc_hero_background_image": { "value": "https://images.unsplash.com/...", "kind": "image" },
-      "bc_hero_background_image_alt": { "value": "Autószerviz műhely", "kind": "scalar" }
+  "fields": {
+    "bc_hero_title": "Precíz munka. Valódi odafigyelés.",
+    "bc_hero_subtitle": "Volkswagen Konszern...",
+    "bc_hero_description": "Minden munkát az adott autóra szabunk...",
+    "bc_hero_primary_cta_text": "Szerviz egyeztetés",
+    "bc_hero_primary_cta_href": "#car-service",
+    "bc_hero_background_image": {
+      "url": "https://images.unsplash.com/...",
+      "alt": "Autószerviz műhely"
     },
-    "bc-brand": {
-      "bc_brand_title": { "value": "Volkswagen Konszern...", "kind": "scalar" },
-      "bc_brand_brands": {
-        "kind": "repeater",
-        "value": [
-          { "name": "Volkswagen", "logo": "https://...", "alt": "Volkswagen logó", "invert": true }
-        ]
-      }
-    }
+    "bc_hero_background_image_alt": "Autószerviz műhely",
+    "bc_brand_title": "Volkswagen Konszern...",
+    "bc_brand_brands": [
+      { "name": "Volkswagen", "logo": "...", "alt": "Volkswagen logó", "invert": "1" }
+    ],
+    "bc_service_contact": {
+      "title": "...", "phone": "...", "hours": "..."
+    },
+    "bc_map_query": "Benett Car Business KFT, Cegléd",
+    "bc_map_height": 500
   }
 }
 ```
 
 **Szabályok:**
 - `post_id: "front_page"` → import-seed.php feloldja `get_option('page_on_front')`-ból
-- `kind` annotáció: az importer ebből tudja, melyik ACF write path-ot használja
-- Image mezők: URL string + külön `_alt` mező (P8.5.4 bővítés)
+- A `fields` objektum lapos: a kulcs az ACF field name, az érték közvetlenül az ACF-be írandó
+- Az importer (`import-seed.php`) `detect_kind()` függvénnyel határozza meg a típust az érték shape-jéből:
+  scalar (string/number/bool), repeater (sequential array), group (assoc object), image ({url, alt} object)
+- Image mezők: `{url, alt}` object → importer URL-t von ki, `update_field()`-del tárolja
 - Repeater mezők: teljes sor-tömb — `update_field()` kezeli a row indexelést
+- Boolean: `"1"` / `"0"` (WP meta convention)
 
 ### 6.2. ACF field mapping (10 szekció)
 
