@@ -4,53 +4,54 @@
 
 ## Eredmény
 
-**53/55 verified parity** — működő pipeline, tudatos maradékokkal.
+**55/55 verified parity + 18/18 endpoint smoke** — működő 5-lépéses pipeline.
 
 | Metrika | Érték |
 |---------|-------|
 | Összes mező | 55 (53 ACF + 2 WP option) |
-| PASS | 53 |
-| FAIL | 2 (group field — ACF regisztráció hiányzik WP-ben) |
+| PASS | 55 |
+| FAIL | 0 |
+| Endpoint image smoke | 18/18 |
 | Szekciók | 10/10 lefedve |
-| Pipeline | egyparancsos orchestráció (`seed-pipeline.ps1`) |
+| Pipeline | 5-lépéses orchestráció (`seed-pipeline.ps1`) |
+
+> **Korrekció (P9.2):** Az eredeti 53/55 eredmény hibás diagnózist tartalmazott.
+> Részletek a „Korrigált diagnózis" szekcióban.
 
 ## Mi számít PASS-nak
 
 A P8.5 PASS definíciója:
 
-1. **Működő pipeline**: `seed-pipeline.ps1` — export → import → dump → verify egyetlen paranccsal
-2. **53/55 field match**: text/CTA exact match, image structural match (URL eltérhet, alt egyezik)
-3. **0 missing field**: minden seed.json kulcs megjelenik wp-state.json-ben
-4. **Explicit elfogadott maradékok**: a 2 FAIL + 6 lokális asset tudatosan P11+ scope-ba tolva
+1. **Működő pipeline**: `seed-pipeline.ps1` — export → import → dump → verify → endpoint smoke (5 lépés)
+2. **55/55 field match**: text/CTA exact match, image structural match (URL eltérhet, alt egyezik), group kulcs-normalizálás
+3. **18/18 endpoint smoke**: minden image field valid URL a live endpointban
+4. **0 missing field**: minden seed.json kulcs megjelenik wp-state.json-ben
+5. **Media library sync**: 18 image sideloaded (6 brand logó lokális fájlból, 12 external URL-ből)
 
 ## Mi NEM számít PASS-nak
 
-- Full 55/55 match
-- Media library sync (image feltöltés + attachment ID)
-- ACF field group regisztráció automatizálás
 - Navigation parity (config-driven, nem DB-ből jön)
+- Vizuális regressziós teszt (screenshot diff)
 
 ---
 
-## FAIL mezők és root cause
+## Korrigált diagnózis (P9.2)
 
-### `bc_service_contact` — group (8 sub-field)
+Az eredeti postmortem három "maradékot" jelölt P11+ scope-ra. Mindhárom diagnózis **téves** volt:
 
-**Tünet**: `update_field()` false-t ad vissza, dump undefined-ot olvas.
-**Root cause**: A `bc_service_contact` group field nincs regisztrálva az ACF plugin-ben (nincs field group definition a WP admin-ban). Az `update_field()` ACF regisztrált field-et vár — regisztrálatlan key-re false-t ad.
-**Fix (P11+)**: ACF field group JSON export létrehozása, ami tartalmazza a contact group definíciót.
+### `bc_service_contact` + `bc_contact_info` — group sub-field kulcs prefix
 
-### `bc_contact_info` — group (3 sub-field)
+**Eredeti diagnózis (TÉVES)**: „ACF field group regisztráció hiányzik"
+**Valódi root cause**: A group mezők ACF regisztrációja végig megvolt (bc-service.php, bc-contact.php). A FAIL oka: `dump-acf.php` a group sub-field-eket raw ACF kulcsokkal adta vissza (`field_bc_service_contact_title`), míg a seed.json rövid kulcsokat használ (`title`). A verify-parity.ts a seed kulcsait kereste a dump-ban → `undefined`.
+**Fix**: `normalize_dump_value()` seed-shape-alapú kulcs-remapping (suffix match).
+**Eredmény**: 55/55 PASS.
 
-**Tünet**: Azonos — `update_field()` false, dump undefined.
-**Root cause**: Azonos — nincs ACF field group regisztráció.
-**Fix (P11+)**: Ugyanaz mint fent.
+### 6 brand logó — lokális asset sideload
 
-### 6 brand logó — lokális asset referencia
-
-**Tünet**: Seed-ben `src/assets/brands/vw-logo.jpg` (projekt-relatív path), nem WP media URL.
-**Root cause**: A site.ts ES importokat használ (`import vwLogo from '...jpg'`), amiket Vite build-ben URL-re old. Seed export kontextusban nincs Vite → asset-loader stub-olja fájlnévre.
-**Fix (P11+)**: Media library upload pipeline — lokális képek feltöltése WP-be, attachment URL visszaírása.
+**Eredeti diagnózis**: „Lokális asset, media library upload kell (P11+)"
+**Valódi helyzet**: A `looks_like_image_ref()` heurisztika + `sideload_local_file()` megoldotta — a 6 brand logó a media library-be kerül (attachment #11–#16). Idempotens (CACHED re-run-ra).
+**Fix**: import-seed.php bare image string detection.
+**Eredmény**: Endpoint smoke PASS — mind a 6 logó valid WP media URL.
 
 ---
 
@@ -142,14 +143,13 @@ sp-infra/                             # platform repo
 
 ---
 
-## P11+ scope — tudatos maradékok
+## P11+ scope
 
 | Feladat | Prioritás | Blokkoló? |
 |---------|-----------|-----------|
-| ACF field group JSON regisztráció (bc_service_contact, bc_contact_info) | Közepes | Nem — 53/55 PASS |
-| Media library upload pipeline (brand logók) | Alacsony | Nem — placeholder path elfogadott |
 | seed-pipeline.ps1 → cross-platform (bash/CI) | Alacsony | Nem — lokális dev only |
 | Automatikus ACF field group sync (site.ts → WP) | Jövő | Nem |
+| Visual regression test (endpoint snapshot) | Jövő | Nem |
 
 ---
 

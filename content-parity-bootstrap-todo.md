@@ -51,7 +51,7 @@
 - [x] @types/node + infra/seed/tsconfig.json — `d3697a7`
 - [x] seed-pipeline.ps1 orchestrátor — `60555fa`
 - [x] WP import + dump (éles pipeline futtatás)
-- [x] parity check: **53/55 PASS** (2 group field → P11+ scope)
+- [x] parity check: **55/55 PASS** (korrigált — lásd P9.2 javítás)
 - [x] commit + push sp-infra (`4006047`, `ef237c0`, `60555fa`)
 - [x] commit + push sp-benettcar (`6d94056`, `d3697a7`)
 
@@ -66,9 +66,10 @@
 
 ## Phase 8.5 — CLOSED
 
-**Eredmény:** 53/55 verified parity, működő pipeline, tudatos maradékok P11+ scope-ban.
+**Eredmény:** 55/55 verified parity + 18/18 endpoint smoke, működő 5-lépéses pipeline.
 
-**Elfogadott maradékok (P11+):**
-- `bc_service_contact` — group field, ACF regisztráció kell
-- `bc_contact_info` — group field, ACF regisztráció kell
-- 6 brand logó — lokális asset, media library upload kell
+> **Korrekció (P9.2):** Az eredeti 53/55 diagnózis téves volt — a group mezők ACF
+> regisztrációja nem hiányzott (bc-service.php, bc-contact.php definíciók végig léteztek).
+> A FAIL oka: dump-acf.php raw ACF key prefix a group sub-field-eken.
+> Fix: seed-shape-alapú kulcs-remapping a normalize_dump_value()-ban.
+> A brand logókat is sideload-olja a pipeline (lokális fájlokból WP media library-be).

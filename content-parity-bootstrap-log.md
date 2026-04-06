@@ -73,10 +73,17 @@ sp-docs/
 
 ```
 Total: 55 fields
-  Match:    53
-  Mismatch: 2  (bc_service_contact, bc_contact_info — ACF regisztráció hiányzik)
+  Match:    55
+  Mismatch: 0
   Missing:  0
 ```
+
+> **Korrekció (P9.2):** Az eredeti 53/55 eredmény hibás diagnózist tartalmazott.
+> A 2 group mező (bc_service_contact, bc_contact_info) ACF regisztrációja nem hiányzott —
+> a bc-service.php és bc-contact.php definíciók végig léteztek. A FAIL oka: a dump-acf.php
+> a group sub-field kulcsokat raw ACF alakban adta vissza (field_bc_service_contact_title),
+> míg a seed.json rövid kulcsokat használ (title). Fix: dump-acf.php normalize_dump_value()
+> seed-shape-alapú kulcs-remapping. Ezzel 55/55 PASS.
 
 ### Sequencing hibák felfedezve
 
