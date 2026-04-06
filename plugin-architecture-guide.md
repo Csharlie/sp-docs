@@ -2,7 +2,7 @@
 
 > Célközönség: junior fejlesztők, senior fejlesztők, külső kontribútorok.
 > Utolsó frissítés: 2026-04-05
-> **Implementációs státusz: Phase 5 complete** — HTTP layer kész, Response Builder placeholder.
+> **Implementációs státusz: Phase 8 closed** — HTTP layer + Response Builder + Contract Hardening kész (P8-R4).
 
 ---
 
@@ -227,26 +227,16 @@ a WordPress default CORS viselkedését.
 - `SiteData`-kompatibilis JSON tömb összeállítása
 - Preview mód támogatása (draft tartalom)
 
-**Jelenlegi állapot: placeholder**
+**Jelenlegi állapot: ✅ Kész (Phase 7)**
 
-```php
-public function build( bool $is_preview = false ): array {
-    return [
-        'site'       => [],
-        'navigation' => [],
-        'pages'      => [],
-    ];
-}
-```
-
-Ez **szándékos**: a Phase 5 a HTTP layer-t építette ki (route, CORS, headerek). A tényleges
-adatgyűjtés Phase 7-ben valósul meg.
+A `build()` metódus valódi `SiteData` JSON-t állít elő: site meta, navigation, section assembly
+ACF mezőkből, média normalizálás. A config forrás a `SPEKTRA_CLIENT_CONFIG` konstans (P8-R4).
 
 **Miért instance method (nem static):**
 - A builder állapotot tarthat (cached fields, preview flag)
 - Tesztelhetőbb — mock-olható, injectable
 
-**A végleges builder fogja:**
+**A builder:
 - ACF mezők kiolvasása field group-onként
 - Site meta összeállítás (név, locale, URL)
 - Navigation struktúra építés
@@ -385,14 +375,14 @@ sp-benettcar/                ← Kliens config (kliens-specifikus)
     infra/                   ← EZ az overlay
 sp-platform/                 ← Frontend app (React + Vite)
     apps/                    ← EZ a renderer
-sp-engine/                   ← Közös típusok (TypeScript)
-    src/types/SiteData.ts    ← EZ a szerződés
+sp-platform/                 ← Platform packages (TypeScript + React)
+    packages/types/src/site.ts ← EZ a szerződés
 ```
 
 Egy fájl **soha nem importál** másik repo-ból közvetlenül. A kapocsok:
 - Plugin ↔ Overlay: `config.php` betöltés futásidőben
 - Plugin ↔ Frontend: HTTP (REST API JSON válasz)
-- Plugin ↔ Engine: a `SiteData` szerződés (TypeScript ↔ PHP — emberi szinkronban tartva)
+- Plugin ↔ Engine: a `SiteData` szerződés (TypeScript ↔ PHP — emberi szinkronban tartva, forrás: `sp-platform/packages/types/`)
 
 ---
 
@@ -602,9 +592,9 @@ A plugin forráskód: **változatlan**.
 
 ## Future Phases
 
-> A jelenlegi állapot: Phase 5 complete. Az alábbiakat a roadmap tartalmazza.
+> A jelenlegi állapot: **Phase 8 closed (P8-R4)**. Phase 6–8 lezárva.
 
-### Phase 6 — ACF Validation
+### Phase 6 — ACF Validation ✅
 
 - Reusable ACF helper függvények (`spektra_get_field`, `spektra_get_section_data`)
 - Media helper (`spektra_normalize_media`)
@@ -612,7 +602,7 @@ A plugin forráskód: **változatlan**.
 - Admin felületi ellenőrzés
 - Teszt adat bevitel + persistence teszt
 
-### Phase 7 — Response Builder
+### Phase 7 — Response Builder ✅
 
 - `Response_Builder::build()` valódi implementáció
 - Site meta + Navigation assembly
@@ -620,11 +610,13 @@ A plugin forráskód: **változatlan**.
 - Media normalization — ACF image → `{ src, alt, width, height }`
 - Teljes SiteData endpoint teszt
 
-### Phase 8 — Frontend Adapter
+### Phase 8 — Contract Hardening ✅ (P8-R4)
 
-- `wp-mapper.ts` — TypeScript adapter a JSON feldolgozásra
-- Normalization + validation (runtime type check)
-- `.env` + adapter switch (mock ↔ WP adapter)
+- CTA contract: `href` required (nem opcionális)
+- Render-safety: normalize-site-data.ts — 50/50 teszt
+- Config boundary: Response Builder `SPEKTRA_CLIENT_CONFIG` konstansból olvas
+- Fallback DOM: `<div>` wrapper `<span>` helyett
+- Docs alignment: content-model, API guide, plugin architecture guide
 
 ---
 
@@ -636,7 +628,7 @@ A plugin forráskód: **változatlan**.
 | Hány endpoint? | 1 (`GET /spektra/v1/site`) |
 | Hol van a kliens config? | Overlay-ben (`spektra-config/config.php`) |
 | Ki kezeli a CORS-t? | `class-cors.php`, priority 100, origin whitelist |
-| Ki építi a JSON-t? | `class-response-builder.php` (Phase 7-ben lesz valódi) |
+| Ki építi a JSON-t? | `class-response-builder.php` (✅ Kész — Phase 7) |
 | Milyen headerek mennek? | `X-Spektra-Version` (mindig), `Cache-Control: no-cache` (preview), CORS headerek |
 | Hogyan bővíthető? | Új endpoint = új route, új kliens = overlay csere, új adat = Builder bővítés |
 | Mi a tervezési elv? | Platform agnostic, client configurable, minimal logic, stable contract, separation of concerns |

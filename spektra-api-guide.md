@@ -2,7 +2,7 @@
 
 > Célközönség: junior fejlesztők, senior fejlesztők, külső kontribútorok.
 > Utolsó frissítés: 2026-04-05
-> **Implementációs státusz: aktív fejlesztés alatt** (Phase 5 — lásd [Aktuális állapot](#aktuális-állapot))
+> **Implementációs státusz: Phase 8 closed (P8-R4)** — lásd [Aktuális állapot](#aktuális-állapot)
 
 ---
 
@@ -167,8 +167,7 @@ Négy repo vesz részt:
 |---|---|---|
 | **sp-infra** | Plugin forráskód (reusable) | `spektra-api.php`, `class-rest-controller.php` |
 | **sp-benettcar** | Kliens config overlay | `config.php`, `acf/field-groups.php` |
-| **sp-platform** | Frontend app (React + Vite) | `App.tsx`, adapter, runtime |
-| **sp-engine** | Közös típusok (TypeScript) | `SiteData.ts` — a szerződés TypeScript oldala |
+| **sp-platform** | Platform packages + frontend runtime | `packages/types/src/site.ts`, adapter, runtime |
 
 ---
 
@@ -272,7 +271,7 @@ Jelenleg ez az egyetlen paraméter. Senere bővülhet (pl. `?section=hero`, `?la
 ## SiteData — a válasz formátuma
 
 A SiteData a **szerződés** a szerver és a kliens között. TypeScript-ben van definiálva
-(`sp-engine/src/types/SiteData.ts`), a PHP oldal ezt a shape-et reprodukálja:
+(`sp-platform/packages/types/src/site.ts`), a PHP oldal ezt a shape-et reprodukálja:
 
 ### Az interfész
 
@@ -626,13 +625,13 @@ egyetlen kliens. Ez nem korlát, hanem **tervezési döntés**.
 ### 2. A „szerződés" mindkét oldalon definiált
 
 A legtöbb headless CMS rendszerben a frontend **alkalmazkodik** a backend válaszához.
-A Spektra-ban fordítva is igaz: a `SiteData` TypeScript interfész (`sp-engine`) határozza
+A `SiteData` TypeScript interfész (`sp-platform/packages/types`) határozza
 meg, mit vár a frontend, és a PHP Response_Builder **ezt a shape-et reprodukálja**.
 
 ```
-sp-engine/src/types/SiteData.ts   ← szerződés (TypeScript)
+sp-platform/packages/types/src/site.ts   ← szerződés (TypeScript)
      ↕ megegyezik
-class-response-builder.php        ← szerződés megvalósítás (PHP)
+class-response-builder.php               ← szerződés megvalósítás (PHP)
 ```
 
 Ha valaki módosítja a TypeScript interfészt, a PHP oldalt is frissíteni kell.
@@ -679,33 +678,21 @@ mielőtt publikálna.
 | ACF field groups | ✅ Kész | `43c4456` (P4.5) | 10 group, 51 field |
 | `class-rest-controller.php` | ✅ Kész | `0f7a129` (P5.2) | Schema, validate, sanitize, headers |
 | `class-cors.php` | ✅ Kész | `26a3f21` (P5.3) | Whitelist, preflight 204, Vary, header_remove |
-| `class-response-builder.php` | 🔶 Placeholder | — | Phase 7-ben lesz valódi assembly |
+| `class-response-builder.php` | ✅ Kész | Phase 7 | Valódi SiteData assembly — config: `SPEKTRA_CLIENT_CONFIG` (P8-R4) |
 | Config loading | ✅ Verified | — (P5.4) | 5 config kulcs, 10 ACF group, 51 field — runtime-log #6 |
 | Smoke test | ✅ 18/18 PASS | — (P5.5) | REST + CORS + preview + preflight — runtime-log #7 |
 
-### Mi jön?
+### Lezárt fázisok
 
-| Fázis | Lépés | Mit csinál |
+| Fázis | Státusz | Összefoglaló |
 |---|---|---|
-| Phase 6 | P6.1 | Reusable ACF helpers (`spektra_get_field`, `spektra_normalize_media`) |
-| Phase 6 | P6.2–6.4 | ACF field registration verify, admin verify, test data |
-| Phase 7 | P7.1 | Response_Builder — osztályváz, section assembly interfész |
-| Phase 7 | P7.2 | Site meta + Navigation assembly |
-| Phase 7 | P7.3 | Section assembly — ACF → SiteData sections[] |
-| Phase 7 | P7.4 | Media normalization — ACF image → `{ src, alt, width, height }` |
-| Phase 7 | P7.5 | Teljes SiteData endpoint teszt |
+| Phase 6 | ✅ Closed | ACF helpers, field registration, admin verify |
+| Phase 7 | ✅ Closed | Response Builder valódi implementáció — site meta, navigation, section assembly, média normalizálás |
+| Phase 8 | ✅ Closed (P8-R4) | Contract Hardening — CTA href required, render-safety, config boundary, docs alignment |
 
 ### Jelenlegi endpoint válasz
 
-```json
-{
-  "site": [],
-  "navigation": [],
-  "pages": []
-}
-```
-
-Ez **szándékos placeholder** — a HTTP layer (route, CORS, headerek) kész, a tartalom Phase 7-ben jön.
+A `GET /spektra/v1/site` endpoint valódi `SiteData` JSON-t ad vissza: site meta, navigation, pages + sections (ACF mezőkből). A kliens config `SPEKTRA_CLIENT_CONFIG` konstansból jön (P8-R4: config boundary fix).
 
 ---
 
@@ -720,5 +707,5 @@ Ez **szándékos placeholder** — a HTTP layer (route, CORS, headerek) kész, a
 | Honnan jön a tartalom? | ACF mezőkből + kliens config-ból |
 | Hogyan tud egy másik kliens is használni? | Overlay csere: `spektra-config/` → másik repo |
 | Mi a CORS? | HTTP header mechanizmus, ami megengedi a cross-origin kéréseket |
-| Hol van a szerződés? | `sp-engine/src/types/SiteData.ts` (TS) ↔ `Response_Builder` (PHP) |
-| Milyen státuszban van? | HTTP layer kész (Phase 5 complete), Response Builder placeholder (Phase 7) |
+| Hol van a szerződés? | `sp-platform/packages/types/src/site.ts` (TS) ↔ `Response_Builder` (PHP) |
+| Milyen státuszban van? | Phase 8 closed (P8-R4) — HTTP layer, Response Builder, Contract Hardening kész |
