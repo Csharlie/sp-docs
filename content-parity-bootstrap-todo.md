@@ -46,6 +46,7 @@
 
 - [x] verify-parity.ts (sp-infra/seed/) — `4006047`
 - [x] dump-acf.php (sp-infra/seed/) — `4006047`
+- [x] dump-acf.php image round-trip shape fix — `ef237c0`
 - [x] seed.json generálás (53 mező, 10 szekció)
 - [ ] WP import + dump (manuális — élő WP szükséges)
 - [ ] parity check PASS (mind 10 szekció)

@@ -9,7 +9,7 @@ Kronológikus napló (fordított sorrend — legújabb felül): mi jött létre,
 
 ## Jelenlegi állapot
 
-> Utolsó frissítés: P8.5.5 Verification (#11)
+> Utolsó frissítés: P8.5.5 Verification (#12)
 
 ### Fájlok (sp-docs)
 
@@ -45,10 +45,31 @@ sp-docs/
 | 9 | `68357a8` | fix(P8.5.4): make seed export runnable — tsx + asset loader + npm scripts | P8.5.4 (sp-benettcar) |
 | 10 | `f9eb596` | fix(P8.5.4): align bootstrap doc with actual seed contract | P8.5.4 (sp-docs) |
 | 11 | `4006047` | P8.5.5: verify-parity.ts + dump-acf.php — parity verification tooling | P8.5.5 (sp-infra) |
+| 12 | `ef237c0` | fix(P8.5.5): dump-acf.php — reconstruct {url,alt} shape for image fields | P8.5.5 (sp-infra) |
 
 ---
 
-## #11 — Parity verification tooling (2026-04-06) · `4006047`
+## #12 — Image round-trip shape fix (2026-04-06) · `ef237c0`
+
+**Mini-phase:** P8.5.5 (sp-infra)
+
+### Mi változott
+
+- `seed/dump-acf.php`: Image mezők esetén (ahol a seed érték `{url, alt}` object)
+  a dump során a WP-ből olvasott URL string + a companion `_alt` mező értéke
+  vissza lesz rakva `{url, alt}` shape-be a wp-state.json-ban.
+
+### Miért
+
+- Az import-seed.php az image `{url, alt}` object-ből kiszedi az URL-t és stringként
+  tárolja `update_field()`-del. Az alt külön `_alt` mezőben megy.
+- A dump-acf.php korábbi verziója nyersen olvasta vissza → plain URL string.
+- A verify-parity.ts az image mezőknél `{url, alt}` shape-et vár mindkét oldalról.
+- Round-trip shape mismatch → garantált FAIL a hero/about image mezőkön.
+
+### Státusz
+
+✅ Pusholva — `ef237c0`
 
 **Mini-phase:** P8.5.5 (sp-infra)
 
