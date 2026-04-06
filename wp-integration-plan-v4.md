@@ -1177,6 +1177,23 @@ sp-client-y/                # Client C
 
 ---
 
+### Phase 8.5 — Content Parity Bootstrap
+
+**Cél**: A WP adatbázis tartalma megegyezik a site.ts tartalommal. Seed pipeline + parity gate.
+
+> Részletes workstream definíció: [content-parity-bootstrap.md](content-parity-bootstrap.md)
+
+| # | Task | Output | Siker-kritérium |
+|---|---|---|---|
+| P8.5.1 | Architecture Closure | Ownership + boundary döntések dokumentálva | Workstream def kész |
+| P8.5.2 | Guardrail Definition | CMS Runtime Parity Gate spec | Parity check szabályok rögzítve |
+| P8.5.3 | Tooling Design | seed.json shape, mapping spec | Technikai terv kész |
+| P8.5.4 | Minimal Implementation | export-seed.ts, mapping.ts, import-seed.sh | seed.json generálódik, WP import fut |
+| P8.5.5 | Verification | verify-parity.ts PASS | WP tartalom = site.ts tartalom |
+| P8.5.6 | Documentation | Postmortem, workflow standard | Onboarding checklist kész |
+
+---
+
 ### Phase 9 — First Vertical Slice (E2E)
 
 **Cél**: 3 vízszintes szelet end-to-end működik WP → Frontend.
