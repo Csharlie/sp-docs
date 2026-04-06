@@ -44,10 +44,12 @@
 
 ## P8.5.5 — Verification
 
-- [ ] verify-parity.ts (sp-infra/seed/)
-- [ ] seed generálás + WP import futtatás
+- [x] verify-parity.ts (sp-infra/seed/) — `4006047`
+- [x] dump-acf.php (sp-infra/seed/) — `4006047`
+- [x] seed.json generálás (53 mező, 10 szekció)
+- [ ] WP import + dump (manuális — élő WP szükséges)
 - [ ] parity check PASS (mind 10 szekció)
-- [ ] commit + push sp-infra
+- [x] commit + push sp-infra (`4006047`)
 
 ## P8.5.6 — Documentation
 

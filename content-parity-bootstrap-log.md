@@ -9,7 +9,7 @@ Kronológikus napló (fordított sorrend — legújabb felül): mi jött létre,
 
 ## Jelenlegi állapot
 
-> Utolsó frissítés: P8.5.4 Minimal Implementation (#10)
+> Utolsó frissítés: P8.5.5 Verification (#11)
 
 ### Fájlok (sp-docs)
 
@@ -44,10 +44,48 @@ sp-docs/
 | 8 | `9ff505f` | P8.5.4 meta: tooling design updates + artefact fixes | P8.5.4 (sp-docs) |
 | 9 | `68357a8` | fix(P8.5.4): make seed export runnable — tsx + asset loader + npm scripts | P8.5.4 (sp-benettcar) |
 | 10 | `f9eb596` | fix(P8.5.4): align bootstrap doc with actual seed contract | P8.5.4 (sp-docs) |
+| 11 | `4006047` | P8.5.5: verify-parity.ts + dump-acf.php — parity verification tooling | P8.5.5 (sp-infra) |
 
 ---
 
-## #10 — Bootstrap doc contract alignment (2026-04-06) · `f9eb596`
+## #11 — Parity verification tooling (2026-04-06) · `4006047`
+
+**Mini-phase:** P8.5.5 (sp-infra)
+
+### Mi jött létre / változott
+
+**Új fájlok:**
+- `seed/verify-parity.ts`: Parity check tool — összehasonlítja seed.json-t és wp-state.json-t.
+  Text/CTA: exact match. Image: structural match (URL eltérhet, alt egyeznie kell).
+  `--verbose`, `--strict` flagek. Exit 0=PASS, 1=FAIL.
+- `seed/dump-acf.php`: WP-CLI eval-file script — kiolvassa a seed.json kulcsainak megfelelő
+  ACF mezőket és WP optionst, wp-state.json-be írja.
+
+**Módosított fájlok:**
+- `seed/package.json`: verify/verify:verbose scriptek, régi export script törölve
+- `seed/README.md`: verification workflow szekció, frissített struktúra
+- `.gitignore`: `seed/wp-state.json` szabály hozzáadva
+
+### Miért
+
+- A P8.5.5 célja a teljes verify pipeline: seed.json → WP import → dump → parity check.
+- A verify-parity.ts támogat seed és wp-state.json összevetést a §4.1 parity szabályok szerint.
+- A dump-acf.php biztosítja, hogy a WP állapotot azonos struktúrában kapjuk vissza mint a seed.
+- seed.json generálva — 53 mező, 10 szekció — dry-run és real export is PASS.
+
+### WP futás — manuális gate
+
+A tényleges WP import + dump + parity check élő WordPress-t igényel:
+```bash
+wp eval-file import-seed.php          # seed → WP DB
+wp eval-file dump-acf.php             # WP DB → wp-state.json
+npx tsx verify-parity.ts --verbose     # PASS / FAIL
+```
+
+### Státusz
+
+✅ Pusholva — `4006047`
+⏳ WP import + parity verify PASS — manuális gate, élő WP-t igényel
 
 **Mini-phase:** P8.5.4 (sp-docs)
 
