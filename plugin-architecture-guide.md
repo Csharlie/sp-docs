@@ -297,7 +297,11 @@ X-Spektra-Version: 0.1.0
 Access-Control-Allow-Origin: http://localhost:5174
 Vary: Origin
 
-{ "site": [], "navigation": [], "pages": [] }
+{
+  "site": { "name": "Benett Car", "locale": "hu", "url": "https://benettcar.hu" },
+  "navigation": { "primary": [ { "label": "Szolgáltatások", "href": "#services" } ] },
+  "pages": [ { "slug": "home", "title": "Benett Car", "sections": [ ... ] } ]
+}
 ```
 
 ### Vizuálisan
