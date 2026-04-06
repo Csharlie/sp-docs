@@ -9,7 +9,7 @@ Kronológikus napló (fordított sorrend — legújabb felül): mi jött létre,
 
 ## Jelenlegi állapot
 
-> Utolsó frissítés: P8.5.5 Verification (#12)
+> Utolsó frissítés: P8.5.5 Verification (#13)
 
 ### Fájlok (sp-docs)
 
@@ -46,10 +46,36 @@ sp-docs/
 | 10 | `f9eb596` | fix(P8.5.4): align bootstrap doc with actual seed contract | P8.5.4 (sp-docs) |
 | 11 | `4006047` | P8.5.5: verify-parity.ts + dump-acf.php — parity verification tooling | P8.5.5 (sp-infra) |
 | 12 | `ef237c0` | fix(P8.5.5): dump-acf.php — reconstruct {url,alt} shape for image fields | P8.5.5 (sp-infra) |
+| 13 | `6d94056` | fix(P8.5.5): local asset path fix — relative refs + warnings | P8.5.5 (sp-benettcar) |
 
 ---
 
-## #12 — Image round-trip shape fix (2026-04-06) · `ef237c0`
+## #13 — Local asset path fix (2026-04-06) · `6d94056`
+
+**Mini-phase:** P8.5.5 (sp-benettcar)
+
+### Mi változott
+
+- `infra/seed/asset-loader.mjs`: A fájlrendszer-path (`/D:/Projects/...`) helyett
+  projekt-relatív path-t ad vissza (`src/assets/brands/vw-logo.jpg`).
+  A PROJECT_ROOT-ot a loader saját pozíciójából számolja (`../../`).
+- `infra/seed/export-seed.ts`: `detectLocalAssets()` függvény — a seed mezőkön
+  végig megy és figyelmeztet minden nem-URL képreferenciára.
+  6 bc-brand logó flagelve, 0 törött abszolút path.
+
+### Miért
+
+- A site.ts ES import-okat használ a brand logókhoz (`import vwLogo from '...jpg'`).
+- A Vite dev/build ezeket asset URL-ekké oldja fel.
+- A seed export kontextusban (tsx + asset-loader) korábban Windows abszolút
+  fájlrendszer-pathok kerültek a seed.json-ba — a WP-ben nem működnek.
+- A parity check átmehetett volna (mindkét oldal törött path), de a WP frontend
+  törött `<img src>` URL-eket kapott volna.
+- A relatív path + web URL-re cserélés P11+ scope (media library upload).
+
+### Státusz
+
+✅ Pusholva — `6d94056`
 
 **Mini-phase:** P8.5.5 (sp-infra)
 
