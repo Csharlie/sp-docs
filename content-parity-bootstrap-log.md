@@ -9,7 +9,7 @@ Kronológikus napló (fordított sorrend — legújabb felül): mi jött létre,
 
 ## Jelenlegi állapot
 
-> Utolsó frissítés: P8.5.2 Docs & Infra alignment (#3, #4)
+> Utolsó frissítés: P8.5.3 Tooling Design (#5)
 
 ### Fájlok (sp-docs)
 
@@ -38,6 +38,43 @@ sp-docs/
 | 2 | `b64157a` | docs(P8.5.1): add content parity bootstrap TODO checklist | P8.5.1 |
 | 3 | `235a6b1` | docs(P8.5.2): v4 seed docs alignment — export ownership + P10.4 alias | P8.5.2 |
 | 4 | `38f095d` | fix(P8.5.2): seed README boundary + seed.json gitignore | P8.5.2 |
+| 5 | — | docs(P8.5.3): tooling design — seed shape, ACF mapping, CLI interfaces | P8.5.3 |
+
+---
+
+## #5 — Tooling Design (2026-04-06)
+
+**Mini-phase:** P8.5.3
+
+### Mi jött létre
+
+`content-parity-bootstrap.md` §6 — 5 új szekció:
+- §6.1 seed.json shape spec (példa JSON-nal)
+- §6.2 ACF field mapping tábla (mind 10 bc-* szekció, ~80 mező)
+- §6.3 export-seed CLI interface
+- §6.4 import-seed.sh interface
+- §6.5 Image handling / media exception spec
+
+### Miért
+
+- A P8.5.4 implementációhoz pontos specifikacíó kell: milyen formátumban írjuk a seed.json-t,
+  milyen ACF field neveket használunk, hogyan kezeljük a képeket.
+- A mapping tábla a `sp-infra/acf/sections.php` builder függvényeiből lett összeállítva —
+  minden ACF field név megegyezik a PHP `spektra_get_field()` hívásokban használttal.
+- Media exception: image URL-ek stringként mennek a seed-be, nem WP attachment ID-ként.
+  A `spektra_normalize_media()` URL stringet is elfogad.
+
+### Döntések
+
+1. **Nincs `--input` / `--mapping` flag** — az export a kliens repóban van, relative import elég
+2. **`post_id: "front_page"`** — import-seed.sh runtime-ban feloldja (`wp option get page_on_front`)
+3. **Repeater convention** — `prefix_N_subfield` (0-indexed), ACF standard
+4. **Boolean**: `"1"` / `"0"` (WP meta convention)
+5. **Image**: URL string (nem attachment ID) — media library sync P11+ scope
+
+### Státusz
+
+⏳ Commit pending
 
 ---
 

@@ -22,9 +22,11 @@
 
 ## P8.5.3 — Tooling Design
 
-- [ ] seed.json shape spec (flat ACF format, WP-CLI kompatibilis)
-- [ ] ACF field mapping tábla (10 szekció — prefix + mezők)
-- [ ] export-seed CLI interface design (--input, --mapping, --output)
+- [x] seed.json shape spec (flat ACF format, WP-CLI kompatibilis)
+- [x] ACF field mapping tábla (10 szekció — prefix + mezők)
+- [x] export-seed CLI interface design (--output, --dry-run, --verbose)
+- [x] import-seed.sh interface design
+- [x] image handling / media exception spec
 - [ ] commit + push sp-docs
 
 ## P8.5.4 — Minimal Implementation
