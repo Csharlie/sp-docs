@@ -12,9 +12,13 @@
 
 ## P8.5.2 — Guardrail Definition
 
-- [ ] Parity check spec véglegesítés (mező-szintű szabályok)
-- [ ] Media exception szabály rögzítés (URL eltérés megengedett, alt+struktúra exact)
-- [ ] commit + push sp-docs
+- [x] Parity check spec véglegesítés (v4 §13.2 ownership alignment)
+- [x] Media exception szabály rögzítés (content-parity-bootstrap.md §4.1)
+- [x] seed.json gitignore hozzáadása (sp-infra .gitignore)
+- [x] seed README boundary alignment (sp-infra seed/README.md)
+- [x] P10.4 → P8.5 alias note (wp-integration-plan-v4.md §20)
+- [x] commit + push sp-docs (`235a6b1`)
+- [x] commit + push sp-infra (`38f095d`)
 
 ## P8.5.3 — Tooling Design
 

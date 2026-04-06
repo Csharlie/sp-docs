@@ -9,7 +9,7 @@ Kronológikus napló (fordított sorrend — legújabb felül): mi jött létre,
 
 ## Jelenlegi állapot
 
-> Utolsó frissítés: P8.5.1 Architecture Closure (#2)
+> Utolsó frissítés: P8.5.2 Docs & Infra alignment (#3, #4)
 
 ### Fájlok (sp-docs)
 
@@ -36,6 +36,60 @@ sp-docs/
 |---|---|---|---|
 | 1 | `41b6645` | docs(P8.5.1): architecture closure — workstream def | P8.5.1 |
 | 2 | `b64157a` | docs(P8.5.1): add content parity bootstrap TODO checklist | P8.5.1 |
+| 3 | `235a6b1` | docs(P8.5.2): v4 seed docs alignment — export ownership + P10.4 alias | P8.5.2 |
+| 4 | `38f095d` | fix(P8.5.2): seed README boundary + seed.json gitignore | P8.5.2 |
+
+---
+
+## #4 — sp-infra seed alignment (2026-04-06) · `38f095d`
+
+**Commit:** `fix(P8.5.2): seed README boundary alignment + seed.json gitignore`
+
+**Repo:** sp-infra
+
+### Mi változott
+
+- `seed/README.md`: Pipeline diagram + structure frissítve az új boundary-nek megfelelően.
+  Export-seed.ts jelölve mint DEPRECATED scaffold (törlendő P8.5.4-ben).
+  Új strucúra: import-seed.sh + verify-parity.ts hozzáadva.
+- `.gitignore`: `seed/seed.json` szabály hozzáadva — korábban dokumentált, de hiányzó.
+
+### Miért
+
+- [P2 finding] A seed README továbbra is sp-infra/seed/export-seed.ts-t írta kanonikus exportként,
+  miközben a P8.5 boundary döntés ezt a kliens repóba helyezte.
+- [P2 finding] A seed.json gitignore-állítás dokumentálva volt (README + content-parity-bootstrap.md),
+  de a .gitignore fájlból ténylegesen hiányzott. Operatív rés, nem csak wording drift.
+
+### Státusz
+
+✅ Pusholva — `38f095d`
+
+---
+
+## #3 — v4 plan seed docs alignment (2026-04-06) · `235a6b1`
+
+**Commit:** `docs(P8.5.2): align v4 seed docs with P8.5 boundary — export ownership + P10.4 alias`
+
+**Repo:** sp-docs
+
+### Mi változott
+
+- `wp-integration-plan-v4.md` §13.2: `sp-infra/seed/export-seed.ts` → `<client>/infra/seed/export-seed.ts`.
+  P8.5 boundary döntés note hozzáadva, link a content-parity-bootstrap.md §3.2-re.
+- `wp-integration-plan-v4.md` §20 P10.4: áthúzva, legacy alias note hozzáadva
+  ("→ Phase 8.5-be áthelyezve (P8.5.4–P8.5.5)").
+
+### Miért
+
+- [P2 finding] A v4 plan §13.2 még sp-infra-t írt kanonikus export helyként — két párhuzamos
+  source of truth ugyanarra a capability-re.
+- [P3 finding] P10.4 és P8.5.4–P8.5.5 dupla tracking volt explicit kapcsolat nélkül.
+  Most P10.4 egyértelműen aliasként jelölve.
+
+### Státusz
+
+✅ Pusholva — `235a6b1`
 
 ---
 
