@@ -52,7 +52,7 @@ sp-docs/
 - §6.1 seed.json shape spec (példa JSON-nal)
 - §6.2 ACF field mapping tábla (mind 10 bc-* szekció, ~80 mező)
 - §6.3 export-seed CLI interface
-- §6.4 import-seed.sh interface
+- §6.4 import-seed.php interface (ACF API, wp eval-file)
 - §6.5 Image handling / media exception spec
 
 ### Miért
@@ -67,8 +67,8 @@ sp-docs/
 ### Döntések
 
 1. **Nincs `--input` / `--mapping` flag** — az export a kliens repóban van, relative import elég
-2. **`post_id: "front_page"`** — import-seed.sh runtime-ban feloldja (`wp option get page_on_front`)
-3. **Repeater convention** — `prefix_N_subfield` (0-indexed), ACF standard
+2. **`post_id: "front_page"`** — import-seed.php runtime-ban feloldja (`get_option('page_on_front')`)
+3. **Repeater/Group** — `update_field()` kezeli a row count-ot és sub-field indexelést
 4. **Boolean**: `"1"` / `"0"` (WP meta convention)
 5. **Image**: URL string (nem attachment ID) — media library sync P11+ scope
 

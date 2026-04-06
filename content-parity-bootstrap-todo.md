@@ -25,7 +25,7 @@
 - [x] seed.json shape spec (flat ACF format, WP-CLI kompatibilis)
 - [x] ACF field mapping tábla (10 szekció — prefix + mezők)
 - [x] export-seed CLI interface design (--output, --dry-run, --verbose)
-- [x] import-seed.sh interface design
+- [x] import-seed.php interface design (ACF API)
 - [x] image handling / media exception spec
 - [x] commit + push sp-docs (`42e10bb`)
 
@@ -34,7 +34,7 @@
 - [ ] mapping.ts (sp-benettcar/infra/seed/)
 - [ ] export-seed.ts (sp-benettcar/infra/seed/)
 - [ ] sp-infra/seed/export-seed.ts scaffold törlés
-- [ ] import-seed.sh (sp-infra/seed/)
+- [ ] import-seed.php (sp-infra/seed/) — ACF-aware, wp eval-file
 - [ ] seed.json .gitignore (sp-infra/seed/)
 - [ ] commit + push sp-benettcar
 - [ ] commit + push sp-infra

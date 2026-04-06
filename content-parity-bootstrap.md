@@ -64,7 +64,7 @@ a canonical hely `sp-benettcar/infra/seed/export-seed.ts`.
 | Mező típus | Egyezési szint | Megjegyzés |
 |---|---|---|
 | Szöveg (title, description, body) | Exact match | Karakter-szintű egyezés |
-| Navigation (label, href) | Exact match | Sorrend + tartalom |
+| Navigation (label, href) | Out of scope | Config-driven (config.php), nem ACF — lásd §6.6 |
 | CTA (text, href) | Exact match | Ha site.ts-ben van, WP-ben is kell |
 | Média (image src, alt) | Structural match | URL eltérhet (WP media library), alt text egyezik |
 | Section order | Exact match | Szekció sorrend és type egyezik |
@@ -80,7 +80,7 @@ viszont egyeznie kell.
 | P8.5.1 | Architecture Closure | Docs | Jelen dokumentum + log scaffold |
 | P8.5.2 | Guardrail Definition | Docs | §4 véglegesítése, parity check spec |
 | P8.5.3 | Tooling Design | Design + docs | seed.json shape, mapping spec |
-| P8.5.4 | Minimal Implementation | Implementation | export-seed.ts, mapping.ts, import-seed.sh |
+| P8.5.4 | Minimal Implementation | Implementation | export-seed.ts, mapping.ts, import-seed.php |
 | P8.5.5 | Verification | Implementation | verify-parity.ts, PASS eredmény |
 | P8.5.6 | Documentation | Docs | Postmortem, workflow standard, v4 plan update |
 
@@ -88,9 +88,11 @@ viszont egyeznie kell.
 
 ### 6.1. seed.json shape
 
-A seed.json WP-CLI kompatibilis, flat struktúrájú fájl. Három szekció:
-`site_options` (WP settings), `navigation` (kliens config adat, nem ACF),
-`fields` (ACF post meta — flat key/value).
+A seed.json ACF-aware struktúrájú fájl. Két szekció:
+`site_options` (WP settings), `sections` (ACF field data — szekciónként csoportosítva,
+mapping kind-dal annotálva: scalar / repeater / group / image).
+
+Navigation **nem** szerepel a seed-ben — config-driven (lásd §6.6).
 
 ```json
 {
@@ -99,38 +101,34 @@ A seed.json WP-CLI kompatibilis, flat struktúrájú fájl. Három szekció:
     "blogname": "Benett Car",
     "blogdescription": "Autószerviz, felvásárlás és útmenti segítség Cegléden."
   },
-  "navigation": {
-    "primary": [
-      { "label": "Galéria", "href": "#gallery" },
-      { "label": "Szolgáltatások", "href": "#services" }
-    ],
-    "footer": [
-      { "label": "Autószerviz", "href": "#car-service" }
-    ]
-  },
-  "fields": {
-    "bc_hero_title": "Precíz munka. Valódi odafigyelés.",
-    "bc_hero_subtitle": "Volkswagen Konszern és Audi járművekre specializált műhely",
-    "bc_hero_description": "Minden munkát az adott autóra szabunk...",
-    "bc_hero_primary_cta_text": "Szerviz egyeztetés",
-    "bc_hero_primary_cta_href": "#car-service",
-    "bc_hero_secondary_cta_text": "Kapcsolat",
-    "bc_hero_secondary_cta_href": "#contact",
-    "bc_hero_background_image": "https://images.unsplash.com/...",
-    "bc_brand_title": "Volkswagen Konszern és Audi...",
-    "bc_brand_brands_0_name": "Volkswagen",
-    "bc_brand_brands_0_logo": "https://...",
-    "bc_brand_brands_0_alt": "Volkswagen logó",
-    "bc_brand_brands_0_invert": "1"
+  "sections": {
+    "bc-hero": {
+      "bc_hero_title": { "value": "Precíz munka. Valódi odafigyelés.", "kind": "scalar" },
+      "bc_hero_subtitle": { "value": "Volkswagen Konszern...", "kind": "scalar" },
+      "bc_hero_description": { "value": "Minden munkát az adott autóra szabunk...", "kind": "scalar" },
+      "bc_hero_primary_cta_text": { "value": "Szerviz egyeztetés", "kind": "scalar" },
+      "bc_hero_primary_cta_href": { "value": "#car-service", "kind": "scalar" },
+      "bc_hero_background_image": { "value": "https://images.unsplash.com/...", "kind": "image" },
+      "bc_hero_background_image_alt": { "value": "Autószerviz műhely", "kind": "scalar" }
+    },
+    "bc-brand": {
+      "bc_brand_title": { "value": "Volkswagen Konszern...", "kind": "scalar" },
+      "bc_brand_brands": {
+        "kind": "repeater",
+        "value": [
+          { "name": "Volkswagen", "logo": "https://...", "alt": "Volkswagen logó", "invert": true }
+        ]
+      }
+    }
   }
 }
 ```
 
 **Szabályok:**
-- `post_id: "front_page"` → import-seed.sh feloldja `wp option get page_on_front`-ból
-- Repeater mezők: ACF konvenció — `prefix_N_subfield` (0-indexed)
-- Image mezők: URL string (nem ACF attachment ID — media library sync külön lépés)
-- Boolean mezők: `"1"` / `"0"` (WP meta convention)
+- `post_id: "front_page"` → import-seed.php feloldja `get_option('page_on_front')`-ból
+- `kind` annotáció: az importer ebből tudja, melyik ACF write path-ot használja
+- Image mezők: URL string + külön `_alt` mező (P8.5.4 bővítés)
+- Repeater mezők: teljes sor-tömb — `update_field()` kezeli a row indexelést
 
 ### 6.2. ACF field mapping (10 szekció)
 
@@ -149,6 +147,7 @@ A PHP builder-ek (`sp-infra/acf/sections.php`) pontosan ezeket a field name-eket
 | `secondaryCTA.text` | `bc_hero_secondary_cta_text` | text | — |
 | `secondaryCTA.href` | `bc_hero_secondary_cta_href` | text | — |
 | `backgroundImage.src` | `bc_hero_background_image` | image (URL) | — |
+| `backgroundImage.alt` | `bc_hero_background_image_alt` | text | — |
 
 #### bc-brand
 
@@ -197,7 +196,7 @@ Repeater: `bc_services_services` (required — hiánya → section skip)
 | `subtitle` | `bc_service_subtitle` | text | — |
 | `description` | `bc_service_description` | textarea | ✅ |
 | `services[N].label` | `bc_service_services_N_label` | text | — |
-| `brands[N].name` | `bc_service_brands_N_name` | text | — |
+| `brands[N]` | `bc_service_brands_N_name` | text | — |
 | `contact.title` | `bc_service_contact_title` | text | — |
 | `contact.description` | `bc_service_contact_description` | textarea | — |
 | `contact.phone` | `bc_service_contact_phone` | text | — |
@@ -207,7 +206,7 @@ Repeater: `bc_services_services` (required — hiánya → section skip)
 | `contact.hours` | `bc_service_contact_hours` | text | — |
 | `contact.weekendHours` | `bc_service_contact_weekend_hours` | text | — |
 
-Repeater: `bc_service_services` (required), `bc_service_brands` (required)
+Repeater: `bc_service_services` (required), `bc_service_brands` (required — site.ts `string[]` → ACF `[{name}]`)
 Group: `bc_service_contact` (optional — hiánya nem skipeli a szekciót)
 
 #### bc-about
@@ -216,8 +215,9 @@ Group: `bc_service_contact` (optional — hiánya nem skipeli a szekciót)
 |---|---|---|---|
 | `title` | `bc_about_title` | text | ✅ |
 | `subtitle` | `bc_about_subtitle` | text | — |
-| `content[N].paragraph` | `bc_about_content_N_paragraph` | textarea | — |
+| `content[N]` | `bc_about_content_N_paragraph` | textarea | — |
 | `image.src` | `bc_about_image` | image (URL) | — |
+| `image.alt` | `bc_about_image_alt` | text | — |
 | `imagePosition` | `bc_about_image_position` | select | — |
 | `colorScheme` | `bc_about_color_scheme` | select | — |
 | `stats[N].value` | `bc_about_stats_N_value` | text | — |
@@ -225,7 +225,7 @@ Group: `bc_service_contact` (optional — hiánya nem skipeli a szekciót)
 | `cta.text` | `bc_about_cta_text` | text | — |
 | `cta.href` | `bc_about_cta_href` | text | — |
 
-Repeater: `bc_about_content` (required — hiánya → section skip)
+Repeater: `bc_about_content` (required — site.ts `string[]` → ACF `[{paragraph}]`)
 
 #### bc-team
 
@@ -237,6 +237,7 @@ Repeater: `bc_about_content` (required — hiánya → section skip)
 | `members[N].name` | `bc_team_members_N_name` | text | — |
 | `members[N].role` | `bc_team_members_N_role` | text | — |
 | `members[N].image` | `bc_team_members_N_image` | image (URL) | — |
+| `members[N].image.alt` | `bc_team_members_N_image_alt` | text | — |
 | `members[N].phone` | `bc_team_members_N_phone` | text | — |
 | `members[N].email` | `bc_team_members_N_email` | text | — |
 
@@ -292,37 +293,57 @@ A script közvetlenül importálja a `site.ts`-t (`import { siteData } from '../
 **Nem kell `--input` vagy `--mapping` flag** — a kliens repóban van, tehát a
 site.ts és mapping.ts relative importtal elérhető.
 
-### 6.4. import-seed.sh interface
+### 6.4. import-seed.php interface
+
+PHP-alapú importer — WordPress kontextusban fut, ACF API-t (`update_field()`) használ.
 
 ```bash
-bash import-seed.sh [seed.json path] [options]
+wp eval-file import-seed.php [seed.json path] [options]
 
 Arguments:
   seed.json       Path to seed file (default: ./seed.json)
 
 Options:
-  --dry-run       Print WP-CLI commands without executing
+  --dry-run       Print operations without executing
   --verbose       Print each field update
 ```
 
-**WP-CLI műveletek:**
-1. `wp option update blogname ...`
-2. `wp option update blogdescription ...`
-3. Resolve `post_id`: `wp option get page_on_front`
-4. ACF repeater row count: `wp post meta update $PID bc_brand_brands <count>`
-5. Per-field: `wp post meta update $PID bc_hero_title "Precíz munka..."`
+**ACF write stratégia kind szerint:**
+
+| Kind | Mechanika | Példa |
+|---|---|---|
+| `scalar` | `update_field('bc_hero_title', $value, $post_id)` | text, textarea, select, url, number |
+| `repeater` | `update_field('bc_brand_brands', $rows_array, $post_id)` | ACF kezeli a row count-ot + sub-field indexelést |
+| `group` | `update_field('bc_service_contact', $assoc_array, $post_id)` | ACF kezeli a sub-field-eket |
+| `image` | `update_field('bc_hero_background_image', $url, $post_id)` | URL stringként — return format = url |
+
+**Site options:** `update_option('blogname', $value)` (nem ACF, WP core).`
 
 ### 6.5. Image handling — media exception
 
-Az export-seed.ts az image URL-eket **stringként** írja a seed.json-ba.
-Az import-seed.sh ezeket **post meta értékként** tárolja (nem attachment ID).
+Az export-seed.ts az image URL-eket **stringként** írja a seed.json-ba,
+a hozzájük tartozó alt textet külön `_alt` mezőben.
+Az import-seed.php `update_field()`-del írja be mindkettőt.
 
 Ez működik, mert:
-- A PHP builder-ek `spektra_normalize_media()` hívásán keresztül kezelik a képeket
-- A `spektra_normalize_media()` URL stringet is elfogad (nem csak ACF image array-t)
-- A parity check (verify-parity.ts) media exception-t alkalmaz: URL eltérhet, alt text és struktúra egyeznie kell
+- A 3 érintett ACF field group (bc-hero, bc-about, bc-team) bővítve lett
+  külön `_alt` mezővel (P8.5.4)
+- A PHP builder-eket is frissítjük, hogy olvassák az alt mezőt
+- A `spektra_normalize_media()` URL stringet is elfogad, de most már
+  az alt text is elérhető a külön mezőből
+- A parity check (verify-parity.ts) media exception: URL eltérhet,
+  alt text és struktúra egyeznie kell
 
 **Nem-goal:** WP media library attachment import. Ez P11+ scope.
+
+### 6.6. Navigation — scope döntés
+
+A navigáció **nem** a parity scope része. Indoklás:
+- A Response Builder a `config.php`-ból épít navot, nem a WP DB-ből
+- Csak primary-t támogatja; a site.ts-ben footer is van
+- A navigáció config-driven marad (Phase 11.5: native WP menu integráció)
+- A seed.json nem tartalmaz navigation blokkot
+- A parity check a navigation-t kihagyja
 
 ## 7. Phase 9 blokkolás
 
@@ -332,8 +353,8 @@ De az adapter runtime switch production cutover TILOS a P8.5.5 PASS nélkül.
 ## 8. Új kliens onboarding checklist (Phase 11+ előkészítés)
 
 1. `site.ts` → kliens tartalom megírása
-2. `infra/seed/mapping.ts` → ACF field mapping
+2. `infra/seed/mapping.ts` → ACF field mapping (kind annotációval)
 3. `infra/seed/export-seed.ts` → seed generálás
-4. `import-seed.sh` → WP import
+4. `import-seed.php` → WP import (ACF API)
 5. `verify-parity.ts` → PASS
 6. Adapter switch engedélyezése
