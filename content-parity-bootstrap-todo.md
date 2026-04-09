@@ -60,7 +60,7 @@
 - [x] postmortem-p8.5-content-parity.md (sp-docs) — honest close + workflow standard
 - [x] log frissítés: #14, #15 entry + close header
 - [x] todo frissítés: P8.5.5 + P8.5.6 lezárás
-- [ ] commit + push sp-docs
+- [x] commit + push sp-docs (`a600163`)
 
 ---
 
