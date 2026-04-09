@@ -1199,14 +1199,37 @@ sp-client-y/                # Client C
 
 ### Phase 9 — First Vertical Slice (E2E)
 
-**Cél**: 3 vízszintes szelet end-to-end működik WP → Frontend.
+**Cél**: A frontend bizonyítottan WP-ről fut, 3 szekció end-to-end renderel.
 
 | # | Task | Output | Siker-kritérium |
 |---|---|---|---|
-| P9.1 | bc-hero E2E (Media + CTA) | Hero section WP-ből renderelve | Kép betöltődik, CTA kattintható |
-| P9.2 | bc-services E2E (repeater) | Services section WP repeater-ből | Lista renderelve, üres eset kezelt |
-| P9.3 | bc-contact E2E (text fields) | Contact section WP-ből | Szöveges mezők megjelennek |
-| P9.4 | CORS + live update verify | WP módosítás → frontend frissítés | Nincs CORS hiba, adat frissül |
+| P9.1 | Runtime Cutover Baseline | Frontend WP módban indul | WP adapter aktív, no silent fallback, endpoint fetch OK, CORS alap |
+| P9.2 | bc-hero E2E (Media + CTA) | Hero section WP-ből renderelve | title/desc/image/CTA render, partial fail-soft |
+| P9.3 | bc-services E2E (repeater) | Services section WP repeater-ből | Lista renderelve, sorrend stabil, üres eset kezelve |
+| P9.4 | bc-contact E2E (text fields) | Contact section WP-ből | Szöveges mezők megjelennek, key normalization helyes |
+| P9.5 | CORS + live update verify | WP módosítás → frontend frissítés | Network-szintű CORS evidence, adat frissül |
+
+**P9.1 checkpointok:**
+
+1. `.env` → `VITE_DATA_SOURCE=wordpress` + `VITE_WP_API_BASE=http://benettcar.local`
+2. `createWordPressAdapter()` aktiválódik (nem json fallback)
+3. **No silent fallback** — fetch hiba → error state, nem json mód
+4. Endpoint fetch → `200 OK` + valid JSON
+5. CORS — Network panel: response header + preflight + origin (`http://localhost:5173`)
+
+**P9.2 checkpointok:**
+
+1. `title` / `subtitle` / `description` renderel
+2. `backgroundImage.src` valid URL, broken image nincs, `alt` eljut a renderig
+3. `primaryCTA` / `secondaryCTA` — label renderel, href helyes, anchor element
+4. Optional CTA hiánya → nincs crash
+5. Hiányzó image → section stabil marad
+
+**P9.5 evidencia:**
+
+- Network panel response header ellenőrzés (nem csak console)
+- Preflight + actual request viselkedés
+- Origin pontos rögzítése
 
 ---
 
