@@ -5,6 +5,8 @@ Minden knowledge dokumentum változás naplója. Keep a Changelog formátum.
 ## [Unreleased]
 
 ### Added
+- `guardrails/p9.1-no-silent-fallback.md` — típus szerinti nézet (canonical: phase-9.1/)
+- `implementation/p9.1-error-ui-pattern.md` — típus szerinti nézet (canonical: phase-9.1/)
 - `phase-9.1/p9.1-runtime-cutover-baseline.md` — Runtime Cutover Baseline gate (5 checkpoint: env, endpoint, CORS, no-silent-fallback, error UI)
 - `phase-9.1/p9.1-no-silent-fallback.md` — No Silent Fallback guardrail (WP adapter throw → null state → error slot lánc)
 - `phase-9.1/p9.1-error-ui-pattern.md` — LandingTemplate error prop implementáció (branded Hungarian error UI, kliens felelősség)
