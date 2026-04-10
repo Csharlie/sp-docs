@@ -1197,17 +1197,17 @@ sp-client-y/                # Client C
 
 ---
 
-### Phase 9 — First Vertical Slice (E2E)
+### Phase 9 — First Vertical Slice (E2E) ✅ COMPLETED (2026-04-11)
 
 **Cél**: A frontend bizonyítottan WP-ről fut, 3 szekció end-to-end renderel.
 
-| # | Task | Output | Siker-kritérium |
-|---|---|---|---|
-| P9.1 | Runtime Cutover Baseline | Frontend WP módban indul | WP adapter aktív, no silent fallback, endpoint fetch OK, CORS alap |
-| P9.2 | bc-hero E2E (Media + CTA) | Hero section WP-ből renderelve | title/desc/image/CTA render, partial fail-soft |
-| P9.3 | bc-services E2E (repeater) | Services section WP repeater-ből | Lista renderelve, sorrend stabil, üres eset kezelve |
-| P9.4 | bc-contact E2E (text fields) | Contact section WP-ből | Szöveges mezők megjelennek, key normalization helyes |
-| P9.5 | CORS + live update verify | WP módosítás → frontend frissítés | Network-szintű CORS evidence, adat frissül |
+| # | Task | Output | Siker-kritérium | Státusz |
+|---|---|---|---|---|
+| P9.1 | Runtime Cutover Baseline | Frontend WP módban indul | WP adapter aktív, no silent fallback, endpoint fetch OK, CORS alap | ✅ |
+| P9.2 | bc-hero E2E (Media + CTA) | Hero section WP-ből renderelve | title/desc/image/CTA render, partial fail-soft | ✅ |
+| P9.3 | bc-services E2E (repeater) | Services section WP repeater-ből | Lista renderelve, sorrend stabil, üres eset kezelve | ✅ |
+| P9.4 | bc-contact E2E (text fields) | Contact section WP-ből | Szöveges mezők megjelennek, key normalization helyes | ✅ |
+| P9.5 | CORS + live update verify | WP módosítás → frontend frissítés | Network-szintű CORS evidence, adat frissül | ✅ |
 
 **P9.1 checkpointok:**
 
