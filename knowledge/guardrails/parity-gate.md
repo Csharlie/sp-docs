@@ -1,11 +1,12 @@
 ---
 title: CMS Runtime Parity Gate
 status: draft
-phase: "8.5"
 type: guardrail
+phase_introduced: "8.5"
+canonical: true
 repos: [sp-infra, sp-docs]
 tags: [guardrail, parity, adapter-switch, runtime, gate]
-last_updated: 2026-04-09
+last_updated: 2026-04-11
 ---
 
 # CMS Runtime Parity Gate

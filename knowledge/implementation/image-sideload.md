@@ -1,11 +1,12 @@
 ---
 title: Image Sideloading a Seed Pipeline-ban
 status: draft
-phase: "8.5"
 type: implementation
+phase_introduced: "8.5"
+canonical: true
 repos: [sp-infra, sp-benettcar]
 tags: [image, sideload, media-library, acf, pipeline, wordpress]
-last_updated: 2026-04-09
+last_updated: 2026-04-11
 ---
 
 # Image Sideloading a Seed Pipeline-ban

@@ -4,17 +4,24 @@ Minden knowledge dokumentum változás naplója. Keep a Changelog formátum.
 
 ## [Unreleased]
 
+### Changed
+- Migrated knowledge structure to SPK v1.1.0 canonical model
+  - Phase-first directories (`phase-8.5/`, `phase-9.1/`) → typed canonical dirs + `phases/` index
+  - Type-view stub fájlok törölve (6 db)
+  - Phase CHANGELOG-ok beolvasztva phase index fájlokba
+  - Frontmatter: `phase:` → `phase_introduced:` + `canonical: true` (6 fájl)
+
 ### Added
-- `guardrails/p9.1-no-silent-fallback.md` — típus szerinti nézet (canonical: phase-9.1/)
-- `implementation/p9.1-error-ui-pattern.md` — típus szerinti nézet (canonical: phase-9.1/)
-- `phase-9.1/p9.1-runtime-cutover-baseline.md` — Runtime Cutover Baseline gate (5 checkpoint: env, endpoint, CORS, no-silent-fallback, error UI)
-- `phase-9.1/p9.1-no-silent-fallback.md` — No Silent Fallback guardrail (WP adapter throw → null state → error slot lánc)
-- `phase-9.1/p9.1-error-ui-pattern.md` — LandingTemplate error prop implementáció (branded Hungarian error UI, kliens felelősség)
-- `phase-8.5/p8.5-seed-pipeline.md` — Seed Pipeline koncepció (site.ts → WP szinkronizáció, 5-lépéses pipeline)
-- `phase-8.5/p8.5-parity-gate.md` — CMS Runtime Parity Gate guardrail (adapter switch előfeltétel)
-- `phase-8.5/p8.5-group-key-normalization.md` — ACF group sub-field key normalizálás troubleshooting (suffix match)
-- `phase-8.5/p8.5-image-sideload.md` — Image sideloading implementation (external URL + lokális asset → WP media library)
-- `concepts/p8.5-seed-pipeline.md` — típus szerinti nézet (canonical: phase-8.5/)
-- `guardrails/p8.5-parity-gate.md` — típus szerinti nézet (canonical: phase-8.5/)
-- `troubleshooting/p8.5-group-key-normalization.md` — típus szerinti nézet (canonical: phase-8.5/)
-- `implementation/p8.5-image-sideload.md` — típus szerinti nézet (canonical: phase-8.5/)
+- `phases/phase-8.5.md` — Phase 8.5 index
+- `phases/phase-9.1.md` — Phase 9.1 index
+- `phases/p9.1-runtime-cutover-baseline.md` — Runtime Cutover Baseline gate (phase-specific)
+
+## [Pre-migration]
+
+### Added
+- `concepts/seed-pipeline.md` — Seed Pipeline koncepció (site.ts → WP szinkronizáció, 5-lépéses pipeline)
+- `guardrails/parity-gate.md` — CMS Runtime Parity Gate guardrail (adapter switch előfeltétel)
+- `guardrails/no-silent-fallback.md` — No Silent Fallback guardrail (WP adapter throw → null state → error slot)
+- `implementation/image-sideload.md` — Image sideloading (external URL + lokális asset → WP media library)
+- `implementation/error-ui-pattern.md` — Error UI Pattern (LandingTemplate error prop, branded kliens UI)
+- `troubleshooting/group-key-normalization.md` — ACF group sub-field key normalizálás (suffix match)

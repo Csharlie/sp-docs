@@ -1,11 +1,12 @@
 ---
 title: Error UI Pattern – LandingTemplate error prop implementáció
 status: draft
-phase: "9.1"
 type: implementation
+phase_introduced: "9.1"
+canonical: true
 repos: [sp-platform, sp-clients]
 tags: [error-ui, landing-template, error-prop, branding, client-responsibility]
-last_updated: 2026-04-10
+last_updated: 2026-04-11
 ---
 
 # Error UI Pattern – LandingTemplate error prop implementáció

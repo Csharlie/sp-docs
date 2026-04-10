@@ -1,15 +1,15 @@
 ---
 title: ACF Group Sub-field Key Normalizálás
 status: draft
-phase: "8.5"
 type: troubleshooting
+phase_introduced: "8.5"
+canonical: true
 repos: [sp-infra]
 tags: [acf, group, dump, key-normalization, suffix-match, troubleshooting]
-last_updated: 2026-04-09
-canonical: ../phase-8.5/p8.5-group-key-normalization.md
+last_updated: 2026-04-11
 ---
 
-Típusnézet. Kanonikus dokumentum: [phase-8.5/p8.5-group-key-normalization.md](../phase-8.5/p8.5-group-key-normalization.md)
+# ACF Group Sub-field Key Normalizálás
 
 ## Summary (Simple)
 
@@ -111,7 +111,7 @@ Ez a hiba azért volt nehezen diagnosztizálható, mert:
 
 ## Related Concepts
 
-- [p8.5-seed-pipeline.md](../phase-8.5/p8.5-seed-pipeline.md) — a pipeline, amelynek a dump lépése ezt használja
+- [p8.5-seed-pipeline.md](p8.5-seed-pipeline.md) — a pipeline, amelynek a dump lépése ezt használja
 - `sp-infra/acf/bc-service.php` — bc_service_contact group regisztráció
 - `sp-infra/acf/bc-contact.php` — bc_contact_info group regisztráció
 - `sp-docs/postmortem-p8.5-content-parity.md` — „Korrigált diagnózis" szekció

@@ -1,11 +1,12 @@
 ---
 title: No Silent Fallback – WP Adapter hibakezelési szabály
 status: draft
-phase: "9.1"
 type: guardrail
+phase_introduced: "9.1"
+canonical: true
 repos: [sp-platform, sp-clients]
 tags: [guardrail, error-handling, wordpress-adapter, fallback, runtime, null-state]
-last_updated: 2026-04-10
+last_updated: 2026-04-11
 ---
 
 # No Silent Fallback – WP Adapter hibakezelési szabály

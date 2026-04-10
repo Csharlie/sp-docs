@@ -1,11 +1,12 @@
 ---
 title: Seed Pipeline — tartalom szinkronizáció site.ts → WordPress
 status: draft
-phase: "8.5"
 type: concept
+phase_introduced: "8.5"
+canonical: true
 repos: [sp-infra, sp-benettcar, sp-docs]
 tags: [seed, pipeline, parity, acf, wordpress, content-sync]
-last_updated: 2026-04-09
+last_updated: 2026-04-11
 ---
 
 # Seed Pipeline — tartalom szinkronizáció site.ts → WordPress
