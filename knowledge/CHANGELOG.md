@@ -4,6 +4,10 @@ Minden knowledge dokumentum változás naplója. Keep a Changelog formátum.
 
 ## [Unreleased]
 
+### Added
+- `concepts/wordpress-mapper-boundary.md` — WordPress Mapper Boundary (P8.1, kliens-oldali WP REST → SiteData mapper)
+- `phases/phase-8.1.md` — Phase 8.1 index
+
 ### Changed
 - Migrated knowledge structure to SPK v1.1.0 canonical model
   - Phase-first directories (`phase-8.5/`, `phase-9.1/`) → typed canonical dirs + `phases/` index
