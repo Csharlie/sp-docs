@@ -1233,17 +1233,17 @@ sp-client-y/                # Client C
 
 ---
 
-### Phase 10 — Stabilization
+### Phase 10 — Stabilization ✅ COMPLETED (2026-04-11)
 
 **Cél**: Teljes 10 szekciós működés, fallback UX, seed pipeline, debug tooling.
 
-| # | Task | Output | Siker-kritérium |
-|---|---|---|---|
-| P10.1 | Loading + error state UX | Loading spinner, WP unavailable error UI | UX tesztelve (gyors net, lassú net, WP down) |
-| P10.2 | Missing field fallback | Degradált renderelés hiányzó optional mezőknél | Nincs crash |
-| P10.3 | Maradék 7 bc-* szekció bekötés | bc-brand, bc-gallery, bc-about, bc-team, bc-assistance, bc-service, bc-map | Mind a 10 szekció E2E működik |
-| P10.4 | ~~Seed pipeline (site.ts → WP)~~ | ~~export-seed.ts → seed.json → WP import~~ | → **Phase 8.5-be áthelyezve** (P8.5.4–P8.5.5) |
-| P10.5 | Debug tooling + logging | Response builder log, adapter error log | Hibakeresés lehetséges |
+| # | Task | Output | Siker-kritérium | Státusz |
+|---|---|---|---|---|
+| P10.1 | Loading + error state UX | Loading spinner, WP unavailable error UI | UX tesztelve (gyors net, lassú net, WP down) | ✅ |
+| P10.2 | Missing field fallback | Degradált renderelés hiányzó optional mezőknél | Nincs crash | ✅ |
+| P10.3 | Maradék 7 bc-* szekció bekötés | bc-brand, bc-gallery, bc-about, bc-team, bc-assistance, bc-service, bc-map | Mind a 10 szekció E2E működik | ✅ |
+| P10.4 | ~~Seed pipeline (site.ts → WP)~~ | ~~export-seed.ts → seed.json → WP import~~ | → **Phase 8.5-be áthelyezve** (P8.5.4–P8.5.5) | — |
+| P10.5 | Debug tooling + logging | Mapper unknown-section warning, normalizer dropped-section warning (`import.meta.env.DEV` gated) | Dev console-ban látható, prod buildből tree-shaken | ✅ |
 
 ---
 
