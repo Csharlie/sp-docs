@@ -133,7 +133,7 @@ Az `sp-platform` repo (`@spektra/*` csomagok) a platform core. Zero BenettCar co
 | **BenettCar coupling** | Nincs |
 | **Multi-client reuse** | Biztonságos |
 
-**Platform verdict:** Az sp-platform repo teljesen kliens-agnosztikus. Zero BenettCar coupling. Multi-client reuse-ra kesz.
+**Platform verdict:** Az sp-platform repo teljesen kliens-agnosztikus. Zero runtime BenettCar coupling (egy komment-szintu referencia a `media.ts`-ben, lasd F6). Multi-client reuse-ra kesz.
 
 ---
 
@@ -329,7 +329,7 @@ Ez a fajl sajat magat is jelzi technikai adossagkent (15. sor: `bc-* specific �
 |---|---|
 | **File** | `sp-infra/seed/seed-pipeline.ps1` |
 | **Ownership** | Infra-owned |
-| **Reusability** | Reszleges — hardcoded `sp-clients\sp-benettcar` path (31. sor) |
+| **Reusability** | Reszleges — hardcoded `sp-clients\sp-benettcar` path (41. sor) |
 | **BenettCar feltetelezesek** | `$ClientDir = Join-Path $SpRoot 'sp-clients\sp-benettcar'` |
 | **Template candidate** | Igen, `-Client` parameter hozzaadasaval (mint `link-overlay.ps1`-ben mar megvan) |
 
@@ -366,7 +366,7 @@ Ez a fajl sajat magat is jelzi technikai adossagkent (15. sor: `bc-* specific �
 |---|---|
 | **File** | `sp-infra/seed/verify-endpoint.php` |
 | **Ownership** | Infra-owned |
-| **Reusability** | Reszleges — hardcoded bc-* section type check-ek (79–99. sor) |
+| **Reusability** | Reszleges — hardcoded bc-* section type check-ek (88–114. sor) |
 | **BenettCar feltetelezesek** | `case 'bc-hero':`, `case 'bc-brand':`, ... hardcoded assertion-ok |
 | **Template candidate** | A logika reusable ha a section check-ek data-driven-re irodik at |
 
@@ -626,8 +626,8 @@ A BenettCar reference implementacio alapjan az uj kliens onboardolasahoz az alab
 | | |
 |---|---|
 | **Severity** | P1 |
-| **Repo/file** | `sp-docs/` — nincs new-client-guide.md |
-| **Miert szamit** | A BenettCar setup teljes ismerete jelenleg implicit (konverzaciokbol, commitokbol, phase logokbol rekonstrualhato, de nem dokumentalt) |
+| **Repo/file** | `sp-docs/` — nincs teljes, standalone, reprodukalhato new-client-guide.md (reszleges anyag letezik: `content-parity-bootstrap.md`, v4 Phase 11 leiras) |
+| **Miert szamit** | A BenettCar setup teljes ismerete jelenleg reszben implicit — egyes lepesek dokumentaltak, de nincs egyetlen vegigjarhato onboarding workflow |
 | **Follow-up** | P11 kovetkezo lepes: onboarding guide |
 
 ### P2 — Nem blokkol, de manualis munkat/drift kockazatot teremt
@@ -636,7 +636,7 @@ A BenettCar reference implementacio alapjan az uj kliens onboardolasahoz az alab
 | | |
 |---|---|
 | **Severity** | P2 |
-| **Repo/file** | `sp-infra/seed/seed-pipeline.ps1` (31. sor) |
+| **Repo/file** | `sp-infra/seed/seed-pipeline.ps1` (41. sor) |
 | **Miert szamit** | Masodik kliens seed pipeline-jahoz vagy masolni kell a scriptet, vagy meg kell parameterezheto |
 | **Follow-up** | `-Client` parameter hozzaadasa (mint `link-overlay.ps1`-ben) |
 
@@ -644,7 +644,7 @@ A BenettCar reference implementacio alapjan az uj kliens onboardolasahoz az alab
 | | |
 |---|---|
 | **Severity** | P2 |
-| **Repo/file** | `sp-infra/seed/verify-endpoint.php` (79–99. sor) |
+| **Repo/file** | `sp-infra/seed/verify-endpoint.php` (88–114. sor) |
 | **Miert szamit** | Masodik kliens endpoint verifikaciojahoz a section check-eket kezileg kell atirni |
 | **Follow-up** | Data-driven section check (config-bol vagy response-bol kinyerve) |
 
@@ -692,7 +692,7 @@ Az `sp-modules` konyvtar nem letezik a `D:\Projects\spektra\` workspace-ben. A j
 
 ## Recommended Next Steps
 
-Az alabbi bontast az audit eredmenye alapjan javasolom. Ez nem alkalmazott roadmap-allapot — a meglevo `wp-integration-plan-v4.md` Phase 11 struktura marad ervenyben amig explicit feluliras nem tortenik.
+Az alabbi bontast az audit eredmenye alapjan javasolom. Ez nem alkalmazott roadmap-allapot — a meglevo `wp-integration-plan-v4.md` Phase 11 struktura marad ervenyben amig kulon dontessel nem modosul. Ha barki innen dolgozik: a v4 roadmap az autoritativ forras, nem ez a javaslat.
 
 ### P11.2 — Section Builder Delegation
 
