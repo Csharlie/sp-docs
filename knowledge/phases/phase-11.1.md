@@ -468,7 +468,7 @@ Az `sp-docs` repo a knowledge base es governance dokumentacio.
 | WordPress REST endpoint | — | `plugin/spektra-api/` | — | — | Generic, config-driven |
 | ACF field registration | — | Loader (`spektra-api.php`) | `infra/acf/field-groups.php` | — | Kliens overlay |
 | ACF value extraction | — | `acf/helpers.php` (generic) | — | — | Tiszta |
-| Section building (ACF → JSON) | — | `acf/sections.php` **!** | `infra/config.php` (section list) | — | **P1: bc-* hardcoded az infra-ban** |
+| Section building (ACF → JSON) | — | `acf/sections.php` (generic dispatch) | `infra/config.php` (section list), overlay `acf/builders.php` | — | P11.2: resolved — builder delegation pattern |
 | Seed export | — | — | `infra/seed/export-seed.ts` | — | Kliens adatbol |
 | Seed import | — | `seed/import-seed.php` | — | — | Generic |
 | Media sideload | — | `seed/import-seed.php` | — | — | Generic |

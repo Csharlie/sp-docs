@@ -1255,10 +1255,11 @@ sp-client-y/                # Client C
 
 | # | Task | Output | Siker-kritérium |
 |---|---|---|---|
-| P11.1 | Új kliens workflow dokumentáció | `sp-infra/docs/new-client-guide.md` | Lépésről lépésre leírás, végig követhető |
-| P11.2 | Client overlay template | Másolható kiindulópont: `config.php`, `acf/`, `env/` | Template-ből indulva 30 perc alatt overlay kész |
-| P11.3 | Reusable pattern extraction | Ami a Benettcar-ból kiemelhető → sp-infra | Media helper, CTA helper, section builder base |
-| P11.4 | Multi-runtime + multi-source docs | Több runtime kezelése, több source típus | Dokumentáció komplett |
+| P11.1 | Multi-Client Boundary Audit | `sp-docs/knowledge/phases/phase-11.1.md` | Ownership matrix, 8 finding, bootstrap requirements |
+| P11.2 | Section Builder Delegation | `sp-infra/acf/sections.php` refactor + `sp-benettcar/infra/acf/builders.php` | Shared infra nem tartalmaz bc-* buildereket; overlay-ból betölthető |
+| P11.3 | Overlay Template | Másolható kliens overlay kiindulópont | Template-ből indulva 30 perc alatt overlay kész |
+| P11.4 | Infra Script Parameterization | `seed-pipeline.ps1`, `verify-endpoint.php` | Mindkét script `-Client` paraméterrel fut bármely kliensre |
+| P11.5 | New Client Onboarding Guide | `sp-docs/` onboarding guide | Új kliens a guide alapján onboardolható BenettCar-repo ismerete nélkül |
 
 ---
 
