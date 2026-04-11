@@ -5,6 +5,7 @@ Minden knowledge dokumentum változás naplója. Keep a Changelog formátum.
 ## [Unreleased]
 
 ### Added
+- `phases/phase-11.3.md` — Phase 11.3 Platform + Infra Naming Refactor & Preset Scaffolding (@spektra/templates → @spektra/layouts, preset struktúra, 3 repo, audit F1–F4 javítva)
 - `phases/phase-11.2.md` — Phase 11.2 Section Builder Delegation (generic registry dispatch, bc-* builders → kliens overlay, F1/P1 finding lezárva)
 - `phases/phase-11.1.md` — Phase 11.1 Multi-Client Boundary Audit (4 repo audit, boundary matrix, 8 finding, bootstrap requirements)
 - `concepts/wordpress-mapper-boundary.md` — WordPress Mapper Boundary (P8.1, kliens-oldali WP REST → SiteData mapper)
