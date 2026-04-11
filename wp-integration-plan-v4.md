@@ -1257,9 +1257,9 @@ sp-client-y/                # Client C
 |---|---|---|---|
 | P11.1 | Multi-Client Boundary Audit | `sp-docs/knowledge/phases/phase-11.1.md` | Ownership matrix, 8 finding, bootstrap requirements |
 | P11.2 | Section Builder Delegation | `sp-infra/acf/sections.php` refactor + `sp-benettcar/infra/acf/builders.php` | Shared infra nem tartalmaz bc-* buildereket; overlay-ból betölthető |
-| P11.3 | Overlay Template | Másolható kliens overlay kiindulópont | Template-ből indulva 30 perc alatt overlay kész |
-| P11.4 | Infra Script Parameterization | `seed-pipeline.ps1`, `verify-endpoint.php` | Mindkét script `-Client` paraméterrel fut bármely kliensre |
-| P11.5 | New Client Onboarding Guide | `sp-docs/` onboarding guide | Új kliens a guide alapján onboardolható BenettCar-repo ismerete nélkül |
+| P11.3 | Platform + Infra Naming Refactor | `@spektra/layouts`, preset scaffolding, `apps/playground` | templates→layouts rename, 3 preset, audit F1–F4 fix |
+| P11.4 | Script Parameterization | `seed-pipeline.ps1 -Client`, data-driven `verify-endpoint.php` | Mindkét script `-Client` paraméterrel fut bármely kliensre |
+| P11.5 | New Client Onboarding Guide | `sp-docs/knowledge/guides/new-client-onboarding.md` | Preset-based onboarding guide, standalone walkthrough |
 
 ---
 

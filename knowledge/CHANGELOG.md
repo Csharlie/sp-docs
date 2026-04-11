@@ -5,6 +5,9 @@ Minden knowledge dokumentum változás naplója. Keep a Changelog formátum.
 ## [Unreleased]
 
 ### Added
+- `guides/new-client-onboarding.md` — P11.5 New Client Onboarding Guide (preset-based bootstrap workflow, infra overlay setup, seed pipeline, ellenőrzés)
+- `phases/phase-11.5.md` — Phase 11.5 index (onboarding guide knowledge doc)
+- `phases/phase-11.4.md` — Phase 11.4 Script Parameterization (-Client param, data-driven verify, image key walker)
 - `phases/phase-11.3.md` — Phase 11.3 Platform + Infra Naming Refactor & Preset Scaffolding (@spektra/templates → @spektra/layouts, preset struktúra, 3 repo, audit F1–F4 javítva)
 - `phases/phase-11.2.md` — Phase 11.2 Section Builder Delegation (generic registry dispatch, bc-* builders → kliens overlay, F1/P1 finding lezárva)
 - `phases/phase-11.1.md` — Phase 11.1 Multi-Client Boundary Audit (4 repo audit, boundary matrix, 8 finding, bootstrap requirements)
