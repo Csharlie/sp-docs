@@ -4,9 +4,9 @@ status: draft
 type: concept
 phase_introduced: "8.5"
 canonical: true
-repos: [sp-infra, sp-benettcar, sp-docs]
+repos: [sp-infra, sp-benettcar, sp-exotica, sp-docs]
 tags: [seed, pipeline, parity, acf, wordpress, content-sync]
-last_updated: 2026-04-11
+last_updated: 2026-04-12
 ---
 
 # Seed Pipeline — tartalom szinkronizáció site.ts → WordPress
@@ -128,3 +128,12 @@ A Seed Pipeline ezt az űrt tölti be: automatizált, ellenőrizhető, idempoten
 
 - `seed-pipeline.ps1` jelenleg Windows-only (PowerShell). Cross-platform (bash/CI) adaptáció P11+ scope.
 - Automatikus ACF field group sync (site.ts → WP admin field definition) — jövőbeli scope.
+- Pre-flight URL validation beépítése a pipeline-ba (lásd: seed-pipeline-blockers.md B2/B5)
+
+## Multi-Client Validation
+
+A pipeline az sp-exotica (2. kliens) seed futtatásával igazoltan generikus:
+- sp-infra scriptek (import, dump, verify, endpoint) változtatás nélkül működtek
+- Csak a kliens-specifikus `mapping.ts` és `site.ts` szükséges a futtatáshoz
+- Eredmény: 39/39 parity, 20/20 endpoint (3 pipeline futtatás a PASS-ig — lásd: [../troubleshooting/seed-pipeline-blockers.md](../troubleshooting/seed-pipeline-blockers.md))
+- A generikus fájlok (export-seed.ts, asset-loader.mjs, register-asset-hooks.mjs) azonosnak bizonyultak — elevation jelöltek (lásd: [platform-elevation.md](platform-elevation.md))

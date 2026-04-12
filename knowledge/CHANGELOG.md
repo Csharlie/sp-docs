@@ -5,6 +5,10 @@ Minden knowledge dokumentum változás naplója. Keep a Changelog formátum.
 ## [Unreleased]
 
 ### Added
+- `concepts/platform-elevation.md` — P12.1 Platform Elevation: A/B/C/D fájl-osztályozási modell, elevation path (P1/P2/P3), sp-exotica vs sp-benettcar összehasonlításból
+- `guardrails/no-copy-paste-client.md` — P12.1 No Copy-Paste Client guardrail: kliens létrehozás nem fájlmásolással, döntési fa (A/B/C/D)
+- `troubleshooting/seed-pipeline-blockers.md` — P12.1 Seed Pipeline Blocker Taxonomy: B1–B5 (tsx, Unsplash 404, @types/node, ACF false, nem validált URL)
+- `phases/phase-12.1.md` — Phase 12.1 index: Second Client Validation (sp-exotica seed pipeline, multi-client proof)
 - `guides/new-client-onboarding.md` — P11.5 New Client Onboarding Guide (preset-based bootstrap workflow, infra overlay setup, seed pipeline, ellenőrzés)
 - `phases/phase-11.5.md` — Phase 11.5 index (onboarding guide knowledge doc)
 - `phases/phase-11.4.md` — Phase 11.4 Script Parameterization (-Client param, data-driven verify, image key walker)
