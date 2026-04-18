@@ -1247,19 +1247,19 @@ sp-client-y/                # Client C
 
 ---
 
-### Phase 11 — Multi-Client Preparation ⚙
+### Phase 11 — Multi-Client Preparation ✅ COMPLETED (2026-04-11)
 
 > **Hard Architecture** — Ez dönti el: platform sikeresség, skálázhatóság, reuse arány.
 
 **Cél**: Dokumentáció és eszközök, amivel új kliens onboard-olása lehetséges.
 
-| # | Task | Output | Siker-kritérium |
-|---|---|---|---|
-| P11.1 | Multi-Client Boundary Audit | `sp-docs/knowledge/phases/phase-11.1.md` | Ownership matrix, 8 finding, bootstrap requirements |
-| P11.2 | Section Builder Delegation | `sp-infra/acf/sections.php` refactor + `sp-benettcar/infra/acf/builders.php` | Shared infra nem tartalmaz bc-* buildereket; overlay-ból betölthető |
-| P11.3 | Platform + Infra Naming Refactor | `@spektra/layouts`, preset scaffolding, `apps/playground` | templates→layouts rename, 3 preset, audit F1–F4 fix |
-| P11.4 | Script Parameterization | `seed-pipeline.ps1 -Client`, data-driven `verify-endpoint.php` | Mindkét script `-Client` paraméterrel fut bármely kliensre |
-| P11.5 | New Client Onboarding Guide | `sp-docs/knowledge/guides/new-client-onboarding.md` | Preset-based onboarding guide, standalone walkthrough |
+| # | Task | Output | Siker-kritérium | Státusz |
+|---|---|---|---|---|
+| P11.1 | Multi-Client Boundary Audit | `sp-docs/knowledge/phases/phase-11.1.md` | Ownership matrix, 8 finding, bootstrap requirements | ✅ |
+| P11.2 | Section Builder Delegation | `sp-infra/acf/sections.php` refactor + `sp-benettcar/infra/acf/builders.php` | Shared infra nem tartalmaz bc-* buildereket; overlay-ból betölthető | ✅ |
+| P11.3 | Platform + Infra Naming Refactor | `@spektra/layouts`, preset scaffolding, `apps/playground` | templates→layouts rename, 3 preset, audit F1–F4 fix | ✅ |
+| P11.4 | Script Parameterization | `seed-pipeline.ps1 -Client`, data-driven `verify-endpoint.php` | Mindkét script `-Client` paraméterrel fut bármely kliensre | ✅ |
+| P11.5 | New Client Onboarding Guide | `sp-docs/knowledge/guides/new-client-onboarding.md` | Preset-based onboarding guide, standalone walkthrough | ✅ |
 
 ---
 
