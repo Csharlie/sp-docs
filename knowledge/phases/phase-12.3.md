@@ -363,7 +363,7 @@ Az implementációs prompt biztonságosan megírható. Minden szükséges kontex
 - A pre-existing mapper bug a migration side-effect-jeként fixálódik
 
 **Döntés szükséges az implementáció előtt:**
-- A `spektra_split_textarea()` helper sp-infra-ba kerüljön (reusable) vagy sp-exotica lokális legyen?
+- ~~A `spektra_split_textarea()` helper sp-infra-ba kerüljön (reusable) vagy sp-exotica lokális legyen?~~ **RESOLVED: lokális sp-exotica.** Indoklás: pilot migration, egyetlen consumer, kisebb blast radius. Extraction rule: sp-infra-ba emelés csak akkor, ha legalább egy második migration ugyanazzal a split-semantikával ténylegesen megjelenik.
 
 ---
 

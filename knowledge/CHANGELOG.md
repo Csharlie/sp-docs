@@ -5,11 +5,12 @@ Minden knowledge dokumentum változás naplója. Keep a Changelog formátum.
 ## [Unreleased]
 
 ### Added
+- `implementation/p12-4-eb-about-values-migration.md` — P12.4 implementációs prompt: eb-about.values ACF Repeater → textarea+split migration. Teljes before/after kód, data flow, seed flow, parity validation, rollback plan.
 - `phases/phase-12-strategy-overview.md` — Phase 12 Platform Hardening Roadmap: 7-track struktúra (P12.1–P12.7), master TODO, cross-phase nyitott kérdések, done state
 
 ### Changed
-- `phases/phase-12.3.md` — P12.3a fixed_slots pilot planning: target `eb-about.values` kiválasztva, textarea+split field representation elfogadva, builder mapping plan, seed impact, SiteData parity validation plan, rollback plan, implementációs prompt készültségi értékelés: READY. Pre-existing mapper bug dokumentálva.
-- `phases/phase-12-strategy-overview.md` — P12.3a TODO-k lezárva, Phase Map P12.3a státusz: READY, Open Question #3 resolved
+- `phases/phase-12.3.md` — P12.3a fixed_slots pilot planning: target `eb-about.values` kiválasztva, textarea+split field representation elfogadva, builder mapping plan, seed impact, SiteData parity validation plan, rollback plan, implementációs prompt készültségi értékelés: READY. Pre-existing mapper bug dokumentálva. Helper placement döntés: lokális sp-exotica.
+- `phases/phase-12-strategy-overview.md` — P12.3a TODO-k lezárva, Phase Map P12.3a READY / P12.4 READY, Open Question #3 resolved, Artifact Index bővítve
 - `concepts/repeatable-content-source-strategy.md` — P12.2 Repeatable Content Source Strategy: 3 source strategy (cpt_collection / fixed_slots / acf_repeater_optional), SiteData stability rule, builder abstraction boundary, 13 repeater classification
 - `phases/phase-12.2.md` — Phase 12.2 index: Repeatable Content Baseline Correction (governance mismatch DR-003, transition rules, classification table, migration plan)
 - `phases/phase-12.3.md` — Phase 12.3 index: First Runtime Migration Planning / Pilot (Candidate A/B/C, decision criteria, required output, guardrails)

@@ -32,7 +32,7 @@ A Phase 12 hátralévő munkájának összefoglalása a multi-client validáció
 | P12.3 | First Runtime Migration Planning / Pilot | ACTIVE | Planning only |
 | P12.3a | fixed_slots Technical Pilot Planning | READY | Planning only |
 | P12.3b | BenettCar cpt_collection Design | NOT STARTED | Design only |
-| P12.4 | First Runtime Migration Implementation | BLOCKED | Runtime |
+| P12.4 | First Runtime Migration Implementation | READY | Runtime |
 | P12.5 | Seed Pipeline Source Strategy Support | PLANNED | Design + runtime |
 | P12.6 | BenettCar Handover Hardening | PLANNED | Design + runtime |
 | P12.7 | Platform Scaffold / Generator Prep | DEFERRED | Design |
@@ -155,9 +155,9 @@ A Phase 12 hátralévő munkájának összefoglalása a multi-client validáció
 
 ---
 
-### P12.4 — First Runtime Migration Implementation [BLOCKED]
+### P12.4 — First Runtime Migration Implementation [READY]
 
-**Státusz:** blokkolt — P12.3 target döntés szükséges
+**Státusz:** implementációs prompt kész
 
 **Cél:**
 - az első elfogadott source strategy migration végrehajtása
@@ -297,4 +297,5 @@ Phase 12 lezárható, ha:
 | `phases/phase-12.2.md` | Phase index | closed |
 | `phases/phase-12.3.md` | Phase index | active |
 | `wp-integration-plan-v4.md` DR-003 | Decision Record | Korrigálva |
+| `implementation/p12-4-eb-about-values-migration.md` | Implementation prompt | ready |
 | `wp-integration-plan-v4.md` DR-015 | Decision Record | Proposed |
