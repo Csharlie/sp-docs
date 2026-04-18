@@ -7,6 +7,7 @@ Minden knowledge dokumentum változás naplója. Keep a Changelog formátum.
 ### Added
 - `concepts/repeatable-content-source-strategy.md` — P12.2 Repeatable Content Source Strategy: 3 source strategy (cpt_collection / fixed_slots / acf_repeater_optional), SiteData stability rule, builder abstraction boundary, 13 repeater classification
 - `phases/phase-12.2.md` — Phase 12.2 index: Repeatable Content Baseline Correction (governance mismatch DR-003, transition rules, classification table, migration plan)
+- `phases/phase-12.3.md` — Phase 12.3 index: First Runtime Migration Planning / Pilot (Candidate A/B/C, decision criteria, required output, guardrails)
 - `concepts/platform-elevation.md` — P12.1 Platform Elevation: A/B/C/D fájl-osztályozási modell, elevation path (P1/P2/P3), sp-exotica vs sp-benettcar összehasonlításból
 - `guardrails/no-copy-paste-client.md` — P12.1 No Copy-Paste Client guardrail: kliens létrehozás nem fájlmásolással, döntési fa (A/B/C/D)
 - `troubleshooting/seed-pipeline-blockers.md` — P12.1 Seed Pipeline Blocker Taxonomy: B1–B5 (tsx, Unsplash 404, @types/node, ACF false, nem validált URL)
@@ -24,6 +25,7 @@ Minden knowledge dokumentum változás naplója. Keep a Changelog formátum.
 - `phases/p9.1-runtime-cutover-baseline.md` — Runtime Cutover Baseline gate (phase-specific)
 
 ### Changed
+- P12.2 concept status `draft` → `accepted` promot\u00e1lva; phase closeout dokument\u00e1lva; P12.3 planning note l\u00e9trehozva
 - `wp-integration-plan-v4.md` Appendix B — DR-003 státusz → ⚠️ Korrigálva (clarification hozzáadva: fixed field groups vs repeatable content scope); DR-015 hozzáadva (Repeatable Content Source Strategy)
 - WordPress free baseline governance pontosítva: ACF Repeater (`type => 'repeater'`) ACF Pro feature, nem baseline-kompatibilis; `acf_add_local_field_group()` maga nem Pro-specifikus
 - Gallery schema type consistency — `BcGalleryImage` (sp-benettcar) és `GalleryImage` (sp-exotica) `extends Media` platform típusra migrálva; lokális `src`/`alt` duplikáció megszüntetve

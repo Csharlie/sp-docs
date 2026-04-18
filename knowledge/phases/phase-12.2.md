@@ -121,6 +121,14 @@ P12.2 lezárási feltétel:
 
 ---
 
+## Closeout
+
+P12.2 lezárva mint dokumentációs/governance fázis. Runtime implementáció a P12.3+ fázisokra halasztva.
+
+Következő: `phases/phase-12.3.md`
+
+---
+
 ## Open Questions
 
 1. **CPT naming convention** — Milyen CPT slug konvenció? `spk_gallery_item`, `bc_brand`, prefix nélküli? Implementation decision a P12.3+ fázisban.

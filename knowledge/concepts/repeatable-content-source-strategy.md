@@ -1,6 +1,6 @@
 ---
 title: Repeatable Content Source Strategy
-status: draft
+status: accepted
 type: concept
 phase_introduced: "12"
 canonical: true
@@ -14,6 +14,8 @@ last_updated: 2026-04-18
 ## Summary (Simple)
 
 A Spektra WordPress free baseline nem függhet ACF Pro-tól. A repeatable content (galéria képek, csapattagok, termékek, márkák stb.) forrás stratégián keresztül kezelt. Három strategy létezik: `cpt_collection` (default free baseline), `fixed_slots` (bounded kis tartalom), `acf_repeater_optional` (opcionális jövőbeli Pro source). A frontend SiteData shape mindig stabil marad — a source strategy csere nem érint frontend prop-okat.
+
+> **Status: accepted** — Ez a concept elfogadott a P12.2 governance keretében és biztonságosan referencialható a P12.3 planning-ből. Az implementációs részletek a jövőbeli fázisokban még változhatnak.
 
 ## Problem Statement
 
