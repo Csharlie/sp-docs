@@ -5,6 +5,7 @@ Minden knowledge dokumentum változás naplója. Keep a Changelog formátum.
 ## [Unreleased]
 
 ### Added
+- `phases/phase-12-strategy-overview.md` — Phase 12 Platform Hardening Roadmap: 7-track struktúra (P12.1–P12.7), master TODO, cross-phase nyitott kérdések, done state
 - `concepts/repeatable-content-source-strategy.md` — P12.2 Repeatable Content Source Strategy: 3 source strategy (cpt_collection / fixed_slots / acf_repeater_optional), SiteData stability rule, builder abstraction boundary, 13 repeater classification
 - `phases/phase-12.2.md` — Phase 12.2 index: Repeatable Content Baseline Correction (governance mismatch DR-003, transition rules, classification table, migration plan)
 - `phases/phase-12.3.md` — Phase 12.3 index: First Runtime Migration Planning / Pilot (Candidate A/B/C, decision criteria, required output, guardrails)
