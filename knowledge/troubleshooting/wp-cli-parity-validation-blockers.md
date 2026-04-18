@@ -87,23 +87,28 @@ $res = rest_do_request($req);
 
 ---
 
-## B5 — Seed import: összes update_field FAIL
+## B5 — Seed import: összes update_field FAIL [RESOLVED]
 
 **Tünet:** `wp eval-file import-seed.php seed.json` → 35 FAIL, 0 sikeres field. De manuális `update_field('eb_about_values_text', 'test', 4)` → `true`.
 
-**Ok:** Nem teljesen diagnosztizált. Valószínű okok:
-1. Az `import-seed.php` a `$result === false` check-et használja, ami ACF 6.x-ben nem megbízható (ha az érték nem változik, ACF `false`-t adhat)
-2. A `--verbose` flag az `import-seed.php`-ban nincs support-olva (error-t dob) — `--verbose` nem WP-CLI natív flag, hanem az import script saját paramétere, de az `eval-file` nem adja át
-3. Lehetséges, hogy az ACF field registry és a field key mismatch okozza a FAIL-t batch import-nál
+**Root cause:** `update_field()` delegates to WordPress core `update_metadata()`, which returns `false` when the new value is identical to the stored value ("no-op"). The import script treated every `false` return as an error — but on a second import (where seed data is already current) **all** fields return `false` because nothing changed.
 
-**Workaround:** Közvetlen `wp eval` + `update_field()` hívás működik:
+**Fix (sp-infra commit):** When `update_field()` returns `false`, read the stored value back with `get_field($key, $post_id, false)` and compare via `field_values_match()`. If values match → "unchanged" (success). If mismatch → true failure.
+
+New helper `field_values_match()` handles:
+- Scalars: string-cast comparison (`(string) $a === (string) $b`)
+- Images: stored as attachment ID (int > 0) vs seed `{url, alt}` object
+- Arrays: JSON-encoded equality
+- Null/empty edge cases
+
+**Verbose flag:** `--verbose` must be passed as positional arg after `--` separator (not as WP-CLI flag):
 ```powershell
-& $php $wp --path=$wpPath eval "update_field('eb_about_values_text', 'V1\nV2\nV3', 4);"
+& $php $wp --path=$wpPath eval-file import-seed.php seed.json -- verbose
 ```
 
-**Státusz:** NEM diagnosztizált — külön investigation szükséges. Nem P12.4-specifikus, minden field-re FAIL.
+**Státusz:** RESOLVED — 37/37 field OK, 0 FAIL.
 
-**Tanulság:** Az `import-seed.php` batch import nem megbízható. Egyedi `update_field` hívások működnek. A seed import script-et felül kell vizsgálni.
+**Tanulság:** WordPress `update_metadata()` (and by extension ACF `update_field()`) returns `false` on no-change — this is by design, not an error. Any import/sync script must verify the stored value instead of relying on the return value.
 
 ---
 

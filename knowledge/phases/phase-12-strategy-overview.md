@@ -33,6 +33,7 @@ A Phase 12 hátralévő munkájának összefoglalása a multi-client validáció
 | P12.3a | fixed_slots Technical Pilot Planning | CLOSED | Planning only |
 | P12.3b | BenettCar cpt_collection Design | NOT STARTED | Design only |
 | P12.4 | First Runtime Migration Implementation | CLOSED | Runtime |
+| P12.5a | Seed Import Failure Diagnosis | CLOSED | Runtime fix |
 | P12.5 | Seed Pipeline Source Strategy Support | PLANNED | Design + runtime |
 | P12.6 | BenettCar Handover Hardening | PLANNED | Design + runtime |
 | P12.7 | Platform Scaffold / Generator Prep | DEFERRED | Design |
@@ -175,6 +176,29 @@ A Phase 12 hátralévő munkájának összefoglalása a multi-client validáció
 - [x] CHANGELOG és phase note frissítés
 
 **Eredmény:** Az első fixed_slots migration pattern bizonyítva. ACF Pro Repeater kiváltható ACF Free textarea + builder split-tel a SiteData contract megtartásával.
+
+---
+
+### P12.5a — Seed Import Failure Diagnosis [CLOSED]
+
+**Státusz:** lezárva
+
+**Cél:**
+- B5 blocker (seed import 35 FAIL / 0 success) diagnosztizálása és javítása
+- A seed pipeline megbízhatósága a további migrációk előfeltétele
+
+**Root cause:** `update_field()` → WordPress `update_metadata()` returns `false` when value is unchanged (by design). Az import script minden `false`-t hibának tekintett.
+
+**Fix:** `import-seed.php` — when `update_field` returns `false`, verify via `get_field()` + `field_values_match()` helper. sp-infra módosítás.
+
+**TODO:**
+- [x] `import-seed.php` teljes kódbázis áttekintés
+- [x] Root cause azonosítás (WP `update_metadata` no-op = `false`)
+- [x] `field_values_match()` helper implementálása
+- [x] Validálás: 37/37 field OK, 0 FAIL
+- [x] B5 troubleshooting entry frissítése → RESOLVED
+
+**Eredmény:** Seed import pipeline megbízható. Ismételt import nem dob false positive FAIL-eket.
 
 ---
 
