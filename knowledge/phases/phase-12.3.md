@@ -7,7 +7,7 @@ Az első runtime migration target kiválasztása az ACF Repeater dependency kiv�
 ## Context
 
 P12.2 bevezette a Repeatable Content Source Strategy-t (`concepts/repeatable-content-source-strategy.md`):
-- `cpt_collection` — default free baseline (CPT + taxonomy)
+- `cpt_collection` — default free baseline (CPT; taxonomy csak ahol kategorizáció indokolt)
 - `fixed_slots` — bounded kis tartalom (ACF Free-kompatibilis)
 - `acf_repeater_optional` — opcionális jövőbeli Pro source
 

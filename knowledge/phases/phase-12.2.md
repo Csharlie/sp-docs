@@ -70,16 +70,6 @@ A Phase 12.2 a repeatable content source strategy governance correction — az A
 
 ---
 
-## First Migration Target
-
-`eb-contact.opening_hours` — a legegyszerűbb fixed_slots jelölt:
-- Egyetlen sub-field (szöveg sor)
-- ~5-7 bounded item
-- Nincs image, nincs nested data
-- Exotica még fejlesztés közben → kisebb kockázat
-
----
-
 ## Operational Priority
 
 **Technikai pilot**: `eb-contact.opening_hours` vagy más kis `fixed_slots` eset — lowest-risk, validációs célú.
