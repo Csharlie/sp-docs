@@ -4,7 +4,12 @@ Minden knowledge dokumentum változás naplója. Keep a Changelog formátum.
 
 ## [Unreleased]
 
+### Added
+- `concepts/repeatable-content-source-strategy.md` — P12.2 Repeatable Content Source Strategy: 3 source strategy (cpt_collection / fixed_slots / acf_repeater_optional), SiteData stability rule, builder abstraction boundary, 12 repeater classification
+- `phases/phase-12.2.md` — Phase 12.2 index: Repeatable Content Baseline Correction (governance mismatch DR-003, transition rules, classification table, migration plan)
+
 ### Changed
+- `wp-integration-plan-v4.md` Appendix B — DR-003 státusz → ⚠️ Korrigálva; DR-015 hozzáadva (Repeatable Content Source Strategy)
 - Gallery schema type consistency — `BcGalleryImage` (sp-benettcar) és `GalleryImage` (sp-exotica) `extends Media` platform típusra migrálva; lokális `src`/`alt` duplikáció megszüntetve
 
 ### Added

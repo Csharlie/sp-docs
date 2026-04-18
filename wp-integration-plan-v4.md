@@ -1364,7 +1364,7 @@ Minden architekturális döntés egy helyen, indoklással és alternatívákkal.
 | **Alternatíva** | ACF Pro + Flexible Content (jövőben lehetséges upgrade path) |
 | **Következmény** | Szekció sorrend a PHP kódban fix; tartalom szerkeszthető, struktúra nem |
 | **Upgrade path** | Ha dinamikus szekció sorrend kell → ACF Pro + Flexible Content migration |
-| **Státusz** | ✅ Végleges (v1) |
+| **Státusz** | ⚠️ Korrigálva — lásd DR-015 és `concepts/repeatable-content-source-strategy.md` |
 
 ### DR-004: WAMP-first, Docker prepared
 
@@ -1475,3 +1475,17 @@ Minden architekturális döntés egy helyen, indoklással és alternatívákkal.
 | **Korlát** | WP-specifikus logika és kliens-specifikus mezők SOHA nem kerülnek a platformba |
 | **Következmény** | Adapter contract, Media shape, validation lazítható — de a boundary megmarad |
 | **Státusz** | ✅ Végleges |
+
+---
+
+### DR-015: Repeatable Content Source Strategy
+
+| | |
+|---|---|
+| **Döntés** | Repeatable content háromféle source strategy-n keresztül kezelt: `cpt_collection` (default free), `fixed_slots` (bounded), `acf_repeater_optional` (opcionális Pro) |
+| **Indoklás** | DR-003 ACF Free sufficiency-t állított, de mindkét kliens inception óta ACF Pro repeater-t használ (12 field, 10 szekció). A free baseline helyreállítása source strategy absztrakcióval történik |
+| **Alternatíva** | ACF Pro mint baseline requirement elfogadása — elutasítva, mert sérti a free/open-source pozícionálást |
+| **Következmény** | Meglévő repeater field-ek classification szükséges; új repeater field tilos a free baseline-ban; SiteData shape változatlan marad |
+| **SiteData hatás** | Nincs — source strategy csere a builder mögött történik, frontend contract stabil |
+| **Cross-reference** | `concepts/repeatable-content-source-strategy.md`, `phases/phase-12.2.md`, DR-003 (korrigálva) |
+| **Státusz** | 📋 Proposed |
