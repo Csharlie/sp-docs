@@ -31,7 +31,7 @@ A Phase 12 hátralévő munkájának összefoglalása a multi-client validáció
 | P12.2 | Repeatable Content Baseline Correction | CLOSED | Docs / governance |
 | P12.3 | First Runtime Migration Planning / Pilot | ACTIVE | Planning only |
 | P12.3a | fixed_slots Technical Pilot Planning | CLOSED | Planning only |
-| P12.3b | BenettCar cpt_collection Design | NOT STARTED | Design only |
+| P12.3b | BenettCar cpt_collection Design | DESIGN COMPLETE | Design only |
 | P12.4 | First Runtime Migration Implementation | CLOSED | Runtime |
 | P12.5a | Seed Import Failure Diagnosis | CLOSED | Runtime fix |
 | P12.5 | Seed Pipeline Source Strategy Support | PLANNED | Design + runtime |
@@ -136,23 +136,23 @@ A Phase 12 hátralévő munkájának összefoglalása a multi-client validáció
 
 **Lezárási feltétel:** Implementációs prompt biztonságosan megírható. Runtime implementáció külön explicit promptot igényel.
 
-#### P12.3b — BenettCar cpt_collection Design
+#### P12.3b — BenettCar cpt_collection Design [DESIGN COMPLETE]
 
-**TODO:**
-- [ ] Első target ajánlás:
-  - `bc-gallery.images`
-  - `bc-brand.brands`
-  - `bc-team.members`
-- [ ] CPT naming convention javaslat
-- [ ] Collection loading pattern javaslat
-- [ ] Builder output shape
-- [ ] Seed strategy impact
-- [ ] SiteData parity validation plan
-- [ ] Migration/rollback plan
-- [ ] Handover impact assessment
-- [ ] Implementációs prompt készültségi értékelés
+**Selected target:** `bc-services.services` (sp-benettcar)
 
-**Lezárási feltétel:** Design ajánlás dokumentálva. A végleges cpt_collection target kiválasztás explicit platform-owner jóváhagyást igényel.
+**Scope kiegészítés:** `bc-services.services` nem volt az eredeti Candidate B listában, de P12.2 classifikáció alapján `cpt_collection` stratégiájú. Legalacsonyabb komplexitás: 3 scalar mező, nincs image, nincs taxonomy.
+
+**Design döntések:**
+- CPT slug: `sp_bc_service` (14 char)
+- Loading: kliens-lokális `spektra_bc_get_services()`
+- SiteData shape: változatlan
+- Seed: `kind: cpt_collection` → P12.5 scope
+
+**Design dokumentum:** `implementation/p12-3b-benettcar-cpt-collection-design.md`
+
+**Deferred targets:** `bc-brand.brands`, `bc-team.members`, `bc-gallery.images` (image/taxonomy komplexitás)
+
+**Lezárási feltétel:** Design ajánlás dokumentálva. Runtime implementáció külön explicit promptot igényel.
 
 ---
 

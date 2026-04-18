@@ -378,31 +378,31 @@ Az implementációs prompt biztonságosan megírható. Minden szükséges kontex
 
 ---
 
-## P12.3b — BenettCar cpt_collection Design
+## P12.3b — BenettCar cpt_collection Design [DESIGN COMPLETE]
 
-**Candidates:**
-- sp-benettcar: `bc-gallery.images`
-- sp-benettcar: `bc-brand.brands`
-- sp-benettcar: `bc-team.members`
+**Selected target:** `bc-services.services` (sp-benettcar)
 
-**Purpose:**
-- az első cpt_collection migration pattern megtervezése
-- BenettCar handover stabilitás támogatása
-- editorial UX javítása magas interakciójú tartalomhoz
+**Scope kiegészítés:** Az eredeti Candidate B lista (`bc-gallery`, `bc-brand`, `bc-team`) nem tartalmazta a `bc-services`-t, de a P12.2 elfogadott classifikáció alapján `bc_services_services` is `cpt_collection` stratégiájú. Az alacsonyabb implementációs kockázat (nincs image, nincs taxonomy, 3 scalar mező) miatt ez a legalkalmasabb első cpt_collection pilot target.
 
-**Fontos:** Ez kizárólag design. CPT runtime kód NEM implementálható P12.3b-ben. P12.3b ajánlást produkál, nem végleges runtime implementációs döntést. A végleges cpt_collection target kiválasztás explicit platform-owner jóváhagyást igényel implementáció előtt.
+**TODO:**
+- [x] Első target ajánlás: `bc-services.services`
+- [x] CPT naming convention javaslat: `sp_bc_service` (14 char, WP 20 char limit alatt)
+- [x] Collection loading pattern javaslat: kliens-lokális `spektra_bc_get_services()`
+- [x] Builder output shape: változatlan SiteData `[{ title, icon, description }]`
+- [x] Seed strategy impact: `kind: cpt_collection` → P12.5 scope
+- [x] SiteData parity validation plan: REST endpoint byte-exact match
+- [x] Migration/rollback plan: commit revert + CPT post delete + repeater fallback
+- [x] Handover impact assessment: editorial workflow változás (inline repeater → CPT admin menüpont)
+- [ ] Implementációs prompt készültségi értékelés: runtime implementáció külön explicit promptot igényel
 
-**Required planning output:**
-- ajánlott első BenettCar cpt_collection target
-- ajánlás indoklása
-- CPT naming convention javaslat
-- collection loading pattern javaslat
-- builder output shape
-- seed strategy impact
-- SiteData parity validation plan
-- migration/rollback plan
-- handover impact assessment
-- implementációs prompt készültségi értékelés
+**Design dokumentum:** `implementation/p12-3b-benettcar-cpt-collection-design.md`
+
+**Deferred targets (komplexitás szerint):**
+1. `bc-brand.brands` — image/logo handling
+2. `bc-team.members` — image + contact fields
+3. `bc-gallery.images` — image + category/taxonomy (legkomplexebb)
+
+**Fontos:** Ez kizárólag design. CPT runtime kód NEM implementálható P12.3b-ben. Runtime implementáció külön explicit promptot igényel. A végleges cpt_collection target kiválasztás explicit platform-owner jóváhagyást igényel implementáció előtt.
 
 ---
 
