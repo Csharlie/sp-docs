@@ -15,11 +15,13 @@ last_updated: 2026-04-18
 
 A Spektra WordPress free baseline nem függhet ACF Pro-tól. A repeatable content (galéria képek, csapattagok, termékek, márkák stb.) forrás stratégián keresztül kezelt. Három strategy létezik: `cpt_collection` (default free baseline), `fixed_slots` (bounded kis tartalom), `acf_repeater_optional` (opcionális jövőbeli Pro source). A frontend SiteData shape mindig stabil marad — a source strategy csere nem érint frontend prop-okat.
 
+## Problem Statement
+
+DR-003 ("Fixed Field Groups — ACF Free elég") implicit módon ACF Free sufficiency-t állított. A valóságban az implementáció inception óta ACF Repeater mezőket használ mindkét kliensben (sp-benettcar: 8 repeater field / 6 szekció, sp-exotica: 4 repeater field / 4 szekció). Ez nem drift — a governance és az implementáció sosem volt konzisztens.
+
+Fontos distinkció: az `acf_add_local_field_group()` maga az ACF lokális field group regisztrációs mechanizmus — sem Free, sem Pro-specifikus. A Pro dependency onnan ered, hogy a field group definíciók `'type' => 'repeater'` mezőket tartalmaznak. Az ACF Repeater field type kizárólag ACF Pro feature.
+
 ## Technical Explanation
-
-### A governance mismatch
-
-DR-003 ("Fixed Field Groups — ACF Free elég") implicit módon ACF Free sufficiency-t állított. A valóságban az implementáció inception óta ACF Repeater mezőket használ mindkét kliensben (sp-benettcar: 8 repeater field / 6 szekció, sp-exotica: 4 repeater field / 4 szekció). Az ACF Repeater ACF Pro feature. Ez nem drift — a governance és az implementáció sosem volt konzisztens.
 
 ### Source Strategies
 
@@ -76,6 +78,22 @@ A jelenlegi seed pipeline (`import-seed.php`, `dump-acf.php`) explicit repeater-
 - `dump-acf.php`: repeater-aware recursive dump
 
 CPT collection seed flow: `wp_insert_post()` + `update_post_meta()` + ACF Free simple fields. Ez új seed path — a meglévő repeater seed logic a transition periódusban megmarad.
+
+## Client Impact Summary
+
+### sp-benettcar
+
+- 10 section builder, ebből 6 használ repeater adatot
+- 8 repeater field összesen
+- Érintett szekciók: bc-gallery, bc-brand, bc-team, bc-services, bc-service, bc-about
+- Operatív prioritás: gallery / brand / team editorial stability kritikus a handover szempontjából
+
+### sp-exotica
+
+- 6 section builder, ebből 4 használ repeater adatot
+- 4 repeater field összesen
+- Érintett szekciók: eb-gallery, eb-products, eb-animals, eb-contact
+- `eb-contact.opening_hours` a legegyszerűbb `fixed_slots` jelölt — technikai pilot lehetőség
 
 ## Why It Exists
 

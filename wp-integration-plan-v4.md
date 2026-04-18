@@ -1364,6 +1364,8 @@ Minden architekturális döntés egy helyen, indoklással és alternatívákkal.
 | **Alternatíva** | ACF Pro + Flexible Content (jövőben lehetséges upgrade path) |
 | **Következmény** | Szekció sorrend a PHP kódban fix; tartalom szerkeszthető, struktúra nem |
 | **Upgrade path** | Ha dinamikus szekció sorrend kell → ACF Pro + Flexible Content migration |
+| **Scope pontosítás** | A "Fixed Field Groups" a szekció/page-szintű fix field group struktúrára vonatkozik. A repeatable content source strategy külön governance alatt áll — lásd DR-015 |
+| **ACF Free baseline** | ACF Free marad a baseline cél. Az `acf_add_local_field_group()` mechanizmus nem Pro-specifikus. A Pro dependency a `'type' => 'repeater'` field type-ból ered, mert az ACF Repeater ACF Pro feature |
 | **Státusz** | ⚠️ Korrigálva — lásd DR-015 és `concepts/repeatable-content-source-strategy.md` |
 
 ### DR-004: WAMP-first, Docker prepared

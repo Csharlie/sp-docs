@@ -79,6 +79,14 @@ A Phase 12.2 a repeatable content source strategy governance correction — az A
 
 ---
 
+## Operational Priority
+
+**Technikai pilot**: `eb-contact.opening_hours` vagy más kis `fixed_slots` eset — lowest-risk, valíDációs célú.
+
+**Operatív prioritás**: BenettCar handover stabilitás. Különösen a gallery / brand / team editorial experience kritikus — ezek a `cpt_collection` jelöltek, amelyek a legtöbb szerkesztői interakciót kapják. A technikai pilot nem helyettesíti az operatív prioritást — a BenettCar kliensnél a repeater → CPT migration sorrendje az editorial impact alapján dől el, nem a technikai egyszerűség alapján.
+
+---
+
 ## Implementation Phases (proposal)
 
 1. **P12.2** (current): Governance correction dokumentáció, classification, DR-015
@@ -94,3 +102,25 @@ A Phase 12.2 a repeatable content source strategy governance correction — az A
 - [x] DR-015 in `wp-integration-plan-v4.md`
 - [x] DR-003 status update
 - [x] CHANGELOG update
+
+---
+
+## Done State
+
+P12.2 lezárási feltétel:
+1. Canonical concept doc (`repeatable-content-source-strategy.md`) érvényes és review-olt
+2. Minden meglévő repeater field classifikálva (classification table teljes)
+3. DR-015 Proposed státuszban a wp-integration-plan-v4.md-ben
+4. DR-003 cross-reference hozzáadva
+5. Transition rules dokumentálva és elfogadva
+6. Runtime kód NEM módosult — ez kizárólag dokumentációs korrekció
+
+---
+
+## Open Questions
+
+1. **CPT naming convention** — Milyen CPT slug konvenció? `spk_gallery_item`, `bc_brand`, prefix nélküli? Implementation decision a P12.3+ fázisban.
+2. **BenettCar migration sorrend** — Gallery / brand / team editorial impact alapján, vagy technikai egyszerűség alapján?
+3. **fixed_slots implementation** — ACF Free numbered fields (`opening_hours_1`, `opening_hours_2`) vagy textarea + split?
+4. **ACF Pro transition deadline** — Explicit deadline szükséges, vagy elég a per-client migration plan?
+5. **Seed pipeline CPT support** — `wp_insert_post()` alapú seed flow ideje a P12.3+ fázisra tervezett.

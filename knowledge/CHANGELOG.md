@@ -9,8 +9,11 @@ Minden knowledge dokumentum változás naplója. Keep a Changelog formátum.
 - `phases/phase-12.2.md` — Phase 12.2 index: Repeatable Content Baseline Correction (governance mismatch DR-003, transition rules, classification table, migration plan)
 
 ### Changed
-- `wp-integration-plan-v4.md` Appendix B — DR-003 státusz → ⚠️ Korrigálva; DR-015 hozzáadva (Repeatable Content Source Strategy)
+- `wp-integration-plan-v4.md` Appendix B — DR-003 státusz → ⚠️ Korrigálva (clarification hozzáadva: fixed field groups vs repeatable content scope); DR-015 hozzáadva (Repeatable Content Source Strategy)
+- WordPress free baseline governance pontosítva: ACF Repeater (`type => 'repeater'`) ACF Pro feature, nem baseline-kompatibilis; `acf_add_local_field_group()` maga nem Pro-specifikus
 - Gallery schema type consistency — `BcGalleryImage` (sp-benettcar) és `GalleryImage` (sp-exotica) `extends Media` platform típusra migrálva; lokális `src`/`alt` duplikáció megszüntetve
+
+> Runtime kód NEM módosult. Ez kizárólag dokumentációs és governance korrekció.
 
 ### Added
 - `concepts/platform-elevation.md` — P12.1 Platform Elevation: A/B/C/D fájl-osztályozási modell, elevation path (P1/P2/P3), sp-exotica vs sp-benettcar összehasonlításból
