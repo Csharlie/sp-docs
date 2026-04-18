@@ -9,8 +9,8 @@ Minden knowledge dokumentum változás naplója. Keep a Changelog formátum.
 - `implementation/p12-4-eb-about-values-migration.md` — P12.4 implementációs prompt: eb-about.values ACF Repeater → textarea+split migration. Teljes before/after kód, data flow, seed flow, parity validation, rollback plan. **CLOSED:** commit `b3f0e56` (sp-exotica), parity validation PASS.
 
 ### Changed
+- `phases/phase-12-strategy-overview.md` — P12.3b CLOSED (runtime migration executed), P12.6 IN PROGRESS, first cpt_collection runtime: bc-services.services, parity PASS
 - `phases/phase-12.3.md` — P12.3b cpt_collection design target selected: `bc-services.services`. Scope kiegészítés dokumentálva (P12.2 classifikáció alapján). Design TODO-k lezárva, implementációs prompt pending.
-- `phases/phase-12-strategy-overview.md` — P12.3b DESIGN COMPLETE, Phase Map frissítve, first cpt_collection target: bc-services.services
 - `phases/phase-12-strategy-overview.md` — P12.3a CLOSED, P12.4 CLOSED (parity PASS), Phase Map frissítve
 - `phases/phase-12.3.md` — P12.3a fixed_slots pilot planning: target `eb-about.values` kiválasztva, textarea+split field representation elfogadva, builder mapping plan, seed impact, SiteData parity validation plan, rollback plan, implementációs prompt készültségi értékelés: READY. Pre-existing mapper bug dokumentálva. Helper placement döntés: lokális sp-exotica.
 - `phases/phase-12-strategy-overview.md` — P12.3a TODO-k lezárva, Phase Map P12.3a READY / P12.4 READY, Open Question #3 resolved, Artifact Index bővítve

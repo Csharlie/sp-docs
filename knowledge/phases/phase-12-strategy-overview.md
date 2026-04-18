@@ -31,11 +31,11 @@ A Phase 12 hátralévő munkájának összefoglalása a multi-client validáció
 | P12.2 | Repeatable Content Baseline Correction | CLOSED | Docs / governance |
 | P12.3 | First Runtime Migration Planning / Pilot | ACTIVE | Planning only |
 | P12.3a | fixed_slots Technical Pilot Planning | CLOSED | Planning only |
-| P12.3b | BenettCar cpt_collection Design | DESIGN COMPLETE | Design only |
+| P12.3b | BenettCar cpt_collection Design | CLOSED | Design + runtime |
 | P12.4 | First Runtime Migration Implementation | CLOSED | Runtime |
 | P12.5a | Seed Import Failure Diagnosis | CLOSED | Runtime fix |
 | P12.5 | Seed Pipeline Source Strategy Support | PLANNED | Design + runtime |
-| P12.6 | BenettCar Handover Hardening | PLANNED | Design + runtime |
+| P12.6 | BenettCar Handover Hardening | IN PROGRESS | Design + runtime |
 | P12.7 | Platform Scaffold / Generator Prep | DEFERRED | Design |
 
 ---
@@ -220,20 +220,25 @@ A Phase 12 hátralévő munkájának összefoglalása a multi-client validáció
 
 ---
 
-### P12.6 — BenettCar Handover Hardening [PLANNED]
+### P12.6 — BenettCar Handover Hardening [IN PROGRESS]
 
-**Státusz:** tervezett
+**Státusz:** első cpt_collection runtime migration végrehajtva — `bc-services.services`
 
 **Cél:**
 - kliens-facing WordPress admin experience stabilizálása
 - editorial UX javítása a magas interakciójú tartalomhoz
 
+**Completed:**
+- [x] Első cpt_collection migration target döntés: `bc-services.services` (P12.3b ajánlás alapján)
+- [x] CPT `sp_bc_service` regisztráció + ACF field group
+- [x] `spektra_bc_get_services()` kliens-lokális loader
+- [x] Builder CPT-first + repeater fallback
+- [x] Migration script: 3/3 repeater row → CPT post
+- [x] Endpoint parity validáció: **PASS**
+
 **TODO:**
 - [ ] Gallery / brand / team editorial UX prioritásozása
-- [ ] Első cpt_collection migration target döntés (P12.3b ajánlás alapján)
-- [ ] Első BenettCar CPT runtime migration végrehajtása
 - [ ] Admin guide írása
-- [ ] Endpoint parity validáció
 - [ ] Handover-safe WP admin flow megerősítése
 - [ ] Maradék CPT collection migration-ök (további benettcar + exotica field-ek)
 
