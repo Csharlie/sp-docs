@@ -5,7 +5,7 @@ Minden knowledge dokumentum változás naplója. Keep a Changelog formátum.
 ## [Unreleased]
 
 ### Added
-- `implementation/p12-4-eb-about-values-migration.md` — P12.4 implementációs prompt: eb-about.values ACF Repeater → textarea+split migration. Teljes before/after kód, data flow, seed flow, parity validation, rollback plan.
+- `implementation/p12-4-eb-about-values-migration.md` — P12.4 implementációs prompt: eb-about.values ACF Repeater → textarea+split migration. Teljes before/after kód, data flow, seed flow, parity validation, rollback plan. **Executed:** commit `b3f0e56` (sp-exotica).
 - `phases/phase-12-strategy-overview.md` — Phase 12 Platform Hardening Roadmap: 7-track struktúra (P12.1–P12.7), master TODO, cross-phase nyitott kérdések, done state
 
 ### Changed

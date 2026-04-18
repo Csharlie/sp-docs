@@ -32,7 +32,7 @@ A Phase 12 hátralévő munkájának összefoglalása a multi-client validáció
 | P12.3 | First Runtime Migration Planning / Pilot | ACTIVE | Planning only |
 | P12.3a | fixed_slots Technical Pilot Planning | READY | Planning only |
 | P12.3b | BenettCar cpt_collection Design | NOT STARTED | Design only |
-| P12.4 | First Runtime Migration Implementation | READY | Runtime |
+| P12.4 | First Runtime Migration Implementation | DONE | Runtime |
 | P12.5 | Seed Pipeline Source Strategy Support | PLANNED | Design + runtime |
 | P12.6 | BenettCar Handover Hardening | PLANNED | Design + runtime |
 | P12.7 | Platform Scaffold / Generator Prep | DEFERRED | Design |
@@ -155,9 +155,9 @@ A Phase 12 hátralévő munkájának összefoglalása a multi-client validáció
 
 ---
 
-### P12.4 — First Runtime Migration Implementation [READY]
+### P12.4 — First Runtime Migration Implementation [DONE]
 
-**Státusz:** implementációs prompt kész
+**Státusz:** végrehajtva — commit `b3f0e56` (sp-exotica)
 
 **Cél:**
 - az első elfogadott source strategy migration végrehajtása
