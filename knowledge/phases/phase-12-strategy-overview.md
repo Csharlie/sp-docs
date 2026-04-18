@@ -16,8 +16,9 @@ A Phase 12 hátralévő munkájának összefoglalása a multi-client validáció
 
 - P12.1: Platform Elevation / No Copy-Paste Client irány dokumentálva
 - P12.2: Repeatable Content Baseline Correction lezárva
-- P12.3: Option C split tracks aktív — P12.3a fixed_slots pilot planning, P12.3b BenettCar cpt_collection design
-- Runtime migration NEM indult el
+- P12.3: Option C split tracks — P12.3a CLOSED (fixed_slots pilot), P12.3b CLOSED (cpt_collection design + runtime)
+- P12.4: fixed_slots runtime migration lezárva (eb-about.values, parity PASS)
+- P12.6: első cpt_collection runtime migration végrehajtva (bc-services.services, parity PASS, transition hardening alkalmazva)
 - ACF Pro NEM baseline requirement
 - SiteData shape stabil marad
 

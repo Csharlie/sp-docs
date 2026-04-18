@@ -9,6 +9,7 @@ Minden knowledge dokumentum változás naplója. Keep a Changelog formátum.
 - `implementation/p12-4-eb-about-values-migration.md` — P12.4 implementációs prompt: eb-about.values ACF Repeater → textarea+split migration. Teljes before/after kód, data flow, seed flow, parity validation, rollback plan. **CLOSED:** commit `b3f0e56` (sp-exotica), parity validation PASS.
 
 ### Changed
+- `phases/phase-12-strategy-overview.md` — Current State frissítve: runtime migration státusz pontosítva (P12.4 fixed_slots CLOSED, P12.6 cpt_collection IN PROGRESS, transition hardening alkalmazva). "Runtime migration NEM indult el" téves állítás törölve.
 - `phases/phase-12-strategy-overview.md` — P12.3b CLOSED (runtime migration executed), P12.6 IN PROGRESS, first cpt_collection runtime: bc-services.services, parity PASS
 - `phases/phase-12.3.md` — P12.3b cpt_collection design target selected: `bc-services.services`. Scope kiegészítés dokumentálva (P12.2 classifikáció alapján). Design TODO-k lezárva, implementációs prompt pending.
 - `phases/phase-12-strategy-overview.md` — P12.3a CLOSED, P12.4 CLOSED (parity PASS), Phase Map frissítve
