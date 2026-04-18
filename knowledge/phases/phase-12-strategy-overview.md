@@ -20,7 +20,9 @@ A Phase 12 hátralévő munkájának összefoglalása a multi-client validáció
 - P12.4: fixed_slots runtime migration lezárva (eb-about.values, parity PASS)
 - P12.6: első cpt_collection runtime migration végrehajtva (bc-services.services, parity PASS, transition hardening alkalmazva)
 - P13.1: bc-services admin refactored to Slot-Based ACF Free Admin (CPT collection superseded for bounded landing content UX)
+- P13.2: BenettCar remaining fixed_slots migrations — bc-about (content → textarea+split, stats → slot fields), bc-service (services → textarea+split, brands → textarea+split). 4/4 parity PASS.
 - Corrected source strategy rule: bounded landing content → slot-based fixed collection, unbounded managed content → cpt_collection
+- BenettCar fixed_slots repeaters: 5/5 migrated (bc_services_services, bc_about_content, bc_about_stats, bc_service_services, bc_service_brands)
 - ACF Pro NEM baseline requirement
 - SiteData shape stabil marad
 
@@ -40,6 +42,7 @@ A Phase 12 hátralévő munkájának összefoglalása a multi-client validáció
 | P12.5 | Seed Pipeline Source Strategy Support | PLANNED | Design + runtime |
 | P12.6 | BenettCar Handover Hardening | CLOSED | Design + runtime |
 | P13.1 | Slot-Based Admin Refactor — bc-services | CLOSED | Runtime + admin UX |
+| P13.2 | BenettCar fixed_slots batch — bc-about + bc-service | CLOSED | Runtime + admin UX |
 | P12.7 | Platform Scaffold / Generator Prep | DEFERRED | Design |
 
 ---

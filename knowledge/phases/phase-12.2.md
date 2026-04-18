@@ -53,10 +53,10 @@ A Phase 12.2 a repeatable content source strategy governance correction — az A
 | benettcar | bc-brand | `bc_brand_brands` | `cpt_collection` | User-managed brand list, logo + metadata |
 | benettcar | bc-team | `bc_team_members` | `cpt_collection` | User-managed team, image + contact |
 | benettcar | bc-services | `bc_services_services` | ~~`cpt_collection`~~ → `fixed_slots` (P13.1) | Service list, icon + description. CPT pilot valid, superseded for bounded landing UX by slot-based admin. |
-| benettcar | bc-service | `bc_service_services` | `fixed_slots` | Bounded service labels, single sub-field |
-| benettcar | bc-service | `bc_service_brands` | `fixed_slots` | Bounded brand names, string array |
-| benettcar | bc-about | `bc_about_content` | `fixed_slots` | ~3-5 paragraphs, single sub-field |
-| benettcar | bc-about | `bc_about_stats` | `fixed_slots` | ~4 items, value + label pair |
+| benettcar | bc-service | `bc_service_services` | `fixed_slots` ✅ P13.2 | Bounded service labels → textarea+split |
+| benettcar | bc-service | `bc_service_brands` | `fixed_slots` ✅ P13.2 | Bounded brand names → textarea+split |
+| benettcar | bc-about | `bc_about_content` | `fixed_slots` ✅ P13.2 | ~3-5 paragraphs → textarea+split |
+| benettcar | bc-about | `bc_about_stats` | `fixed_slots` ✅ P13.2 | ~4 items → slot fields (value+label) |
 | exotica | eb-gallery | `eb_gallery_images` | `cpt_collection` | Unbounded, categorized image collection |
 | exotica | eb-products | `eb_products_products` | `cpt_collection` | User-managed product list, image + metadata |
 | exotica | eb-animals | `eb_animals_animals` | `cpt_collection` | User-managed animal list, image + metadata |
