@@ -25,7 +25,8 @@ Minden knowledge dokumentum változás naplója. Keep a Changelog formátum.
 - `phases/p9.1-runtime-cutover-baseline.md` — Runtime Cutover Baseline gate (phase-specific)
 
 ### Changed
-- P12.2 concept status `draft` → `accepted` promot\u00e1lva; phase closeout dokument\u00e1lva; P12.3 planning note l\u00e9trehozva
+- P12.3 strategy selected: Option C split tracks — P12.3a fixed_slots pilot planning, P12.3b BenettCar cpt_collection design
+- P12.2 concept status `draft` → `accepted` promotálva; phase closeout dokumentálva; P12.3 planning note létrehozva
 - `wp-integration-plan-v4.md` Appendix B — DR-003 státusz → ⚠️ Korrigálva (clarification hozzáadva: fixed field groups vs repeatable content scope); DR-015 hozzáadva (Repeatable Content Source Strategy)
 - WordPress free baseline governance pontosítva: ACF Repeater (`type => 'repeater'`) ACF Pro feature, nem baseline-kompatibilis; `acf_add_local_field_group()` maga nem Pro-specifikus
 - Gallery schema type consistency — `BcGalleryImage` (sp-benettcar) és `GalleryImage` (sp-exotica) `extends Media` platform típusra migrálva; lokális `src`/`alt` duplikáció megszüntetve

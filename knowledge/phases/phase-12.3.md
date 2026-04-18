@@ -11,11 +11,31 @@ P12.2 bevezette a Repeatable Content Source Strategy-t (`concepts/repeatable-con
 - `fixed_slots` — bounded kis tartalom (ACF Free-kompatibilis)
 - `acf_repeater_optional` — opcionális jövőbeli Pro source
 
-13 repeater field / 11 szekció classifikálva. P12.3 feladata az első migration target kiválasztása kód módosítás előtt.
+13 repeater field / 11 szekció classifikálva. Stratégiai döntés: Option C (Split Tracks) — lásd Decision szekció.
 
 ---
 
-## Candidate A — fixed_slots Technical Pilot
+## Decision
+
+Option C selected: Split Tracks.
+
+- **P12.3a**: fixed_slots technical pilot planning
+- **P12.3b**: BenettCar cpt_collection design
+
+**Rationale:**
+- fixed_slots pilot alacsony kockázatú validációt ad az ACF Repeater kiváltásra
+- BenettCar cpt_collection design védi a handover prioritást
+- split track nem blokkolja a platform validációt, miközben a valós kliens editorial pain-t is címzi
+
+**Fontos:** Ez a lépés a stratégiai döntést rögzíti. Egyik track sem tartalmaz runtime implementációt. P12.3a a planning lezárásakor implementációs promptot produkál. P12.3b design dokumentum marad az explicit platform-owner jóváhagyásig.
+
+---
+
+## Decision Context (resolved)
+
+Az alábbi szekciók a döntési folyamat dokumentációja. Option C kiválasztásra került — a candidate-ok és kritériumok a döntés indoklását szolgálják.
+
+### Candidate A — fixed_slots Technical Pilot (→ P12.3a)
 
 **Lehetséges target-ek:**
 - sp-exotica: `eb-contact.opening_hours`
@@ -33,16 +53,14 @@ P12.2 bevezette a Repeatable Content Source Strategy-t (`concepts/repeatable-con
 - Nem validálja a `cpt_collection` pattern-t
 - Exotica-specifikus — nem ad közvetlenül BenettCar handover értéket
 
----
-
-## Candidate B — BenettCar cpt_collection Planning
+### Candidate B — BenettCar cpt_collection Planning (→ P12.3b)
 
 **Lehetséges target-ek:**
 - sp-benettcar: `bc-gallery.images`
 - sp-benettcar: `bc-brand.brands`
 - sp-benettcar: `bc-team.members`
 
-**Fontos: Candidate B a P12.3 keretében design és migration planning dokumentumot jelent. NEM jelent CPT runtime kód implementációt, hacsak egy későbbi explicit implementációs prompt azt nem engedélyezi.**
+**Fontos: Candidate B design és migration planning dokumentum. NEM jelent CPT runtime kód implementációt — a végleges target kiválasztás explicit platform-owner jóváhagyást igényel.**
 
 **Indoklás:**
 - Közvetlen BenettCar handover stabilitás támogatás
@@ -56,21 +74,17 @@ P12.2 bevezette a Repeatable Content Source Strategy-t (`concepts/repeatable-con
 - Seed strategy planning szükséges
 - Erősebb parity validation szükséges
 
----
+### Option C — Split Tracks (selected)
 
-## Option C — Split Tracks
-
-Ha split tracks mellett döntünk:
-- **P12.3a**: `fixed_slots` pilot döntés és implementáció planning — ez záródik előbb.
+Option C kiválasztva. A split tracks megközelítés:
+- **P12.3a**: `fixed_slots` pilot planning — ez záródik előbb.
 - **P12.3b**: BenettCar `cpt_collection` design párhuzamosan indulhat, de design dokumentum marad az explicit jóváhagyásig.
 - P12.3b NEM blokkolhatja P12.3a lezárását.
-- Runtime implementáció továbbra is külön elfogadott target döntést igényel.
+- Runtime implementáció továbbra is külön elfogadott implementációs promptot igényel.
 
----
+### Decision Criteria (applied)
 
-## Decision Criteria
-
-Kandidátusok összehasonlítása:
+Kandidátusok összehasonlítása az alábbi dimenziók mentén történt:
 - technikai kockázat
 - üzleti / handover impact
 - implementációs scope
@@ -87,31 +101,58 @@ A végső target döntés nem automatikus, ha tradeoff-ok fennállnak. A tradeof
 - Platform validáció fókusz: technikai kockázat és bounded scope súlyozottabb
 - Hosszú távú platform érettség: scaffold/generator érték és seed impact súlyozottabb
 
----
-
-## Required Decision Before Implementation
-
-P12.3-nak az alábbiak közül kell választania:
-1. `fixed_slots` pilot indítása
-2. BenettCar `cpt_collection` planning indítása
-3. Split tracks:
-   - P12.3a `fixed_slots` pilot
-   - P12.3b BenettCar `cpt_collection` design
+**Eredmény:** Option C kiválasztva — mindkét dimenzió (platform validáció + handover) párhuzamosan haladhat.
 
 ---
 
-## Required Output
+## P12.3a — fixed_slots Technical Pilot Planning
 
-Runtime kód módosítás előtt P12.3-nak produkálnia kell:
-- kiválasztott migration target vagy planning track
-- döntési indoklás
-- source strategy
-- elvárt WP field/source pattern
-- elvárt builder pattern
+**Candidates:**
+- sp-exotica: `eb-contact.opening_hours`
+- sp-exotica: `eb-about.values`
+
+**Purpose:**
+- fixed_slots source strategy bizonyítása
+- egy egyszerű ACF Repeater dependency kiváltásának előkészítése ACF Free-kompatibilis bounded mezőkkel
+- SiteData output változatlan marad
+
+**Fontos:** Ez kizárólag planning. P12.3a akkor záródik, amikor az implementációs prompt elkészült. A tényleges runtime implementáció külön explicit implementációs promptot igényel.
+
+**Required planning output implementáció előtt:**
+- kiválasztott fixed_slots target
+- field representation döntés: numbered fields vs textarea split vs egyéb bounded reprezentáció
+- builder mapping plan
 - seed impact
 - SiteData parity validation plan
 - rollback plan
-- done state
+- implementációs prompt készültségi értékelés
+
+---
+
+## P12.3b — BenettCar cpt_collection Design
+
+**Candidates:**
+- sp-benettcar: `bc-gallery.images`
+- sp-benettcar: `bc-brand.brands`
+- sp-benettcar: `bc-team.members`
+
+**Purpose:**
+- az első cpt_collection migration pattern megtervezése
+- BenettCar handover stabilitás támogatása
+- editorial UX javítása magas interakciójú tartalomhoz
+
+**Fontos:** Ez kizárólag design. CPT runtime kód NEM implementálható P12.3b-ben. P12.3b ajánlást produkál, nem végleges runtime implementációs döntést. A végleges cpt_collection target kiválasztás explicit platform-owner jóváhagyást igényel implementáció előtt.
+
+**Required planning output:**
+- ajánlott első BenettCar cpt_collection target
+- ajánlás indoklása
+- CPT naming convention javaslat
+- collection loading pattern javaslat
+- builder output shape
+- seed strategy impact
+- SiteData parity validation plan
+- migration/rollback plan
+- handover impact assessment
 - implementációs prompt készültségi értékelés
 
 ---
@@ -123,17 +164,18 @@ Runtime kód módosítás előtt P12.3-nak produkálnia kell:
 - Frontend section props változatlan marad
 - ACF Pro nem baseline requirement
 - Meglévő kliensek megtarthatják a repeater-eket a migration-ig
-- Candidate B planning/design marad, hacsak explicit runtime implementáció nem engedélyezett
-- Runtime kód csak az elfogadott target döntés után indulhat
+- P12.3a planning-only, amíg külön implementációs prompt nem elfogadott
+- P12.3b design-only, amíg később expliciten nem jóváhagyott
+- Runtime kód csak elfogadott implementációs prompt után indulhat
 
 ---
 
 ## Done State
 
 P12.3 planning lezárási feltétel:
-1. Első migration target vagy split-track stratégia explicit kiválasztva
-2. Source strategy megerősítve
-3. Implementációs scope bounded
-4. Validation plan definiálva
-5. Rollback plan definiálva
-6. Runtime implementációs prompt biztonságosan megírható
+1. Option C rögzítve mint kiválasztott stratégia
+2. P12.3a target ajánlás dokumentálva és implementációs prompt biztonságosan megírható
+3. P12.3b cpt_collection design ajánlás dokumentálva
+4. SiteData stability validation plan mindkét track-re létezik
+5. Rollback plan mindkét track-re létezik
+6. Runtime kód NEM módosult ebben a planning lépésben
