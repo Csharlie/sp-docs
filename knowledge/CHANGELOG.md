@@ -5,10 +5,13 @@ Minden knowledge dokumentum változás naplója. Keep a Changelog formátum.
 ## [Unreleased]
 
 ### Added
+- `implementation/p13-1-bc-services-slot-based-admin-refactor.md` — P13.1: bc-services cpt_collection pilot superseded by Slot-Based ACF Free Admin for BenettCar handover UX. 6 slot fields, CPT hidden, repeater retained, SiteData shape unchanged.
 - `implementation/p12-3b-benettcar-cpt-collection-design.md` — P12.3b design: bc-services.services cpt_collection target. CPT slug `sp_bc_service`, kliens-lokális loader, SiteData shape változatlan, seed deferred P12.5-re. Design only — runtime implementáció NEM tartozik ide.
 - `implementation/p12-4-eb-about-values-migration.md` — P12.4 implementációs prompt: eb-about.values ACF Repeater → textarea+split migration. Teljes before/after kód, data flow, seed flow, parity validation, rollback plan. **CLOSED:** commit `b3f0e56` (sp-exotica), parity validation PASS.
 
 ### Changed
+- `phases/phase-12-strategy-overview.md` — P13.1 slot-based admin refactor: Current State + Phase Map frissítve, P12.6 CLOSED, P13.1 CLOSED, corrected source strategy rule
+- `phases/phase-12.2.md` — bc-services.services classification annotated: cpt_collection → fixed_slots (P13.1)
 - `phases/phase-12-strategy-overview.md` — Current State frissítve: runtime migration státusz pontosítva (P12.4 fixed_slots CLOSED, P12.6 cpt_collection IN PROGRESS, transition hardening alkalmazva). "Runtime migration NEM indult el" téves állítás törölve.
 - `phases/phase-12-strategy-overview.md` — P12.3b CLOSED (runtime migration executed), P12.6 IN PROGRESS, first cpt_collection runtime: bc-services.services, parity PASS
 - `phases/phase-12.3.md` — P12.3b cpt_collection design target selected: `bc-services.services`. Scope kiegészítés dokumentálva (P12.2 classifikáció alapján). Design TODO-k lezárva, implementációs prompt pending.
