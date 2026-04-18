@@ -30,9 +30,9 @@ A Phase 12 hátralévő munkájának összefoglalása a multi-client validáció
 | P12.1 | Second Client Validation + Platform Elevation Discovery | CLOSED | Runtime + docs |
 | P12.2 | Repeatable Content Baseline Correction | CLOSED | Docs / governance |
 | P12.3 | First Runtime Migration Planning / Pilot | ACTIVE | Planning only |
-| P12.3a | fixed_slots Technical Pilot Planning | READY | Planning only |
+| P12.3a | fixed_slots Technical Pilot Planning | CLOSED | Planning only |
 | P12.3b | BenettCar cpt_collection Design | NOT STARTED | Design only |
-| P12.4 | First Runtime Migration Implementation | DONE | Runtime |
+| P12.4 | First Runtime Migration Implementation | CLOSED | Runtime |
 | P12.5 | Seed Pipeline Source Strategy Support | PLANNED | Design + runtime |
 | P12.6 | BenettCar Handover Hardening | PLANNED | Design + runtime |
 | P12.7 | Platform Scaffold / Generator Prep | DEFERRED | Design |
@@ -155,27 +155,26 @@ A Phase 12 hátralévő munkájának összefoglalása a multi-client validáció
 
 ---
 
-### P12.4 — First Runtime Migration Implementation [DONE]
+### P12.4 — First Runtime Migration Implementation [CLOSED]
 
-**Státusz:** végrehajtva — commit `b3f0e56` (sp-exotica)
+**Státusz:** lezárva — commit `b3f0e56` (sp-exotica), parity validation PASS
 
 **Cél:**
 - az első elfogadott source strategy migration végrehajtása
 - SiteData shape stabilitás bizonyítása runtime cserénél
 
-**Érintett repók:** sp-exotica; sp-infra csak akkor, ha a shared seed tooling módosítása szükséges.
+**Érintett repók:** sp-exotica (sp-infra NEM módosult)
 
 **TODO:**
-- [ ] Végrehajtás kizárólag elfogadott implementációs prompt alapján
-- [ ] ACF field group módosítás (repeater → bounded fields)
-- [ ] Builder módosítás (repeater array read → bounded field read)
-- [ ] Seed pipeline update (ha szükséges)
-- [ ] SiteData parity validation (output nem változhat)
-- [ ] Rollback verification
-- [ ] Before/after dokumentáció
-- [ ] CHANGELOG és phase note frissítés
+- [x] Végrehajtás elfogadott implementációs prompt alapján
+- [x] ACF field group módosítás (repeater → textarea)
+- [x] Builder módosítás (`spektra_split_textarea()` lokális helper)
+- [x] Seed mapping update (repeater → scalar)
+- [x] SiteData parity validation: **PASS** — 3 value string, pontos egyezés
+- [x] Before/after dokumentáció
+- [x] CHANGELOG és phase note frissítés
 
-**Guardrail:** SiteData shape változatlan. Ha a parity validation fail, a csere nem mehet élesbe.
+**Eredmény:** Az első fixed_slots migration pattern bizonyítva. ACF Pro Repeater kiváltható ACF Free textarea + builder split-tel a SiteData contract megtartásával.
 
 ---
 

@@ -1,6 +1,6 @@
 ---
 title: "P12.4 — eb-about.values: ACF Repeater → Textarea+Split Migration"
-status: executed
+status: closed
 type: implementation-prompt
 phase: "12.4"
 canonical: true
