@@ -1367,6 +1367,7 @@ Minden architekturális döntés egy helyen, indoklással és alternatívákkal.
 | **Scope pontosítás** | A "Fixed Field Groups" a szekció/page-szintű fix field group struktúrára vonatkozik. A repeatable content source strategy külön governance alatt áll — lásd DR-015 |
 | **ACF Free baseline** | ACF Free marad a baseline cél. Az `acf_add_local_field_group()` mechanizmus nem Pro-specifikus. A Pro dependency a `'type' => 'repeater'` field type-ból ered, mert az ACF Repeater ACF Pro feature |
 | **Státusz** | ⚠️ Korrigálva — lásd DR-015 és `concepts/repeatable-content-source-strategy.md` |
+| **Státusz megjegyzés** | A `⚠️ Korrigálva` azt jelzi, hogy az eredeti döntés hatályos marad (fix field group struktúra), de a scope pontosításra szorult — a repeatable content governance külön DR-015 alatt kezelendő |
 
 ### DR-004: WAMP-first, Docker prepared
 
@@ -1485,7 +1486,7 @@ Minden architekturális döntés egy helyen, indoklással és alternatívákkal.
 | | |
 |---|---|
 | **Döntés** | Repeatable content háromféle source strategy-n keresztül kezelt: `cpt_collection` (default free), `fixed_slots` (bounded), `acf_repeater_optional` (opcionális Pro) |
-| **Indoklás** | DR-003 ACF Free sufficiency-t állított, de mindkét kliens inception óta ACF Pro repeater-t használ (12 field, 10 szekció). A free baseline helyreállítása source strategy absztrakcióval történik |
+| **Indoklás** | DR-003 ACF Free sufficiency-t állított, de mindkét kliens inception óta ACF Pro repeater-t használ (13 field, 11 szekció). A free baseline helyreállítása source strategy absztrakcióval történik |
 | **Alternatíva** | ACF Pro mint baseline requirement elfogadása — elutasítva, mert sérti a free/open-source pozícionálást |
 | **Következmény** | Meglévő repeater field-ek classification szükséges; új repeater field tilos a free baseline-ban; SiteData shape változatlan marad |
 | **SiteData hatás** | Nincs — source strategy csere a builder mögött történik, frontend contract stabil |

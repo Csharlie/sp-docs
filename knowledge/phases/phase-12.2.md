@@ -11,7 +11,7 @@ A Phase 12.2 a repeatable content source strategy governance correction — az A
 - DR-003 implicit módon Free sufficiency-t állított
 - Mindkét kliens (sp-benettcar, sp-exotica) inception óta ACF Pro repeater-t használ
 - Ez nem drift — a governance és az implementáció sosem volt konzisztens
-- 12 repeater field összesen (8 benettcar, 4 exotica), 10 szekción keresztül
+- 13 repeater field összesen (8 benettcar, 5 exotica), 11 szekción keresztül
 
 ## Canonical Concept
 
@@ -39,9 +39,9 @@ A Phase 12.2 a repeatable content source strategy governance correction — az A
 
 ### sp-exotica
 
-- 6 section builder, ebből 4 használ repeater adatot
-- 4 repeater field összesen
-- Érintett szekciók: eb-gallery, eb-products, eb-animals, eb-contact
+- 6 section builder, ebből 5 használ repeater adatot
+- 5 repeater field összesen
+- Érintett szekciók: eb-gallery, eb-products, eb-animals, eb-contact, eb-about
 
 ---
 
@@ -61,11 +61,12 @@ A Phase 12.2 a repeatable content source strategy governance correction — az A
 | exotica | eb-products | `eb_products_products` | `cpt_collection` | User-managed product list, image + metadata |
 | exotica | eb-animals | `eb_animals_animals` | `cpt_collection` | User-managed animal list, image + metadata |
 | exotica | eb-contact | `eb_contact_opening_hours` | `fixed_slots` | ~5-7 text lines, single sub-field |
+| exotica | eb-about | `eb_about_values` | `fixed_slots` | ~3-7 bounded value strings, single text sub-field |
 
 ### Summary
 
-- **`cpt_collection`**: 7 field (58%) — új CPT + taxonomy szükséges
-- **`fixed_slots`**: 5 field (42%) — ACF Free numbered fields, nincs repeater dependency
+- **`cpt_collection`**: 7 field (54%) — CPT szükséges; taxonomy csak ahol kategorizáció indokolt
+- **`fixed_slots`**: 6 field (46%) — ACF Free-kompatibilis bounded mezők, nincs repeater dependency
 
 ---
 
@@ -81,7 +82,7 @@ A Phase 12.2 a repeatable content source strategy governance correction — az A
 
 ## Operational Priority
 
-**Technikai pilot**: `eb-contact.opening_hours` vagy más kis `fixed_slots` eset — lowest-risk, valíDációs célú.
+**Technikai pilot**: `eb-contact.opening_hours` vagy más kis `fixed_slots` eset — lowest-risk, validációs célú.
 
 **Operatív prioritás**: BenettCar handover stabilitás. Különösen a gallery / brand / team editorial experience kritikus — ezek a `cpt_collection` jelöltek, amelyek a legtöbb szerkesztői interakciót kapják. A technikai pilot nem helyettesíti az operatív prioritást — a BenettCar kliensnél a repeater → CPT migration sorrendje az editorial impact alapján dől el, nem a technikai egyszerűség alapján.
 
@@ -90,8 +91,11 @@ A Phase 12.2 a repeatable content source strategy governance correction — az A
 ## Implementation Phases (proposal)
 
 1. **P12.2** (current): Governance correction dokumentáció, classification, DR-015
-2. **P12.3** (future): First migration — `eb_contact_opening_hours` → `fixed_slots`
-3. **P12.4+** (future): CPT collection migrations — gallery, brands, team, stb.
+2. **P12.3** (future): First Runtime Migration Planning / Pilot
+   - Candidate A: `eb-contact.opening_hours` vagy `eb-about.values` → `fixed_slots` (lowest-risk technikai pilot)
+   - Candidate B: BenettCar gallery / brand / team migration planning (operatív prioritás handover-hez)
+   - Végleges target explicit döntést igényel implementáció előtt
+3. **P12.4+** (future): CPT collection migrations a P12.3 döntés alapján
 
 ---
 

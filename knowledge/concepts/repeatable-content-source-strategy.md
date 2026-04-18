@@ -17,7 +17,7 @@ A Spektra WordPress free baseline nem függhet ACF Pro-tól. A repeatable conten
 
 ## Problem Statement
 
-DR-003 ("Fixed Field Groups — ACF Free elég") implicit módon ACF Free sufficiency-t állított. A valóságban az implementáció inception óta ACF Repeater mezőket használ mindkét kliensben (sp-benettcar: 8 repeater field / 6 szekció, sp-exotica: 4 repeater field / 4 szekció). Ez nem drift — a governance és az implementáció sosem volt konzisztens.
+DR-003 ("Fixed Field Groups — ACF Free elég") implicit módon ACF Free sufficiency-t állított. A valóságban az implementáció inception óta ACF Repeater mezőket használ mindkét kliensben (sp-benettcar: 8 repeater field / 6 szekció, sp-exotica: 5 repeater field / 5 szekció). Ez nem drift — a governance és az implementáció sosem volt konzisztens.
 
 Fontos distinkció: az `acf_add_local_field_group()` maga az ACF lokális field group regisztrációs mechanizmus — sem Free, sem Pro-specifikus. A Pro dependency onnan ered, hogy a field group definíciók `'type' => 'repeater'` mezőket tartalmaznak. Az ACF Repeater field type kizárólag ACF Pro feature.
 
@@ -36,9 +36,10 @@ Fontos distinkció: az `acf_add_local_field_group()` maga az ACF lokális field 
 #### 2. `fixed_slots` — Bounded Landing Page Content
 
 - Kizárólag kis, bounded tartalom (max 3-7 item).
-- ACF Free numbered fields repeater nélkül.
+- ACF Free-kompatibilis bounded mezők repeater nélkül.
+- A konkrét implementáció (numbered fields, textarea + split, vagy más explicit bounded ábrázolás) a P12.3+ fázisban dől el.
 - Nem használható large, unbounded, vagy kliens által szabadon bővíthető kolekciókra.
-- Példák: max 4 statisztika, ~5-7 nyitvatartási sor, ~3-5 bekezdés, ~5-10 service label.
+- Példák: max 4 statisztika, ~5-7 nyitvatartási sor, ~3-7 érték lista, ~3-5 bekezdés, ~5-10 service label.
 
 #### 3. `acf_repeater_optional` — Optional Future Pro Source
 
@@ -90,10 +91,10 @@ CPT collection seed flow: `wp_insert_post()` + `update_post_meta()` + ACF Free s
 
 ### sp-exotica
 
-- 6 section builder, ebből 4 használ repeater adatot
-- 4 repeater field összesen
-- Érintett szekciók: eb-gallery, eb-products, eb-animals, eb-contact
-- `eb-contact.opening_hours` a legegyszerűbb `fixed_slots` jelölt — technikai pilot lehetőség
+- 6 section builder, ebből 5 használ repeater adatot
+- 5 repeater field összesen
+- Érintett szekciók: eb-gallery, eb-products, eb-animals, eb-contact, eb-about
+- `eb-contact.opening_hours` és `eb-about.values` a legegyszerűbb `fixed_slots` jelöltek — technikai pilot lehetőség
 
 ## Why It Exists
 
