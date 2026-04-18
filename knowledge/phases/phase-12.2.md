@@ -49,9 +49,9 @@ A Phase 12.2 a repeatable content source strategy governance correction — az A
 
 | Client | Section | Repeater field | Strategy | Rationale |
 |--------|---------|---------------|----------|-----------|
-| benettcar | bc-gallery | `bc_gallery_images` | `cpt_collection` | Unbounded, categorized image collection |
-| benettcar | bc-brand | `bc_brand_brands` | `cpt_collection` | User-managed brand list, logo + metadata |
-| benettcar | bc-team | `bc_team_members` | `cpt_collection` | User-managed team, image + contact |
+| benettcar | bc-gallery | `bc_gallery_images` | ~~`cpt_collection`~~ → `fixed_slots` ✅ P13.3 | Bounded gallery (max 10) → image slot fields |
+| benettcar | bc-brand | `bc_brand_brands` | ~~`cpt_collection`~~ → `fixed_slots` ✅ P13.3 | Bounded brand list (max 10) → slot fields with image |
+| benettcar | bc-team | `bc_team_members` | ~~`cpt_collection`~~ → `fixed_slots` ✅ P13.3 | Bounded team (max 8) → slot fields with image |
 | benettcar | bc-services | `bc_services_services` | ~~`cpt_collection`~~ → `fixed_slots` (P13.1) | Service list, icon + description. CPT pilot valid, superseded for bounded landing UX by slot-based admin. |
 | benettcar | bc-service | `bc_service_services` | `fixed_slots` ✅ P13.2 | Bounded service labels → textarea+split |
 | benettcar | bc-service | `bc_service_brands` | `fixed_slots` ✅ P13.2 | Bounded brand names → textarea+split |
