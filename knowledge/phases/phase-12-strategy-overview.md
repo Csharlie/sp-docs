@@ -30,7 +30,7 @@ A Phase 12 hátralévő munkájának összefoglalása a multi-client validáció
 | P12.1 | Second Client Validation + Platform Elevation Discovery | CLOSED | Runtime + docs |
 | P12.2 | Repeatable Content Baseline Correction | CLOSED | Docs / governance |
 | P12.3 | First Runtime Migration Planning / Pilot | ACTIVE | Planning only |
-| P12.3a | fixed_slots Technical Pilot Planning | NOT STARTED | Planning only |
+| P12.3a | fixed_slots Technical Pilot Planning | READY | Planning only |
 | P12.3b | BenettCar cpt_collection Design | NOT STARTED | Design only |
 | P12.4 | First Runtime Migration Implementation | BLOCKED | Runtime |
 | P12.5 | Seed Pipeline Source Strategy Support | PLANNED | Design + runtime |
@@ -122,19 +122,16 @@ A Phase 12 hátralévő munkájának összefoglalása a multi-client validáció
 
 #### P12.3a — fixed_slots Technical Pilot Planning
 
+**Selected target:** `eb-about.values` (sp-exotica)
+
 **TODO:**
-- [ ] Target kiválasztás:
-  - `eb-contact.opening_hours`
-  - `eb-about.values`
-- [ ] Field representation döntés:
-  - numbered fields
-  - textarea split
-  - egyéb bounded reprezentáció
-- [ ] Builder mapping plan
-- [ ] Seed impact
-- [ ] SiteData parity validation plan
-- [ ] Rollback plan
-- [ ] Implementációs prompt produkálása
+- [x] Target kiválasztás: `eb-about.values`
+- [x] Field representation döntés: textarea + split
+- [x] Builder mapping plan
+- [x] Seed impact
+- [x] SiteData parity validation plan
+- [x] Rollback plan
+- [x] Implementációs prompt produkálása: **READY**
 
 **Lezárási feltétel:** Implementációs prompt biztonságosan megírható. Runtime implementáció külön explicit promptot igényel.
 
@@ -254,7 +251,7 @@ A Phase 12 hátralévő munkájának összefoglalása a multi-client validáció
 |---|--------|-------|---------|
 | 1 | CPT naming convention (`spk_gallery_item`, `bc_brand`, prefix nélküli?) | P12.3b | Döntés szükséges |
 | 2 | BenettCar migration sorrend (editorial impact vs technikai egyszerűség) | P12.3b / P12.6 | Döntés szükséges |
-| 3 | fixed_slots field representation (numbered fields vs textarea+split) | P12.3a | Döntés szükséges |
+| 3 | ~~fixed_slots field representation~~ | P12.3a | RESOLVED: textarea + split |
 | 4 | ACF Pro transition deadline (explicit vs per-client migration plan) | P12.6 | Döntés szükséges |
 | 5 | Seed pipeline CPT support (`wp_insert_post()` flow) | P12.5 | Design szükséges |
 | 6 | sp-infra helper scope (`spektra_get_field()` vs közös facade) | P12.5 | Design szükséges |

@@ -107,9 +107,18 @@ A végső target döntés nem automatikus, ha tradeoff-ok fennállnak. A tradeof
 
 ## P12.3a — fixed_slots Technical Pilot Planning
 
-**Candidates:**
-- sp-exotica: `eb-contact.opening_hours`
-- sp-exotica: `eb-about.values`
+**Selected target:** `eb-about.values` (sp-exotica)
+
+**Indoklás:**
+- Valódi, látható adat renderel a dev frontenden (3 value string)
+- Érdemi parity validation — van mit összehasonlítani before/after
+- 1 text sub-field repeater, `string[]` SiteData output — minimális komplexitás
+- Normalizer egyszerű (nincs hard gate, csak whitespace cleanup)
+- `eb-contact.opening_hours` strukturálisan identikus, de az alap frontenden nem renderel tartalmat — nem ad érdemi validációt
+
+**Evaluated candidates:**
+- sp-exotica: `eb-about.values` — SELECTED
+- sp-exotica: `eb-contact.opening_hours` — elvetett (nincs látható tartalom az alap frontenden)
 
 **Purpose:**
 - fixed_slots source strategy bizonyítása
@@ -118,14 +127,254 @@ A végső target döntés nem automatikus, ha tradeoff-ok fennállnak. A tradeof
 
 **Fontos:** Ez kizárólag planning. P12.3a akkor záródik, amikor az implementációs prompt elkészült. A tényleges runtime implementáció külön explicit implementációs promptot igényel.
 
+**Current runtime shape (before):**
+- PHP: `eb_about_values` repeater, sub-field `text` (text, required)
+- Schema: `values?: string[]`
+- Mapper: `asArray(raw.values).map(asString).filter(isDefined)`
+- Seed: `kind: 'repeater'`, `string[] → { text: string }[]`
+- Component: `values.map(v => <li>✦ {v}</li>)`
+- Dev data: 3 items
+
+**Field representation döntés:** Textarea + Split
+
+- **ACF field:** egyetlen `eb_about_values_text` textarea mező váltja a repeater-t
+- **Builder mapping:** `textarea.split(/\r?\n/).map(s => s.trim()).filter(Boolean)` → `string[]`
+- **SiteData output:** változatlan `values: string[]`
+- **Seed:** egyetlen `update_field('eb_about_values_text', values.join('\n'))` hívás
+- **Editorial UX:** 1 textarea többsoros szerkesztéssel, soronként 1 érték
+
+**Elvetett alternatívák:**
+- Numbered fields (7× `eb_about_value_N`) — zajos admin UX, hardcoded maximum
+- JSON textarea — rossz editorial UX, hibalehetőség
+
+### Builder Mapping Plan
+
+**Felfedezett bug:** A jelenlegi `mapEbAbout` TS mapper `asString()` hívást végez a repeater row objektumokon (`{text: "..."}`), ami `undefined`-ot ad, mivel `typeof {text: "..."} !== 'string'`. A dev frontend a `site.ts`-ből kapja a `string[]`-t közvetlenül, de a WP REST endpoint-ról az adatok elvesznének. A textarea+split migration ezt a pre-existing bug-ot is fixálja.
+
+**Érintett fájlok és változások:**
+
+| # | Fájl | Repó | Változás |
+|---|------|------|----------|
+| 1 | `infra/acf/sections/eb-about.php` | sp-exotica | repeater → textarea field def |
+| 2 | `infra/acf/builders.php` | sp-exotica | split logic a builder-ben |
+| 3 | `src/data/wp-mapper.ts` | sp-exotica | NEM változik (already works with `string[]`) |
+| 4 | `infra/seed/mapping.ts` | sp-exotica | repeater extract → scalar join |
+| 5 | `src/data/normalize-site-data.ts` | sp-exotica | NEM változik |
+| 6 | `src/data/site.ts` | sp-exotica | NEM változik |
+| 7 | `src/sections/eb-about/eb-about.schema.ts` | sp-exotica | NEM változik |
+| 8 | `src/sections/eb-about/eb-about.component.tsx` | sp-exotica | NEM változik |
+
+**Változás #1 — ACF field definition** (`eb-about.php`):
+
+Before:
+```php
+'key'  => 'field_eb_about_values',
+'name' => 'eb_about_values',
+'type' => 'repeater',
+'sub_fields' => [[ 'key' => 'field_eb_about_values_text', 'name' => 'text', 'type' => 'text' ]]
+```
+
+After:
+```php
+'key'   => 'field_eb_about_values_text',
+'label' => 'Values (soronként 1 érték)',
+'name'  => 'eb_about_values_text',
+'type'  => 'textarea',
+'rows'  => 5,
+'new_lines' => '',  // no <br> or <p> wrapping
+```
+
+**Változás #2 — PHP builder** (`builders.php`):
+
+Before:
+```php
+'values' => spektra_get_field( $p . 'values', $pid, [] ),
+```
+
+After:
+```php
+'values' => spektra_split_textarea( spektra_get_field( $p . 'values_text', $pid, '' ) ),
+```
+
+Ahol `spektra_split_textarea` (sp-infra helper vagy lokális):
+```php
+function spektra_split_textarea( string $text ): array {
+    if ( $text === '' ) return [];
+    return array_values( array_filter( array_map( 'trim', explode( "\n", $text ) ) ) );
+}
+```
+
+**Változás #3 — TS mapper**: Nem szükséges. A mapper `asArray(raw.values).map(asString).filter(isDefined)` — ha a PHP builder `string[]`-t ad, a mapper helyesen dolgozza fel. A migration side-effect: fixálja a pre-existing bug-ot.
+
+**Változás #4 — Seed mapping** (`mapping.ts`):
+
+Before:
+```typescript
+{ acfKey: 'eb_about_values', kind: 'repeater',
+  extract: (d) => { const values = d.values as string[]; return values.map(text => ({text: str(text)})) } }
+```
+
+After:
+```typescript
+{ acfKey: 'eb_about_values_text', kind: 'scalar',
+  extract: (d) => { const values = d.values as string[]; return values.join('\n') } }
+```
+
+**Data flow after migration:**
+
+| Lépés | Formátum | Hol |
+|-------|----------|-----|
+| WP admin | textarea: `"line1\nline2\nline3"` | ACF textarea |
+| PHP builder | `spektra_split_textarea()` → `["line1","line2","line3"]` | builders.php |
+| REST endpoint | `{"values": ["line1","line2","line3"]}` | JSON output |
+| TS mapper | `asArray().map(asString).filter()` → `string[]` | wp-mapper.ts |
+| SiteData | `values: string[]` | **változatlan** |
+| Component | `values.map(v => <li>✦ {v}</li>)` | **változatlan** |
+
+---
+
+### Seed Impact
+
+**Jelenlegi seed flow (repeater):**
+1. `site.ts` → `values: ["V1", "V2", "V3"]` (string array)
+2. `export-seed.ts` → `mapping.extract()` → `[{text: "V1"}, {text: "V2"}, {text: "V3"}]`
+3. `seed.json` → `"eb_about_values": [{text: "V1"}, ...]`
+4. `import-seed.php` → `detect_kind()` → `'repeater'` → `update_field('eb_about_values', [...])`
+
+**Migrált seed flow (textarea):**
+1. `site.ts` → `values: ["V1", "V2", "V3"]` — **változatlan**
+2. `export-seed.ts` → `mapping.extract()` → `"V1\nV2\nV3"` (joined string)
+3. `seed.json` → `"eb_about_values_text": "V1\nV2\nV3"`
+4. `import-seed.php` → `detect_kind()` → `'scalar'` → `update_field('eb_about_values_text', "V1\nV2\nV3")`
+
+**Impact elemzés:**
+- `site.ts`: NEM változik (továbbra is `string[]`)
+- `mapping.ts`: extract function egyszerűsödik (join vs map-to-object)
+- `seed.json`: kisebb output (egy string vs array-of-objects)
+- `import-seed.php`: `detect_kind()` `'scalar'`-t ad → egyszerűbb path, nincs row iteration
+- **sp-infra seed tooling NEM igényel módosítást** — a `detect_kind()` és az `update_field()` path scalar-okat is kezel
+
+**Kockázat:** Nincs. A seed pipeline scalar field-eket natívan támogatja. A `detect_kind()` automatikusan 'scalar'-t ad egy plain string-re.
+
+---
+
 **Required planning output implementáció előtt:**
-- kiválasztott fixed_slots target
-- field representation döntés: numbered fields vs textarea split vs egyéb bounded reprezentáció
-- builder mapping plan
-- seed impact
+- ~~kiválasztott fixed_slots target~~ DONE: `eb-about.values`
+- ~~field representation döntés~~ DONE: textarea + split
+- ~~builder mapping plan~~ DONE
+- ~~seed impact~~ DONE
 - SiteData parity validation plan
 - rollback plan
 - implementációs prompt készültségi értékelés
+
+---
+
+### SiteData Parity Validation Plan
+
+**Cél:** Bizonyítani, hogy a migration után a SiteData output byte-ra megegyezik a migration előttivel.
+
+**Validation lépések:**
+
+1. **Before snapshot**: A migration előtt rögzíteni a `/wp-json/spektra/v1/site` endpoint `eb-about` szekciójának JSON outputját
+   ```bash
+   wp eval-file import-seed.php        # seed betöltés repeater formátumban
+   curl -s .../wp-json/spektra/v1/site | jq '.sections[] | select(.type == "eb-about")' > before.json
+   ```
+
+2. **Migration végrehajtás**: ACF field definition csere, builder update, seed mapping update
+
+3. **Re-seed**: Az új seed formátummal (textarea) újraseedélni
+   ```bash
+   wp eval-file import-seed.php        # seed betöltés textarea formátumban
+   ```
+
+4. **After snapshot**: Ugyanaz az endpoint
+   ```bash
+   curl -s .../wp-json/spektra/v1/site | jq '.sections[] | select(.type == "eb-about")' > after.json
+   ```
+
+5. **Diff**:
+   ```bash
+   diff before.json after.json
+   ```
+   **Elvárt eredmény:** 0 diff — a `values` array tartalma és sorrendje azonos.
+
+**Amit összehasonlítunk:**
+- `values` array length (3)
+- `values` array tartalom (exact string match minden elemre)
+- `values` array sorrend
+- Egyéb `eb-about` mezők változatlanok (title, subtitle, description, story, image)
+
+**Amit NEM hasonlítunk össze:**
+- ACF admin felületi megjelenés (ez UX change, nem data change)
+- wp_postmeta belső szerkezet (ACF implementation detail)
+- seed.json formátum (ez szándékosan változik)
+
+**Pass/Fail kritérium:** `before.json` és `after.json` 100% egyezés az `eb-about` szekción belül. Bármi eltérés FAIL → rollback.
+
+---
+
+### Rollback Plan
+
+**Trigger:** A parity validation FAIL, VAGY bármi váratlan viselkedés a migration után.
+
+**Rollback lépések (sorrendben):**
+
+1. **ACF field definition**: `eb-about.php`-ban a textarea field visszacserélése repeater-re (git revert)
+2. **Builder**: `builders.php`-ban `spektra_split_textarea()` hívás visszacserélése `spektra_get_field('values', ...)` hívásra (git revert)
+3. **Seed mapping**: `mapping.ts`-ben a scalar extract visszacserélése repeater extract-re (git revert)
+4. **Re-seed**: Repeater formátumú seed újrafuttatása
+   ```bash
+   wp eval-file import-seed.php
+   ```
+5. **Verification**: Before snapshot-tal való egyezés újra ellenőrzése
+
+**Rollback scope:** Kizárólag sp-exotica + sp-infra (ha helper hozzáadva). Más kliensek NEM érintettek.
+
+**Rollback mechanizmus:** `git revert <migration-commit>` — egyetlen commit revertálása elegendő, ha minden migration változás egy commitban van.
+
+**Fontos:** A migration commitot úgy kell megírni, hogy egyetlen `git revert` működjön. Nem szabad más, nem-migration változásokat összekeverni a committal.
+
+---
+
+### Implementációs Prompt Készültségi Értékelés
+
+**Checklist:**
+
+| # | Elem | Státusz | Megjegyzés |
+|---|------|---------|------------|
+| 1 | Target kiválasztás | ✅ | `eb-about.values` |
+| 2 | Field representation | ✅ | textarea + split |
+| 3 | Érintett fájlok listája | ✅ | 4 fájl módosul, 4 változatlan |
+| 4 | Before/after kód minden érintett fájlhoz | ✅ | PHP ACF, PHP builder, TS seed mapping |
+| 5 | SiteData parity validation plan | ✅ | endpoint snapshot diff |
+| 6 | Rollback plan | ✅ | single commit revert |
+| 7 | Pre-existing bug dokumentálva | ✅ | mapper `asString` on repeater rows |
+| 8 | Seed flow before/after | ✅ | repeater → scalar |
+| 9 | Nem-érintett fájlok explicitek | ✅ | schema, component, normalizer, site.ts |
+
+**Eredmény: READY**
+
+Az implementációs prompt biztonságosan megírható. Minden szükséges kontextus rendelkezésre áll:
+- Pontosan 4 fájl módosítandó (ACF def, builder, seed mapping + opcionálisan sp-infra helper)
+- A SiteData output nem változik
+- A parity validation terv létezik
+- A rollback terv létezik
+- A pre-existing mapper bug a migration side-effect-jeként fixálódik
+
+**Döntés szükséges az implementáció előtt:**
+- A `spektra_split_textarea()` helper sp-infra-ba kerüljön (reusable) vagy sp-exotica lokális legyen?
+
+---
+
+**Required planning output összesítés:**
+- ~~kiválasztott fixed_slots target~~ DONE: `eb-about.values`
+- ~~field representation döntés~~ DONE: textarea + split
+- ~~builder mapping plan~~ DONE
+- ~~seed impact~~ DONE
+- ~~SiteData parity validation plan~~ DONE
+- ~~rollback plan~~ DONE
+- ~~implementációs prompt készültségi értékelés~~ DONE: **READY**
 
 ---
 
