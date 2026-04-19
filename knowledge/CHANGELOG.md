@@ -5,6 +5,7 @@ Minden knowledge dokumentum változás naplója. Keep a Changelog formátum.
 ## [Unreleased]
 
 ### Added
+- P13.4: BenettCar seed mapping aligned with slot-based ACF Free model — 8 stale `kind: 'repeater'` mappings replaced with slot/textarea extractors (makeSlotScalars, makeSlotImages, joinLines). P13.3 migration unused slot clearing added. 194-field seed export validated.
 - P13.3: BenettCar image-bearing repeaters migrated to slot-based ACF Free fields — bc_gallery_images (max 10 image slots), bc_brand_brands (max 10 brand slots), bc_team_members (max 8 member slots). 3/3 parity PASS.
 - P13.2: BenettCar fixed_slots batch migration — bc_about_content (textarea+split), bc_about_stats (slot fields), bc_service_services (textarea+split), bc_service_brands (textarea+split). 4/4 parity PASS.
 - `implementation/p13-1-bc-services-slot-based-admin-refactor.md` — P13.1: bc-services cpt_collection pilot superseded by Slot-Based ACF Free Admin for BenettCar handover UX. 6 slot fields, CPT hidden, repeater retained, SiteData shape unchanged.
@@ -12,6 +13,7 @@ Minden knowledge dokumentum változás naplója. Keep a Changelog formátum.
 - `implementation/p12-4-eb-about-values-migration.md` — P12.4 implementációs prompt: eb-about.values ACF Repeater → textarea+split migration. Teljes before/after kód, data flow, seed flow, parity validation, rollback plan. **CLOSED:** commit `b3f0e56` (sp-exotica), parity validation PASS.
 
 ### Changed
+- `phases/phase-12-strategy-overview.md` — P13.4: Current State + Phase Map frissítve, seed pipeline aligned with slot model
 - `phases/phase-12-strategy-overview.md` — P13.3: Current State + Phase Map frissítve, BenettCar fixed_slots 8/8 migrated
 - `phases/phase-12.2.md` — bc-gallery + bc-brand + bc-team classification annotated: cpt_collection → fixed_slots ✅ P13.3
 - `phases/phase-12-strategy-overview.md` — P13.2: Current State + Phase Map frissítve, BenettCar fixed_slots 5/5 migrated

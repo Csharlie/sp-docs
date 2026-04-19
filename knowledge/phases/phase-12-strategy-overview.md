@@ -22,8 +22,10 @@ A Phase 12 hátralévő munkájának összefoglalása a multi-client validáció
 - P13.1: bc-services admin refactored to Slot-Based ACF Free Admin (CPT collection superseded for bounded landing content UX)
 - P13.2: BenettCar remaining fixed_slots migrations — bc-about (content → textarea+split, stats → slot fields), bc-service (services → textarea+split, brands → textarea+split). 4/4 parity PASS.
 - P13.3: BenettCar image-bearing repeaters migrated to slot-based fields — bc-gallery (max 10), bc-brand (max 10), bc-team (max 8). 3/3 parity PASS.
+- P13.4: BenettCar seed mapping aligned with slot-based ACF Free model. 8 stale `kind: 'repeater'` mappings replaced with slot/textarea extractors. P13.3 migration unused slot clearing added. 194-field seed export validated.
 - Corrected source strategy rule: bounded landing content → slot-based fixed collection, unbounded managed content → cpt_collection
 - BenettCar fixed_slots repeaters: 8/8 migrated (bc_services_services, bc_about_content, bc_about_stats, bc_service_services, bc_service_brands, bc_gallery_images, bc_brand_brands, bc_team_members)
+- BenettCar seed pipeline: fully aligned with slot-based model (P13.4 CLOSED)
 - ACF Pro NEM baseline requirement
 - SiteData shape stabil marad
 
@@ -45,6 +47,7 @@ A Phase 12 hátralévő munkájának összefoglalása a multi-client validáció
 | P13.1 | Slot-Based Admin Refactor — bc-services | CLOSED | Runtime + admin UX |
 | P13.2 | BenettCar fixed_slots batch — bc-about + bc-service | CLOSED | Runtime + admin UX |
 | P13.3 | BenettCar image slot migration — bc-gallery + bc-brand + bc-team | CLOSED | Runtime + admin UX |
+| P13.4 | BenettCar Seed Mapping + Slot Migration Cleanup | CLOSED | Seed pipeline |
 | P12.7 | Platform Scaffold / Generator Prep | DEFERRED | Design |
 
 ---
