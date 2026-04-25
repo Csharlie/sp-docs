@@ -477,17 +477,28 @@ Az ügyfél ténylegesen tudja szerkeszteni az oldalt.
 - [ ] Contact form státusz (döntés P14.6 alapján)
 - [ ] Fejlesztői feladatok listája
 
-**Screenshot ellenőrzés:**
+**Screenshot rögzítési sorrend:**
+
+| Mikor | Mit lehet rögzíteni |
+|---|---|
+| P14.5-ben | ACF mezők, accordion preview, menus, gallery, services — P13.5 óta stabilak |
+| P14.6 után | Contact form plugin admin felülete (CF7 / WPForms) |
+| P14.7 után | Production WP screenshotok (Rackforest-en futó végleges rendszer, éles URL-ek) |
+
+A kézikönyv **szövege és screenshotjainak ~90%-a** elkészíthető P14.5-ben. A **contact szekció screenshotját** P14.6 után kell pótolni. Ha a kézikönyv a production admin URL-t és logint is tartalmazza, az éles screenshotokat P14.7 után kell véglegesíteni.
+
+**Screenshot ellenőrzés (P14.5 scope):**
 - Egyeznek-e az aktuális admin UX-szel
 - Accordion preview látszik-e
 - Magyar labelek frissek-e
+- Contact szekció screenshot: **P14.6 után pótolni**
 
 ### Done State
 
-- Admin guide commitolva és remote-on elérhető
+- Admin guide commitolva és remote-on elérhető (contact rész P14.6 után véglegesítve)
 - Quick guide commitolva és remote-on elérhető
 - `admin-guide-index.md` létezik és linkeli a dokumentumokat
-- Screenshotok aktuálisak
+- Screenshotok aktuálisak (contact screenshot P14.6 utáni állapotot tükröz)
 - Known limitations dokumentáltak
 
 ### Commit javaslat
