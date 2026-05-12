@@ -4,7 +4,7 @@ status: active
 type: phase-roadmap
 canonical: true
 created: 2026-04-25
-last_updated: 2026-04-25
+last_updated: 2026-05-12
 ---
 
 # Phase 14 — BenettCar Handover Release Hardening
@@ -70,7 +70,7 @@ P13.x sorozat (P13.1–P13.5) lezárta:
 |-------|-----|---------|
 | P14.0 | Remote Baseline Verification | PENDING |
 | P14.1 | JSON Source Frontend Editing Mode | PENDING |
-| P14.2 | Client Feedback Frontend Implementation | PENDING |
+| P14.2 | Client Feedback Frontend Implementation | ✅ DONE |
 | P14.3 | Content & Media Freeze | PENDING |
 | P14.4 | WordPress Resync / Seed Rehydration | PENDING |
 | P14.5 | Admin Handover Package | PENDING |

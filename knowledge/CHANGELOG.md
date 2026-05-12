@@ -4,6 +4,12 @@ Minden knowledge dokumentum változás naplója. Keep a Changelog formátum.
 
 ## [Unreleased]
 
+### Changed
+- `phases/phase-14-benettcar-handover-release.md` — P14.2 DONE (2026-05-12): Footer teljes újraírás (4-col custom, Kapcsolat grid, Facebook, PSPro, jogi linkek bottom barban), bc-service schema `serviceListTitle`/`brandsTitle`/`hoursNote` szerkeszthetővé, meta title/description/site.description Volkswagen-konszern irányba, bc-assistance requestHref → `tel:`, navigation.footer restructure (`#roadside` ki, `#gallery` be). Build/test PASS (50/50).
+- `bc-client-feedback-tracker.md` — P14.2 lezárva, 24 módosítás dokumentálva, státusz ✅.
+- `implementation-log.md` — #32 bejegyzés hozzáadva (P14.2, step #34 pending hash).
+- `infra/docs/content-model.md` — bc-service §2.5: `description` required → optional, `serviceListTitle`, `brandsTitle`, `contact.hoursNote` új opcionális mezők dokumentálva.
+
 ### Added
 - P13.4: BenettCar seed mapping aligned with slot-based ACF Free model — 8 stale `kind: 'repeater'` mappings replaced with slot/textarea extractors (makeSlotScalars, makeSlotImages, joinLines). P13.3 migration unused slot clearing added. 194-field seed export validated.
 - P13.3: BenettCar image-bearing repeaters migrated to slot-based ACF Free fields — bc_gallery_images (max 10 image slots), bc_brand_brands (max 10 brand slots), bc_team_members (max 8 member slots). 3/3 parity PASS.
