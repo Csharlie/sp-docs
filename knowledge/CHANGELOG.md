@@ -4,7 +4,12 @@ Minden knowledge dokumentum változás naplója. Keep a Changelog formátum.
 
 ## [Unreleased]
 
+### Added
+- `troubleshooting/data-source-env-override.md` — `.env.local` Vite prioritás gotcha: ha `VITE_DATA_SOURCE` `.env`-ben van állítva, de `.env.local`-ban felülírva, a frontend a felülíró értéket fogja használni. Tünet/megoldás/prevention/agent ellenőrzőlista. Felfedezve P14.4 átálláskor.
+- `sp-clients/sp-benettcar/infra/env/README.md` — env-fájl prioritási sorrend, JSON↔WP adatforrás váltás lépésről lépésre, gotcha figyelmeztetés.
+
 ### Changed
+- `phases/phase-14-benettcar-handover-release.md` — P14.4 DONE lokálisan (2026-05-13): parity 196/196, 0 mismatch, 17/17 image OK. Eyebrow mező teljes pipeline integráció (ACF + mapping + builder + wp-mapper). bc_service_description `required` eltávolítva (P14.2 schema-val konzisztens). Seed alt text fix (cached attachment + dump post meta forrás). bc-team mobil layout újraépítve identity-first patternre. `.env.local` JSON → wordpress. Éles WP runtime parity P14.7 staging után validálódik.
 - `phases/phase-14-benettcar-handover-release.md` — P14.4 IN PROGRESS (2026-05-13): seed:export:dry + seed:export PASS — 193 mező, 6 brand logo local asset warning (WP Media Library upload P14.7-ben). WP-függő lépések (import, REST, parity) staging után.
 - `phases/phase-14-benettcar-handover-release.md` — P14.3 DONE (2026-05-13): legal modals (Adatvédelem + ÁSZF), footer bottom bar restructure, gallery pagination + lightbox nav, PSPro link, build/test PASS, seed:export:dry PASS. Ügyfél oldali blockerek dokumentálva (fotók, email).
 - `phases/phase-14-benettcar-handover-release.md` — P14.3 IN PROGRESS (2026-05-13): valós adatok beépítve (László Béla +36 20 240 1601, Cegléd Kőrösi út 01144/14 2700), bc-logo-128.png navbar+footer, vite.config platform source aliases, NavigationBar logoClassName prop + mobil menü slide animáció, bc-map zoom param, bc-contact info-grid eltávolítva, bc-team single member centered layout.

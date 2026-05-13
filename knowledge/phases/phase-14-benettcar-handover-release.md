@@ -72,7 +72,7 @@ P13.x sorozat (P13.1–P13.5) lezárta:
 | P14.1 | JSON Source Frontend Editing Mode | PENDING |
 | P14.2 | Client Feedback Frontend Implementation | ✅ DONE |
 | P14.3 | Content & Media Freeze | ✅ DONE (ügyfél fotók/email pending — nem blokkoló) |
-| P14.4 | WordPress Resync / Seed Rehydration | 🟡 IN PROGRESS (seed kész, WP staging blokkol) |
+| P14.4 | WordPress Resync / Seed Rehydration | ✅ DONE lokálisan (parity 196/196) — éles WP-re P14.7 után |
 | P14.5 | Admin Handover Package | PENDING |
 | P14.6 | Contact Form Decision | PENDING |
 | P14.7 | Staging / Production Readiness | PENDING |
