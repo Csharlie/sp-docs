@@ -5,6 +5,9 @@ Minden knowledge dokumentum változás naplója. Keep a Changelog formátum.
 ## [Unreleased]
 
 ### Changed
+- `phases/phase-14-benettcar-handover-release.md` — P14.3 IN PROGRESS (2026-05-13): valós adatok beépítve (László Béla +36 20 240 1601, Cegléd Kőrösi út 01144/14 2700), bc-logo-128.png navbar+footer, vite.config platform source aliases, NavigationBar logoClassName prop + mobil menü slide animáció, bc-map zoom param, bc-contact info-grid eltávolítva, bc-team single member centered layout.
+- `bc-client-feedback-tracker.md` — 11 új sor (#25–#35): P14.3 content data + UI/platform fejlesztések dokumentálva.
+- `implementation-log.md` — #33 bejegyzés hozzáadva (P14.3 in progress, commit pending).
 - `phases/phase-14-benettcar-handover-release.md` — P14.2 DONE (2026-05-12): Footer teljes újraírás (4-col custom, Kapcsolat grid, Facebook, PSPro, jogi linkek bottom barban), bc-service schema `serviceListTitle`/`brandsTitle`/`hoursNote` szerkeszthetővé, meta title/description/site.description Volkswagen-konszern irányba, bc-assistance requestHref → `tel:`, navigation.footer restructure (`#roadside` ki, `#gallery` be). Build/test PASS (50/50).
 - `bc-client-feedback-tracker.md` — P14.2 lezárva, 24 módosítás dokumentálva, státusz ✅.
 - `implementation-log.md` — #32 bejegyzés hozzáadva (P14.2, step #34 pending hash).
