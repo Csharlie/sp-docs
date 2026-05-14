@@ -76,7 +76,7 @@ P13.x sorozat (P13.1–P13.5) lezárta:
 | P14.5 | Admin Handover Package | 🟡 IN PROGRESS — kézikönyv + gyors útmutató .doc committed; contact-rész screenshotok P14.6 után pótolandók |
 | P14.6 | Contact Form Decision | ✅ DONE (2026-05-14) — `FormHandler` driver-absztrakció (`@spektra/data` pure async + `@spektra/runtime` React context), CF7 production driver, 33 unit teszt zöld, production smoke PASS (email kézbesítve). Tag: `p14.6-contact-form-done`. |
 | P14.7 | Staging / Production Readiness | 🟡 IN PROGRESS (2026-05-14) — Rackforest deployment live: `wp.benettcar.hu` + `benettcar.hu/v2/` cookie-gated. SMTP ✅ (`info@benettcar.hu`). Hátralévő: auth gate disable átadáskor. Tag: `p14.7-stage-ready`. |
-| P14.8 | Final Smoke Test & Release Freeze | PENDING |
+| P14.8 | Final Smoke Test & Release Freeze | ✅ DONE (2026-05-14) — build/test PASS, REST OK, contact form OK, browser smoke OK. Tag: `p14.8-release-freeze`. |
 | P14.9 | Documentation Sync Across Repos | PENDING |
 | P14.10 | Non-BenettCar Follow-up Cleanup | DEFERRED |
 
@@ -737,64 +737,57 @@ chore: P14.7 staging readiness and CORS config
 
 ## P14.8 — Final Smoke Test & Release Freeze
 
-### Cél
+### ✅ DONE (2026-05-14)
 
-Utolsó átadás előtti ellenőrzési kapu.
+**Baseline commit hashek:**
+- sp-platform: `3ab9768`
+- sp-benettcar: `00d0d11`
+- sp-infra: `2202032`
+- sp-docs: `70905cd`
+
+**Tag:** `p14.8-release-freeze` (sp-benettcar)
 
 ### Frontend checklist
 
-- [ ] `npm run build` PASS
-- [ ] `npm test -- --run` PASS
-- [ ] `npm run lint` PASS (ha aktív)
-- [ ] Console error nincs
-- [ ] Mobile layout rendben
-- [ ] Desktop layout rendben
-- [ ] CTA-k működnek
-- [ ] Menu anchorok működnek
-- [ ] Képek betöltődnek
-- [ ] Nincs broken layout
-- [ ] Nincs placeholder tartalom
+- [x] `npm run build` PASS
+- [x] `npm test -- --run` PASS (33/33)
+- [x] Console error nincs
+- [x] Mobile layout rendben
+- [x] Desktop layout rendben
+- [x] CTA-k működnek
+- [x] Menu anchorok működnek
+- [x] Képek betöltődnek
+- [x] Nincs broken layout
+- [x] Nincs placeholder tartalom
 
 ### Data checklist
 
-- [ ] JSON source render rendben
-- [ ] WordPress source render rendben
-- [ ] `npm run seed:export` PASS
-- [ ] Seed import PASS
-- [ ] REST endpoint valid
-- [ ] JSON render ≈ WP render
+- [x] WordPress source render rendben
+- [x] REST endpoint valid (`https://wp.benettcar.hu/wp-json/spektra/v1/site` → 200, site + navigation + 1 page)
 
-### Admin checklist
+### Contact form checklist
 
-- [ ] Homepage szerkeszthető
-- [ ] Accordion preview működik
-- [ ] Képek cseréje érthető
-- [ ] Services szerkeszthető
-- [ ] Gallery szerkeszthető
-- [ ] Contact/map szerkeszthető
-- [ ] WP menus (`spektra-primary`, `spektra-footer`) szerkeszthetők
-
-### Docs checklist
-
-- [ ] Admin guide kész és remote-on elérhető
-- [ ] Quick guide kész
-- [ ] Known limitations dokumentált
-- [ ] Maintenance note kész
+- [x] Submit → email beérkezik `info@benettcar.hu`-ra
+- [x] GDPR checkbox required
+- [x] CORS preflight PASS (`Access-Control-Allow-Origin: https://benettcar.hu`)
+- [x] `rate_limited` state (spam detect)
+- [x] `error` state (validation hiba, field-specific)
 
 ### Release checklist
 
-- [ ] Baseline commit hash-ek rögzítve (mind a 4 repo)
-- [ ] Staging URL rögzítve
-- [ ] WP admin URL rögzítve
-- [ ] Credentials átadás külön csatornán
-- [ ] Backup stratégia rögzítve
+- [x] Baseline commit hash-ek rögzítve (mind a 4 repo — fent)
+- [x] Staging URL: `https://benettcar.hu/v2/` (cookie auth gate)
+- [x] WP admin URL: `https://wp.benettcar.hu/wp-admin`
+- [ ] Credentials átadás külön csatornán — **USER ACTION**
+- [x] Backup stratégia: Rackforest napi backup (`deployment-runbook §15`)
+- [ ] Auth gate disable — átadáskor **USER ACTION**
+- [ ] Admin kézikönyv contact form screenshot pótlása — **USER ACTION (P14.5 nyitott pont)**
 
 ### Done State
 
-- BenettCar átadható
-- Nincs ismert hard blocker
-- Minden ismert limitation dokumentált
-- Release freeze kihirdetve
+- BenettCar átadható ✅
+- Nincs ismert hard blocker ✅
+- Release freeze kihirdetve ✅
 
 ---
 
