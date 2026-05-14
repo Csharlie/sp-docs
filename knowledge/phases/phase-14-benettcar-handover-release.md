@@ -4,7 +4,7 @@ status: active
 type: phase-roadmap
 canonical: true
 created: 2026-04-25
-last_updated: 2026-05-13 (P14.4)
+last_updated: 2026-05-14 (P14.7 stage-ready)
 ---
 
 # Phase 14 — BenettCar Handover Release Hardening
@@ -72,10 +72,10 @@ P13.x sorozat (P13.1–P13.5) lezárta:
 | P14.1 | JSON Source Frontend Editing Mode | PENDING |
 | P14.2 | Client Feedback Frontend Implementation | ✅ DONE |
 | P14.3 | Content & Media Freeze | ✅ DONE (ügyfél fotók/email pending — nem blokkoló) |
-| P14.4 | WordPress Resync / Seed Rehydration | ✅ DONE lokálisan (parity 196/196) — éles WP-re P14.7 után |
-| P14.5 | Admin Handover Package | PENDING |
-| P14.6 | Contact Form Decision | PENDING |
-| P14.7 | Staging / Production Readiness | PENDING |
+| P14.4 | WordPress Resync / Seed Rehydration | ✅ DONE lokálisan (parity 196/196) + ✅ éles Rackforest WP-n (P14.7 keretében: brand logók + seed importálva, REST `200 OK`, alt parity) |
+| P14.5 | Admin Handover Package | 🟡 IN PROGRESS — kézikönyv + gyors útmutató .doc committed; contact-rész screenshotok P14.6 után pótolandók |
+| P14.6 | Contact Form Decision | 🟡 IN PROGRESS — architektúra döntés (2026-05-14): `FormHandler` driver-absztrakció a `@spektra/data` package-ben, default `wp-spektra` driver + `web3forms` / `mailto` / `noop` alternatívák (CMS-független design). Implementáció pending. |
+| P14.7 | Staging / Production Readiness | 🟡 IN PROGRESS (2026-05-14) — Rackforest deployment live: `wp.benettcar.hu` + `benettcar.hu/v2/` cookie-gated. Hátralévő: SMTP + P14.6 contact form + átadáskor auth gate disable. Tag: `p14.7-stage-ready`. |
 | P14.8 | Final Smoke Test & Release Freeze | PENDING |
 | P14.9 | Documentation Sync Across Repos | PENDING |
 | P14.10 | Non-BenettCar Follow-up Cleanup | DEFERRED |
@@ -548,27 +548,77 @@ Nincs backend submit, nincs email küldés, nincs API integration. A success sta
 
 **Választott opció: Option A — Valódi backend submit, WordPress pluginnal**
 
-**Implementációs megközelítés (2026-04-25):**
-- Backend: **Contact Form 7** vagy **WPForms Lite** (ingyenes WP plugin) — ez kezeli a `wp_mail()` hívást, az SMTP deliveryt és a spam védelmet
-- SMTP konfig: **WP Mail SMTP** plugin Rackforest SMTP szerverrel
-- Frontend: a React form komponens megtartva, `fetch()`-csel postol a plugin REST/Ajax endpointára (CF7-nek van ilyen)
-- **Nem javasolt:** a contact sectionöt WP-rendered embed-re cserélni — kiesne a SiteData/section modellből
+### 🔄 Implementáció-szintű revízió (2026-05-14)
+
+A P14.7 stage-ready elérése után, a contact form implementáció **architektúra szintjén** revidálódott. A korábbi CF7 / WPForms ötlet helyett a Spektra platform read-oldali `DataSource` absztrakciójának tükör mintáját követjük — a contact form is **driver-független** legyen, hogy ne kötődjön kizárólag WordPress-hez.
+
+**Új implementációs megközelítés:**
+
+- **Frontend: `FormHandler` driver-absztrakció** a `@spektra/data` package-ben
+  - Interface: `FormHandler.submit(formId, data): Promise<FormSubmitResult>`
+  - Driver-választás `VITE_FORM_HANDLER` env var-on keresztül (mint `VITE_DATA_SOURCE`)
+  - React komponens `useFormHandler()` hook-ot hív, UI változatlan marad
+
+- **Default driver: `wp-spektra`** (a mostani Rackforest WP backend use case)
+  - POST `/wp-json/spektra/v1/contact` → `spektra-api` plugin új endpoint
+  - PHP-szintű validáció + honeypot + `wp_mail()` (a `WP Mail SMTP` plugin SMTP-jén keresztül)
+  - Response shape: a mi kontraktusunk (`{ status: 'ok' }` / `{ status: 'error', field?, message }` / `{ status: 'rate_limited' }`)
+  - Előny CF7-tel szemben: nincs külön CORS namespace beállítás, response shape match-el a React state-eknek
+
+- **Alternatív driverek** (a kliens / jövőbeli telepítések szabadsága):
+  - `web3forms` — static deployment (ingyenes 3rd-party, no backend needed)
+  - `formspree` — static deployment alternatíva (ingyenes 50/hó)
+  - `mailto` — zero-infra fallback (mailto: link megnyitás)
+  - `noop` — preview/Storybook (console.log + fake success)
+
+- **Miért ez a megközelítés a CF7 helyett:**
+  - **CMS-független architektúra:** a kliens (vagy egy következő fejlesztő) `.env` változó cserével át tudja kapcsolni a contact form-ot más backend-re — ugyanúgy, ahogy `VITE_DATA_SOURCE=json|wordpress` váltás működik
+  - **Static deployment lehetséges:** ha valaha WP nélküli static export-ot akarunk (`VITE_DATA_SOURCE=json` + `VITE_FORM_HANDLER=web3forms`), a contact form akkor is működik backend nélkül
+  - **CORS egyszerűbb:** ugyanaz a `spektra/v1` namespace, mint a read-oldal — már beállított CORS működik
+  - **Response shape kontrollált:** field-specific error mapping a React state-be, nem kell CF7-ből visszafejteni a `mail_sent` / `validation_failed` állapotokat
 
 További implikációk:
-- Spam protection: plugin beépített (CF7: reCAPTCHA support)
-- GDPR: adatkezelési tájékoztató szükséges az űrlapon
-- Success/error state valós API válasz alapján (nem local state)
-- A P14.6 scope kisebb, mint custom PHP mailerrel, de a frontend komponenst még át kell írni
+- Spam protection: handler-szintű (honeypot a `wp-spektra`-ban + service-szintű a `web3forms`-ban / `formspree`-ben)
+- GDPR: UI-oldali (checkbox), nem handler-szintű
+- Success/error state: handler `FormSubmitResult` válasza alapján
+- A P14.6 scope nagyobb mint CF7-tel volt, de a strukturális nyereség (CMS-függetlenség, static deploy lehetőség) megéri
 
-### Elvégzendő
+### Elvégzendő (revidált 2026-05-14)
 
-1. WP plugin telepítése (CF7 vagy WPForms Lite) Rackforest WP-n
-2. WP Mail SMTP plugin konfigurálása Rackforest SMTP-vel
-3. Plugin endpoint azonosítása (CF7 REST / Ajax URL)
-4. Frontend: `fetch()` a plugin endpoint felé, valós success/error state
-5. GDPR szöveg az űrlapon
-6. Admin guide frissítése a contact form státuszával
-7. End-to-end teszt éles SMTP-vel
+**Architektúra (`@spektra/data`):**
+1. `forms.ts` — `FormHandler` interface + `FormSubmitResult` types + `createFormHandler()` factory
+2. `useFormHandler()` hook (mint a `useSiteData()`)
+
+**Driver implementációk:**
+3. `WpSpektraFormHandler` (default) — POST `/wp-json/spektra/v1/contact`
+4. `Web3FormsHandler` — static deploy alternatíva
+5. `MailtoHandler` — zero-infra fallback
+6. `NoOpFormHandler` — preview/Storybook
+
+**WP-Spektra backend (`sp-infra/plugin/spektra-api/`):**
+7. `class-contact-controller.php` — POST endpoint, schema, validation, honeypot, rate limit, `wp_mail()`
+8. Route registration a `class-rest-controller.php`-ban
+
+**SMTP setup (Rackforest):**
+9. `kapcsolat@benettcar.hu` cPanel email account létrehozás (jelszó → `deployment-runbook.md` credentials katalógusába)
+10. WP Mail SMTP plugin telepítés + Rackforest SMTP konfig (`mail.benettcar.hu:465 SSL`)
+11. WP Mail SMTP Email Test PASS
+
+**Frontend integráció:**
+12. `bc-contact.component.tsx` `onSubmit` → `handler.submit()` (UI nem változik)
+13. GDPR checkbox required (link a `#privacy` modalra)
+14. Honeypot mező (rejtett input)
+15. Field-specific error mapping a React state-be
+
+**Validáció:**
+16. Valódi end-to-end submission → email megérkezés `kapcsolat@benettcar.hu`-ra
+17. Spam mappa ellenőrzés
+18. Rate limit teszt
+
+**Dokumentáció:**
+19. Admin guide frissítése a contact form státuszával + screenshot
+20. `sp-docs/guides/form-handler-drivers.md` (új) — driver-katalógus, env-konfig, deployment-specifikus választás guide
+21. `deployment-runbook §12` frissítése a `FormHandler` mintára
 
 ### Done State
 
@@ -587,6 +637,28 @@ fix: P14.6 clarify BenettCar contact flow
 ---
 
 ## P14.7 — Staging / Production Readiness
+
+### 🟡 Status: IN PROGRESS (2026-05-14)
+
+**Stage-ready elérve.** Tag: [`p14.7-stage-ready`](https://github.com/Csharlie/sp-benettcar/releases/tag/p14.7-stage-ready) (sp-benettcar `b8054fb` + sp-infra `2202032`).
+
+**Élesedett:**
+- WP backend: `https://wp.benettcar.hu` (spektra-api + spektra-config + ACF Pro)
+- Frontend: `https://benettcar.hu/v2/` (cookie auth gate mögött)
+- REST endpoint külső hálózatról `200 OK`, mind a 10 section serve-elve
+- CORS: `https://benettcar.hu` + `https://www.benettcar.hu` mindkettő preflight PASS
+- Brand média WP Media Library-ben, alt text parity OK
+- SSL zöld mindkét domainre (Rackforest AutoSSL)
+- v2 auth gate: `login.php` + `auth-check.php` + `.htaccess` cookie-alapú, 7-nap TTL
+- Mobile valódi eszköz smoke test PASS (iPhone 12, Pixel 5)
+- PHP 8.4 kompatibilitás javítva sp-infra-ban (`true|\WP_Error` → `bool|\WP_Error`)
+- Dokumentáció: `docs/deployment-runbook.md` (gitignored, 1925 sor) + `docs/deployment-guide.md` (gitignored, 235 sor)
+
+**Nyitva:**
+- SMTP konfiguráció + `kapcsolat@benettcar.hu` email account — P14.6 függvénye
+- P14.6 contact form integráció — `FormHandler` driver-absztrakció (`@spektra/data`-ban), default `wp-spektra` driver
+- Auth gate disable workflow — átadáskor (runbook §10.7)
+- Decision: átadáskor a v2 marad `/v2/`-n VAGY átköltözik `/` root-ra (a régi v1-et felváltva)
 
 ### Cél
 
@@ -628,19 +700,23 @@ Production origineket hozzá kell adni — **ne a platformban, hanem a kliens ov
 
 ### Elvégzendő
 
-- [ ] Staging subdomain döntés: lesz-e `staging.benettcar.hu` vagy közvetlenül production?
-- [ ] Rackforest cPanel hozzáférés és WP telepítés
-- [ ] Frontend build (`npm run build`) → `dist/` feltöltése SFTP-vel
-- [ ] WP REST plugin aktiválás production-ön
-- [ ] CORS `allowed_origins` frissítés production URL-lel
-- [ ] `VITE_DATA_SOURCE=wordpress` + production WP URL a deployed configban
-- [ ] SSL tanúsítvány ellenőrzés (`https://benettcar.hu`)
-- [ ] WP REST endpoint külső hálózatról: `https://benettcar.hu/wp-json/spektra/v1/site`
-- [ ] Media URL-ek ellenőrzése production WP-n
-- [ ] SMTP konfiguráció (P14.6 Option A miatt kötelező)
-- [ ] Admin user átadás
-- [ ] Backup stratégia (Rackforest backup policy vagy WP plugin)
-- [ ] Update responsibility rögzítése (WP core, plugin, témák)
+- [x] Staging subdomain döntés: **`wp.benettcar.hu` (WP backend) + `benettcar.hu/v2/` (frontend cookie-gated)** — nincs külön staging subdomain, a v2 alkönyvtár szolgál pre-handover stage-ként
+- [x] Rackforest cPanel hozzáférés és WP telepítés (`wp.benettcar.hu`, Softaculous, PHP 8.x)
+- [x] Frontend build (`npm run build`) → `dist/` feltöltése FTP-vel (`/public_html/v2/`)
+- [x] WP REST plugin aktiválás production-ön (`spektra-api` + `spektra-config` overlay)
+- [x] CORS `allowed_origins` frissítés production URL-lel (`benettcar.hu` + `www.benettcar.hu`)
+- [x] `VITE_DATA_SOURCE=wordpress` + production WP URL a deployed configban (`.env.production`)
+- [x] SSL tanúsítvány ellenőrzés (Rackforest AutoSSL zöld mindkét domainre)
+- [x] WP REST endpoint külső hálózatról: `https://wp.benettcar.hu/wp-json/spektra/v1/site` → `200 OK`
+- [x] Media URL-ek ellenőrzése production WP-n (brand logók + képek alt text parity)
+- [ ] SMTP konfiguráció (P14.6 Option A miatt kötelező) — `kapcsolat@benettcar.hu` cPanel email account + WP Mail SMTP plugin
+- [ ] Admin user átadás — kliensnek külön csatornán (1Password / Signal)
+- [x] Backup stratégia (Rackforest backup policy vagy WP plugin) — dokumentálva: `sp-benettcar/docs/deployment-runbook.md §15`
+- [x] Update responsibility rögzítése (WP core, plugin, témák) — `deployment-runbook.md §16.4` (átadás előtt írásban a klienssel)
+- [x] PHP 8.4 kompatibilitás (`class-rest-controller.php` `true|\WP_Error` → `bool|\WP_Error`) — sp-infra commit `2202032`, troubleshooting: [`php-84-true-type-literal.md`](../troubleshooting/php-84-true-type-literal.md)
+- [x] v2 auth gate (cookie-alapú előzetes hozzáférés) — `login.php` + `auth-check.php` + `.htaccess`, credentials a `deployment-runbook §2`-ben
+- [x] Deployment runbook + guide (`docs/deployment-runbook.md` 1925 sor + `docs/deployment-guide.md` 235 sor) — gitignored, konkrét credentials inline
+- [ ] Auth gate disable workflow (átadáskor)
 
 ### Done State
 
