@@ -73,11 +73,11 @@ P13.x sorozat (P13.1–P13.5) lezárta:
 | P14.2 | Client Feedback Frontend Implementation | ✅ DONE |
 | P14.3 | Content & Media Freeze | ✅ DONE (ügyfél fotók/email pending — nem blokkoló) |
 | P14.4 | WordPress Resync / Seed Rehydration | ✅ DONE lokálisan (parity 196/196) + ✅ éles Rackforest WP-n (P14.7 keretében: brand logók + seed importálva, REST `200 OK`, alt parity) |
-| P14.5 | Admin Handover Package | 🟡 IN PROGRESS — kézikönyv + gyors útmutató .doc committed; contact-rész screenshotok P14.6 után pótolandók |
+| P14.5 | Admin Handover Package | 🟡 IN PROGRESS — kézikönyv + gyors útmutató .doc committed; contact-rész screenshotok pótolandók. Admin UX: „Főoldal" menüpont ✅ + branded CMS gateway ✅ (wp.benettcar.hu root) |
 | P14.6 | Contact Form Decision | ✅ DONE (2026-05-14) — `FormHandler` driver-absztrakció (`@spektra/data` pure async + `@spektra/runtime` React context), CF7 production driver, 33 unit teszt zöld, production smoke PASS (email kézbesítve). Tag: `p14.6-contact-form-done`. |
 | P14.7 | Staging / Production Readiness | 🟡 IN PROGRESS (2026-05-14) — Rackforest deployment live: `wp.benettcar.hu` + `benettcar.hu/v2/` cookie-gated. SMTP ✅ (`info@benettcar.hu`). Hátralévő: auth gate disable átadáskor. Tag: `p14.7-stage-ready`. |
 | P14.8 | Final Smoke Test & Release Freeze | ✅ DONE (2026-05-14) — build/test PASS, REST OK, contact form OK, browser smoke OK. Tag: `p14.8-release-freeze`. |
-| P14.9 | Documentation Sync Across Repos | PENDING |
+| P14.9 | Documentation Sync Across Repos | 🟡 IN PROGRESS |
 | P14.10 | Non-BenettCar Follow-up Cleanup | DEFERRED |
 
 ---
