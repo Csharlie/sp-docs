@@ -4,7 +4,7 @@ status: active
 type: phase-roadmap
 canonical: true
 created: 2026-04-25
-last_updated: 2026-05-14 (P14.7 stage-ready)
+last_updated: 2026-05-14 (P14.6 contact-form-done)
 ---
 
 # Phase 14 — BenettCar Handover Release Hardening
@@ -74,8 +74,8 @@ P13.x sorozat (P13.1–P13.5) lezárta:
 | P14.3 | Content & Media Freeze | ✅ DONE (ügyfél fotók/email pending — nem blokkoló) |
 | P14.4 | WordPress Resync / Seed Rehydration | ✅ DONE lokálisan (parity 196/196) + ✅ éles Rackforest WP-n (P14.7 keretében: brand logók + seed importálva, REST `200 OK`, alt parity) |
 | P14.5 | Admin Handover Package | 🟡 IN PROGRESS — kézikönyv + gyors útmutató .doc committed; contact-rész screenshotok P14.6 után pótolandók |
-| P14.6 | Contact Form Decision | 🟡 IN PROGRESS — architektúra döntés (2026-05-14): `FormHandler` driver-absztrakció a `@spektra/data` package-ben, default `wp-spektra` driver + `web3forms` / `mailto` / `noop` alternatívák (CMS-független design). Implementáció pending. |
-| P14.7 | Staging / Production Readiness | 🟡 IN PROGRESS (2026-05-14) — Rackforest deployment live: `wp.benettcar.hu` + `benettcar.hu/v2/` cookie-gated. Hátralévő: SMTP + P14.6 contact form + átadáskor auth gate disable. Tag: `p14.7-stage-ready`. |
+| P14.6 | Contact Form Decision | ✅ DONE (2026-05-14) — `FormHandler` driver-absztrakció (`@spektra/data` pure async + `@spektra/runtime` React context), CF7 production driver, 33 unit teszt zöld, production smoke PASS (email kézbesítve). Tag: `p14.6-contact-form-done`. |
+| P14.7 | Staging / Production Readiness | 🟡 IN PROGRESS (2026-05-14) — Rackforest deployment live: `wp.benettcar.hu` + `benettcar.hu/v2/` cookie-gated. SMTP ✅ (`info@benettcar.hu`). Hátralévő: auth gate disable átadáskor. Tag: `p14.7-stage-ready`. |
 | P14.8 | Final Smoke Test & Release Freeze | PENDING |
 | P14.9 | Documentation Sync Across Repos | PENDING |
 | P14.10 | Non-BenettCar Follow-up Cleanup | DEFERRED |
@@ -548,7 +548,7 @@ Nincs backend submit, nincs email küldés, nincs API integration. A success sta
 
 **Választott opció: Option A — Valódi backend submit, WordPress pluginnal**
 
-### 🔄 Implementáció-szintű revízió (2026-05-14)
+### ✅ Implementáció kész (2026-05-14)
 
 > **Részletes 7-fázis implementációs terv:** [`implementation/p14-6-contact-form-formhandler.md`](../implementation/p14-6-contact-form-formhandler.md) — architektúra döntések, fázis-szintű deliverables + success criteria, párhuzamosítási lehetőségek, bukási módok + mitigáció.
 

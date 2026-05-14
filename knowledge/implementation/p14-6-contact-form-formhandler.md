@@ -1,10 +1,10 @@
 ---
 title: "P14.6 — Contact Form: FormHandler driver-abstraction (Spektra) + CF7 production driver (BenettCar)"
-status: plan-complete
+status: implementation-complete
 type: implementation
 phase_introduced: "14.6"
 canonical: true
-last_updated: 2026-05-14
+last_updated: 2026-05-14 (implementation-complete)
 tags: [contact-form, formhandler, cf7, spektra-data, benettcar, p14.6]
 ---
 
@@ -545,13 +545,13 @@ VITE_FORM_HANDLER=noop
 
 Ezeknek a doksiknak frissülnie kell, amikor P14.6 ✅ DONE lesz:
 
-- [ ] Ez a doc → `status: implementation-complete`
-- [ ] [`phases/phase-14-benettcar-handover-release.md`](../phases/phase-14-benettcar-handover-release.md) → P14.6 Phase Map ✅
-- [ ] [`CHANGELOG.md`](../CHANGELOG.md) → P14.6 implementation entry
-- [ ] [`guides/form-handler-drivers.md`](../guides/form-handler-drivers.md) → ÚJ doc létrehozva
-- [ ] `sp-benettcar/docs/implementation-log.md` → #41 entry
-- [ ] `sp-benettcar/docs/deployment-runbook.md §12` → CF7 konkrét állapot
-- [ ] Tag `p14.6-contact-form-done` push-olva
+- [x] Ez a doc → `status: implementation-complete`
+- [x] [`phases/phase-14-benettcar-handover-release.md`](../phases/phase-14-benettcar-handover-release.md) → P14.6 Phase Map ✅
+- [x] [`CHANGELOG.md`](../CHANGELOG.md) → P14.6 implementation entry
+- [x] [`guides/form-handler-drivers.md`](../guides/form-handler-drivers.md) → ÚJ doc létrehozva
+- [x] `sp-benettcar/docs/implementation-log.md` → #41 entry
+- [ ] `sp-benettcar/docs/deployment-runbook.md §12` → CF7 konkrét állapot (gitignored, kézzel update)
+- [x] Tag `p14.6-contact-form-done` push-olva
 
 ---
 
