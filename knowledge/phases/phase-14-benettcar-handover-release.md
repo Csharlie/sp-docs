@@ -550,7 +550,9 @@ Nincs backend submit, nincs email küldés, nincs API integration. A success sta
 
 ### 🔄 Implementáció-szintű revízió (2026-05-14)
 
-A P14.7 stage-ready elérése után, a contact form implementáció **architektúra szintjén** revidálódott. A korábbi CF7 / WPForms ötlet helyett a Spektra platform read-oldali `DataSource` absztrakciójának tükör mintáját követjük — a contact form is **driver-független** legyen, hogy ne kötődjön kizárólag WordPress-hez.
+> **Részletes 7-fázis implementációs terv:** [`implementation/p14-6-contact-form-formhandler.md`](../implementation/p14-6-contact-form-formhandler.md) — architektúra döntések, fázis-szintű deliverables + success criteria, párhuzamosítási lehetőségek, bukási módok + mitigáció.
+
+A P14.7 stage-ready elérése után, a contact form implementáció **architektúra szintjén** revidálódott. A korábbi CF7-közvetlen / WPForms ötlet helyett a Spektra platform read-oldali `DataSource` absztrakciójának tükör mintáját követjük — a contact form is **driver-független** legyen, hogy ne kötődjön kizárólag WordPress-hez, miközben a BenettCar production driverét **CF7 plugin** adja (proven, kliens-szerkeszthető, beépített spam-védelem).
 
 **Új implementációs megközelítés:**
 

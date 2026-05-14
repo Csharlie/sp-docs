@@ -5,6 +5,7 @@ Minden knowledge dokumentum változás naplója. Keep a Changelog formátum.
 ## [Unreleased]
 
 ### Added
+- `implementation/p14-6-contact-form-formhandler.md` — 7-fázis implementációs terv a P14.6 contact form bevezetéséhez. Architektúra: `FormHandler` driver-absztrakció a `@spektra/data` package-ben (read-side `DataSource` mintára), BenettCar production driver: **Contact Form 7** plugin. Driverek: `cf7` (prod) / `web3forms` (static deploy) / `mailto` (fallback) / `noop` (dev). Fázis-szintű deliverables, success criteria, párhuzamosítási lehetőségek, bukási módok + mitigáció, indítás workflow opciók (lineáris vs párhuzamos). Becsült munka: ~10 óra, 3 repo érintett.
 - `troubleshooting/php-84-true-type-literal.md` — PHP 8.4 alatt a `true|\WP_Error` return type literál a namespace-elt fájlban `Spektra\API\true` class-referenciaként parse-olódik → plugin aktiváláskor `Class not found` fatal. Megoldás: `bool|\WP_Error` (szemantikailag ekvivalens). Felfedezve P14.7 stage-ready Rackforest deployment közben. Fix commit: `2202032` (sp-infra).
 - `troubleshooting/data-source-env-override.md` — `.env.local` Vite prioritás gotcha: ha `VITE_DATA_SOURCE` `.env`-ben van állítva, de `.env.local`-ban felülírva, a frontend a felülíró értéket fogja használni. Tünet/megoldás/prevention/agent ellenőrzőlista. Felfedezve P14.4 átálláskor.
 - `sp-clients/sp-benettcar/infra/env/README.md` — env-fájl prioritási sorrend, JSON↔WP adatforrás váltás lépésről lépésre, gotcha figyelmeztetés.
